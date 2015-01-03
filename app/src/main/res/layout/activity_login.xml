@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:fillViewport="true">
+
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <!-- Email -->
+        <EditText android:id="@+id/edit_text_email"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:inputType="textEmailAddress"
+            android:hint="email"
+            android:singleLine="true"/>
+
+        <!-- Password Label -->
+        <EditText android:id="@+id/edit_text_password"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:hint="password"
+            android:password="true"
+            android:singleLine="true"/>
+
+
+        <Button android:id="@+id/button_signup"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:text="new user?"
+            android:onClick="signup"/>
+
+        <Button android:id="@+id/button_submit"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:text="submit"
+            android:onClick="submit"/>
+
+    </LinearLayout>
+</ScrollView>
+

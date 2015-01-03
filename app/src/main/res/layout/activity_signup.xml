@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:paddingLeft="17dp"
+    android:paddingRight="17dp"
+    >
+
+    <EditText
+        android:id="@+id/edit_text_email"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:hint="email"
+        android:inputType="textEmailAddress"
+        android:padding="10dp"
+        />
+
+    <EditText
+        android:id="@+id/edit_text_password"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:inputType="textPassword"
+        android:hint="password"
+        android:padding="10dp"
+        />
+    <EditText
+        android:id="@+id/edit_text_verification_code"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:hint="verification code"
+        android:padding="10dp"
+        />
+    <Button
+        android:id="@+id/button_verification_code"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:text="Get Verification Code"
+        android:onClick="onGetVerificationCode"
+        android:padding="10dp"/>
+    <Button
+        android:id="@+id/button_submit"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:text="Create Account"
+        android:onClick="onSubmit"
+        android:padding="10dp"/>
+
+    <TextView android:id="@+id/edit_text_already_memeber"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:padding="5dp"
+        android:gravity="center"
+        android:onClick="onBack"
+        android:clickable="true"
+        android:text="Already a member?"/>
+</LinearLayout>
+
+
