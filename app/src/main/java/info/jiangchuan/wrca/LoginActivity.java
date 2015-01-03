@@ -1,5 +1,6 @@
 package info.jiangchuan.wrca;
 
+import android.preference.PreferenceManager;
 import android.support.v7.app.ActionBarActivity;
 
 import android.os.Bundle;
@@ -28,50 +29,30 @@ import java.util.HashMap;
 
 import android.content.Intent;
 
+import junit.framework.Assert;
+
 public class LoginActivity extends ActionBarActivity {
 
     private static final String TAG = "LoginActivity";
     private LoginActivity mActivity;
-
+    private SharedPreferences mSharePref;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
         mActivity = this;
+        mSharePref = getPreferences(Context.MODE_PRIVATE);
 
-        SharedPreferences sharedPref = getPreferences(Context.MODE_PRIVATE);
-        if (sharedPref == null) {
-            Log.e(TAG, "get SharedPreferences handle err");
-        }
-
-        String token =  sharedPref.getString(Constants.string_token, null);
-        if (token != null) {
+        String token = sharedPreferencesReadKeyValue(Constants.string_token);
+        if (token != "") {
            // start MainActivity
+            Intent intent = new Intent(mActivity, MainActivity.class);
+            startActivity(intent);
+        } else {
+            Log.d(TAG, "token is empty");
         }
     }
 
-
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_main, menu);
-        return true;
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
-
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-            return true;
-        }
-
-        return super.onOptionsItemSelected(item);
-    }
 
     public void signup(View view) {
         Intent intent = new Intent(this, SignupActivity.class);
@@ -97,14 +78,15 @@ public class LoginActivity extends ActionBarActivity {
 
                     @Override
                     public void onResponse(JSONObject response) {
-                        Log.d(TAG, "onResponse");
                         try {
                             int result = response.getInt("success");
                             if (result == 0) {
                                 Utility.showToastMessage(mActivity, response.toString(), Toast.LENGTH_LONG);
                             } else if (result == 1) {
-                                Utility.showToastMessage(mActivity, "login success", Toast.LENGTH_LONG);
-
+                                Log.d(TAG, response.getString("token"));
+                                sharedPreferencesWriteKeyPair(Constants.string_token, response.getString("token"));
+                                Intent intent = new Intent(mActivity, MainActivity.class);
+                                startActivity(intent);
                             } else {
                                 Utility.showToastMessage(mActivity, "result code not recognize", Toast.LENGTH_LONG);
                             }
@@ -125,5 +107,27 @@ public class LoginActivity extends ActionBarActivity {
                 });
 
         WRCAApplication.getInstance().getRequestQueue().add(request);
+    }
+
+    private SharedPreferences getSharedPreference() {
+       if (mSharePref == null) {
+       }
+        return mSharePref;
+    }
+    private void sharedPreferencesWriteKeyPair (String key, String value) {
+        if (mSharePref == null) {
+            Log.e(TAG, "getSharedPreference null error");
+            return;
+        }
+        SharedPreferences.Editor editor = mSharePref.edit();
+        editor.putString(key, value); // save the token
+        editor.commit();
+    }
+    private String sharedPreferencesReadKeyValue(String key) {
+        if (mSharePref == null) {
+            Log.e(TAG, "getSharedPreference null error");
+            return null;
+        }
+        return mSharePref.getString(key, null);
     }
 }
