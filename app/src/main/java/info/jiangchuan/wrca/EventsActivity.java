@@ -49,12 +49,12 @@ public class EventsActivity extends Activity {
 
         //pullMoreData();
         // Creating volley request obj
-        String url = "http://jiangchuan.info/php/index.php?object=events&type=all&cursorPos=" + lastItem+1;
+
+        String url = "http://jiangchuan.info/php/index.php?object=events&type=all&cursorPos=" + Integer.toString(lastItem+1);
         JsonArrayRequest eventReq = new JsonArrayRequest(url,
                 new Response.Listener<JSONArray>() {
                     @Override
                     public void onResponse(JSONArray response) {
-                        lastItem += response.length();
                         // Parsing json
                         for (int i = 0; i < response.length(); i++) {
                             try {
@@ -77,6 +77,7 @@ public class EventsActivity extends Activity {
                         // notifying list adapter about data changes
                         // so that it renders the list view with updated data
                         adapter.notifyDataSetChanged();
+                        lastItem += response.length();
                     }
                 }, new Response.ErrorListener() {
             @Override
@@ -109,7 +110,7 @@ public class EventsActivity extends Activity {
 
     private void pullMoreData() {
         // Creating volley request obj
-        String url = "http://jiangchuan.info/php/index.php?object=events&type=all&cursorPos=" + 3;
+        String url = "http://jiangchuan.info/php/index.php?object=events&type=all&cursorPos=" + Integer.toString(lastItem + 1);
         Log.d(TAG, "pull more data");
         JsonArrayRequest eventReq = new JsonArrayRequest(url,
                 new Response.Listener<JSONArray>() {
