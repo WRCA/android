@@ -35,6 +35,8 @@ public class EventsActivity extends Activity {
     private CustomListAdapter adapter;
 
     private int lastItem = 0;
+
+    private boolean loading = false;
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -97,7 +99,8 @@ public class EventsActivity extends Activity {
 
                 // threshold being indicator if bottom of list is hit
 
-                if (firstVisibleItem == totalItemCount-5) {
+                if (loading == false && firstVisibleItem == totalItemCount-5) {
+                    loading = true;
                     pullMoreData();
                 }
             }
@@ -137,6 +140,7 @@ public class EventsActivity extends Activity {
                         // so that it renders the list view with updated data
                         Log.d(TAG, Integer.toString(eventsList.size()));
                         adapter.notifyDataSetChanged();
+                        loading = false;
                     }
                 }, new Response.ErrorListener() {
             @Override
