@@ -48,6 +48,7 @@ public class LoginActivity extends ActionBarActivity {
            // start MainActivity
             Intent intent = new Intent(mActivity, MainActivity.class);
             startActivity(intent);
+            finish();
         } else {
             Log.d(TAG, "token is empty");
         }

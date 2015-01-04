@@ -14,10 +14,11 @@ import android.widget.ListView;
 import java.util.List;
 import java.util.ArrayList;
 
+import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.VolleyLog;
-import com.android.volley.toolbox.JsonArrayRequest;
+import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.NetworkResponse;
 
 import org.json.JSONArray;
@@ -51,42 +52,7 @@ public class EventsActivity extends Activity {
         // Creating volley request obj
 
         String url = "http://jiangchuan.info/php/index.php?object=events&type=all&cursorPos=" + Integer.toString(lastItem+1);
-        JsonArrayRequest eventReq = new JsonArrayRequest(url,
-                new Response.Listener<JSONArray>() {
-                    @Override
-                    public void onResponse(JSONArray response) {
-                        // Parsing json
-                        for (int i = 0; i < response.length(); i++) {
-                            try {
-
-                                JSONObject obj = response.getJSONObject(i);
-                                Event movie = new Event();
-                                movie.setTitle(obj.getString("title"));
-                                movie.setThumbnailUrl(obj.getString("thumbnail_url"));
-                                movie.setLocation(obj.getString("location"));
-                                movie.setTime(obj.getString("time"));
-
-                                // adding movie to movies array
-                                eventsList.add(movie);
-                            } catch (JSONException e) {
-                                e.printStackTrace();
-                            }
-
-                        }
-
-                        // notifying list adapter about data changes
-                        // so that it renders the list view with updated data
-                        adapter.notifyDataSetChanged();
-                        lastItem += response.length();
-                    }
-                }, new Response.ErrorListener() {
-            @Override
-            public void onErrorResponse(VolleyError error) {
-                VolleyLog.d(TAG, "Error: " + error.getMessage());
-            }
-        });
-        // Adding request to request queue
-        WRCAApplication.getInstance().getRequestQueue().add(eventReq);
+        getEventsFromURL(url);
         listView.setOnScrollListener(new ListView.OnScrollListener() {
             @Override
             public void onScrollStateChanged(AbsListView view,
@@ -112,49 +78,52 @@ public class EventsActivity extends Activity {
         // Creating volley request obj
         String url = "http://jiangchuan.info/php/index.php?object=events&type=all&cursorPos=" + Integer.toString(lastItem + 1);
         Log.d(TAG, "pull more data");
-        JsonArrayRequest eventReq = new JsonArrayRequest(url,
-                new Response.Listener<JSONArray>() {
-                    @Override
-                    public void onResponse(JSONArray response) {
-                        lastItem += response.length();
-                        // Parsing json
-                        //Log.d(TAG, Integer.toString(eventsList.size()));
-                        for (int i = 0; i < response.length(); i++) {
-                            try {
-
-                                JSONObject obj = response.getJSONObject(i);
-                                Event movie = new Event();
-                                movie.setTitle(obj.getString("title"));
-                                movie.setThumbnailUrl(obj.getString("thumbnail_url"));
-                                movie.setLocation(obj.getString("location"));
-                                movie.setTime(obj.getString("time"));
-
-                                // adding movie to movies array
-                                eventsList.add(movie);
-                            } catch (JSONException e) {
-                                e.printStackTrace();
-                            }
-
-                        }
-
-                        // notifying list adapter about data changes
-                        // so that it renders the list view with updated data
-                        Log.d(TAG, Integer.toString(eventsList.size()));
-                        adapter.notifyDataSetChanged();
-                        loading = false;
-                    }
-                }, new Response.ErrorListener() {
-            @Override
-            public void onErrorResponse(VolleyError error) {
-
-                Log.d(TAG, "Error: " + error.toString());
-                NetworkResponse networkResponse = error.networkResponse;
-                if (networkResponse != null)
-                Log.e(TAG, Integer.toString(networkResponse.statusCode));
-            }
-        });
+        getEventsFromURL(url);
         // Adding request to request queue
-        WRCAApplication.getInstance().getRequestQueue().add(eventReq);
     }
 
+   void getEventsFromURL(String url) {
+       JsonObjectRequest eventReq = new JsonObjectRequest(Request.Method.GET, url, null,
+               new Response.Listener<JSONObject>() {
+                   @Override
+                   public void onResponse(JSONObject response) {
+                       try {
+                           // Parsing json
+                           int code = response.getInt("success");
+                           if (code == 0) {
+                               listView.setOnScrollListener(null);
+                               Log.d(TAG, "no data left");
+                               return;
+                           }
+                           String json = response.getString("events");
+                           JSONArray arr = new JSONArray(json);
+                           for (int i = 0; i < arr.length(); i++) {
+                               JSONObject obj = arr.getJSONObject(i);
+                               Event movie = new Event();
+                               movie.setTitle(obj.getString("title"));
+                               movie.setThumbnailUrl(obj.getString("thumbnail_url"));
+                               movie.setLocation(obj.getString("location"));
+                               movie.setTime(obj.getString("time"));
+
+                               // adding movie to movies array
+                               eventsList.add(movie);
+
+                           }
+
+                       } catch (JSONException e) {
+                           e.printStackTrace();
+                       }
+                       adapter.notifyDataSetChanged();
+                       lastItem += response.length();
+                       loading = false;
+                   }
+               }, new Response.ErrorListener() {
+           @Override
+           public void onErrorResponse(VolleyError error) {
+               VolleyLog.d(TAG, "Error: " + error.getMessage());
+           }
+       });
+       // Adding request to request queue
+       WRCAApplication.getInstance().getRequestQueue().add(eventReq);
+   }
 }
