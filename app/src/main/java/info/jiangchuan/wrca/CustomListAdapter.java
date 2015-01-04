@@ -53,6 +53,7 @@ public class CustomListAdapter extends BaseAdapter{
 
         if (imageLoader == null)
             imageLoader = WRCAApplication.getInstance().getImageLoader();
+
         NetworkImageView thumbNail = (NetworkImageView) convertView
                 .findViewById(R.id.thumbnail);
         TextView title = (TextView) convertView.findViewById(R.id.title);
@@ -64,7 +65,7 @@ public class CustomListAdapter extends BaseAdapter{
         Event m = eventItems.get(position);
 
         // thumbnail image
-        //thumbNail.setImageUrl(m.getThumbnailUrl(), imageLoader);
+        thumbNail.setImageUrl(m.getThumbnailUrl(), imageLoader);
 
         // title
         title.setText(m.getTitle());

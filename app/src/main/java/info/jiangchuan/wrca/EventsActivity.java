@@ -48,9 +48,6 @@ public class EventsActivity extends Activity {
         adapter = new CustomListAdapter(this, eventsList);
         listView.setAdapter(adapter);
 
-        //pullMoreData();
-        // Creating volley request obj
-
         String url = "http://jiangchuan.info/php/index.php?object=events&type=all&cursorPos=" + Integer.toString(lastItem+1);
         getEventsFromURL(url);
         listView.setOnScrollListener(new ListView.OnScrollListener() {
@@ -97,6 +94,7 @@ public class EventsActivity extends Activity {
                            }
                            String json = response.getString("events");
                            JSONArray arr = new JSONArray(json);
+                           lastItem += arr.length();
                            for (int i = 0; i < arr.length(); i++) {
                                JSONObject obj = arr.getJSONObject(i);
                                Event movie = new Event();
@@ -114,7 +112,6 @@ public class EventsActivity extends Activity {
                            e.printStackTrace();
                        }
                        adapter.notifyDataSetChanged();
-                       lastItem += response.length();
                        loading = false;
                    }
                }, new Response.ErrorListener() {
