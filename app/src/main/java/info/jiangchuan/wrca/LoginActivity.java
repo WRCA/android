@@ -44,7 +44,10 @@ public class LoginActivity extends ActionBarActivity {
         mSharePref = getPreferences(Context.MODE_PRIVATE);
 
         String token = sharedPreferencesReadKeyValue(Constants.string_token);
-        if (token != "") {
+
+        SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(this);
+        boolean autoLogin = sharedPref.getBoolean(Constants.string_auto_Login, false);
+        if (autoLogin == true && token != "") {
            // start MainActivity
             Intent intent = new Intent(mActivity, MainActivity.class);
             startActivity(intent);
@@ -88,6 +91,7 @@ public class LoginActivity extends ActionBarActivity {
                                 sharedPreferencesWriteKeyPair(Constants.string_token, response.getString("token"));
                                 Intent intent = new Intent(mActivity, MainActivity.class);
                                 startActivity(intent);
+                                finish();
                             } else {
                                 Utility.showToastMessage(mActivity, "result code not recognize", Toast.LENGTH_LONG);
                             }

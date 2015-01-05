@@ -8,8 +8,10 @@ import android.app.Activity;
 import android.os.Bundle;
 import android.view.View;
 
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
+import android.content.Intent;
 
 import java.util.List;
 import java.util.ArrayList;
@@ -34,6 +36,7 @@ public class EventsActivity extends Activity {
     private List<Event> eventsList = new ArrayList<Event>();
     private ListView listView;
     private CustomListAdapter adapter;
+    private EventsActivity mActivity;
 
     private int lastItem = 0;
 
@@ -42,8 +45,8 @@ public class EventsActivity extends Activity {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_events);
+        mActivity = this;
         listView = (ListView) findViewById(R.id.list);
-
 
         adapter = new CustomListAdapter(this, eventsList);
         listView.setAdapter(adapter);
@@ -69,6 +72,17 @@ public class EventsActivity extends Activity {
                 }
             }
         });
+
+        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                //Toast.makeText(this, item + " selected", Toast.LENGTH_LONG).show();
+                Intent intent = new Intent(mActivity, EventDetailActivity.class);
+                intent.putExtra("event", eventsList.get(position));
+                startActivity(intent);
+            }
+        });
+
     }
 
     private void pullMoreData() {

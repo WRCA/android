@@ -1,9 +1,14 @@
 package info.jiangchuan.wrca;
 
+import java.io.Serializable;
+
 /**
  * Created by jiangchuan on 1/3/15.
  */
-public class Event {
+public class Event implements Serializable {
+
+    static final long serialVersionUID = 42L;
+
     private String title;
     private String location;
     private String time;

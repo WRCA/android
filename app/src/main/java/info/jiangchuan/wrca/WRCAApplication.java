@@ -40,6 +40,7 @@ public class WRCAApplication extends Application{
             mImageLoader = new ImageLoader(this.mRequestQueue,
                     new LruBitmapCache());
         }
+
         return this.mImageLoader;
     }
 

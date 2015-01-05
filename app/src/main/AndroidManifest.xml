@@ -37,11 +37,17 @@
             android:name=".MainActivity"
             android:label="@string/title_activity_main" >
         </activity>
-
         <activity
             android:name=".EventsActivity"
-            android:label= "EventsActivity"/>
-
+            android:label="EventsActivity" />
+        <activity
+            android:name=".EventDetailActivity"
+            android:label="@string/title_activity_event_detail" >
+        </activity>
+        <activity
+            android:name=".SettingsActivity"
+            android:label="@string/title_activity_settings" >
+        </activity>
     </application>
 
 </manifest>

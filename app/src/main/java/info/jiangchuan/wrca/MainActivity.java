@@ -63,11 +63,11 @@ public class MainActivity extends ActionBarActivity {
         if (tab1 == null || tab2 == null) {
             Log.d(TAG, "tab null");
         }
-        tab1.setIndicator("calender");
-        tab2.setIndicator("events");
+        tab1.setIndicator("events");
+        tab2.setIndicator("setting");
         // TODO: use intent
         tab1.setContent(new Intent(this, EventsActivity.class));
-        tab2.setContent(new Intent(this, EventsActivity.class));
+        tab2.setContent(new Intent(this, SettingsActivity.class));
 
         host.addTab(tab1);
         host.addTab(tab2);

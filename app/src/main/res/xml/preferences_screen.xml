@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+    <PreferenceCategory
+        android:title="ACCOUNT"
+        android:persistent="true"
+        android:key="pref_key_storage_settings">
+
+        <CheckBoxPreference
+            android:id="@+id/checkbox_preference_auto_login"
+            android:key="pref_auto_login"
+            android:title="Auto Login"
+            android:defaultValue="true" />
+    </PreferenceCategory>
+</PreferenceScreen>
