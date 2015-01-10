@@ -50,4 +50,4 @@
         android:layout_alignParentBottom="true"
         android:layout_alignParentRight="true"
         android:textSize="@dimen/year" /> 
-    </RelativeLayout>
+</RelativeLayout>

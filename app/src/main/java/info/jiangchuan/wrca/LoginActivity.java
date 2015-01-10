@@ -62,6 +62,7 @@ public class LoginActivity extends ActionBarActivity {
         Intent intent = new Intent(this, SignupActivity.class);
         startActivity(intent);
     }
+
     public void submit(View view) {
         TextView email = (TextView)findViewById(R.id.edit_text_email);
         TextView password = (TextView)findViewById(R.id.edit_text_password);

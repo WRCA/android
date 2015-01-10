@@ -12,6 +12,8 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.content.Intent;
+import android.view.Menu;
+import android.view.MenuItem;
 
 import java.util.List;
 import java.util.ArrayList;
@@ -22,15 +24,17 @@ import com.android.volley.VolleyError;
 import com.android.volley.VolleyLog;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.NetworkResponse;
+import com.android.volley.toolbox.NetworkImageView;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import android.util.Log;
+import android.support.v7.app.ActionBarActivity;
 
 import android.widget.AbsListView;
-public class EventsActivity extends Activity {
+public class EventsActivity extends ActionBarActivity {
 
     private static final String TAG = "EventsActivity";
     private List<Event> eventsList = new ArrayList<Event>();
@@ -51,7 +55,7 @@ public class EventsActivity extends Activity {
         adapter = new CustomListAdapter(this, eventsList);
         listView.setAdapter(adapter);
 
-        String url = "http://jiangchuan.info/php/index.php?object=events&type=all&cursorPos=" + Integer.toString(lastItem+1);
+        String url = "http://jiangchuan.info/php/index.php?object=events&type=all&offset=" + Integer.toString(lastItem+1);
         getEventsFromURL(url);
         listView.setOnScrollListener(new ListView.OnScrollListener() {
             @Override
@@ -83,11 +87,109 @@ public class EventsActivity extends Activity {
             }
         });
 
+        getSupportActionBar().setTitle("All Events");
     }
 
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        // Inflate the menu; this adds items to the action bar if it is present.
+        getMenuInflater().inflate(R.menu.menu_events, menu);
+        return true;
+    }
+
+    @Override
+    public void onBackPressed() {
+        finish();
+    }
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        // Handle action bar item clicks here. The action bar will
+        // automatically handle clicks on the Home/Up button, so long
+        // as you specify a parent activity in AndroidManifest.xml.
+        int id = item.getItemId();
+
+        //noinspection SimplifiableIfStatement
+
+        switch (id) {
+            case R.id.item_saved:
+                Intent intent = new Intent(this, SavedEventsActivity.class);
+                startActivity(intent);
+                break;
+            case R.id.item_this_week:
+                listView.setOnScrollListener(null);
+                onEventsThisWeek();
+                getSupportActionBar().setTitle("This Week");
+                break;
+            case R.id.item_this_month:
+                listView.setOnScrollListener(null);
+                onEventsThisMonth();
+                getSupportActionBar().setTitle("This Month");
+                break;
+            case R.id.item_all:
+                onEventsAll();
+                getSupportActionBar().setTitle("All Events");
+                break;
+            case android.R.id.home:
+                return true;
+            default:
+                break;
+        }
+        return super.onOptionsItemSelected(item);
+    }
+    private void onEventsThisWeek() {
+        eventsList.clear();
+        adapter = new CustomListAdapter(this, eventsList);
+        listView.setAdapter(adapter);
+        String url = "http://jiangchuan.info/php/index.php?object=events&type=week";
+        getEventsFromURL(url);
+    }
+    private void onEventsThisMonth() {
+        eventsList.clear();
+        adapter = new CustomListAdapter(this, eventsList);
+        listView.setAdapter(adapter);
+        String url = "http://jiangchuan.info/php/index.php?object=events&type=month";
+        getEventsFromURL(url);
+    }
+    private void onEventsAll() {
+        eventsList.clear();
+        adapter = new CustomListAdapter(this, eventsList);
+        listView.setAdapter(adapter);
+        lastItem = 0;
+        String url = "http://jiangchuan.info/php/index.php?object=events&type=all&offset=" + Integer.toString(lastItem+1);
+        getEventsFromURL(url);
+        listView.setOnScrollListener(new ListView.OnScrollListener() {
+            @Override
+            public void onScrollStateChanged(AbsListView view,
+                                             int scrollState) {
+                // Do nothing
+            }
+
+            @Override
+            public void onScroll(AbsListView view, int firstVisibleItem,
+                                 int visibleItemCount, int totalItemCount) {
+
+                // threshold being indicator if bottom of list is hit
+
+                if (loading == false && firstVisibleItem == totalItemCount-5) {
+                    loading = true;
+                    pullMoreData();
+                }
+            }
+        });
+
+        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                //Toast.makeText(this, item + " selected", Toast.LENGTH_LONG).show();
+                Intent intent = new Intent(mActivity, EventDetailActivity.class);
+                intent.putExtra("event", eventsList.get(position));
+                startActivity(intent);
+            }
+        });
+    }
     private void pullMoreData() {
         // Creating volley request obj
-        String url = "http://jiangchuan.info/php/index.php?object=events&type=all&cursorPos=" + Integer.toString(lastItem + 1);
+        String url = "http://jiangchuan.info/php/index.php?object=events&type=all&offset=" + Integer.toString(lastItem + 1);
         Log.d(TAG, "pull more data");
         getEventsFromURL(url);
         // Adding request to request queue

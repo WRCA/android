@@ -48,6 +48,18 @@
             android:name=".SettingsActivity"
             android:label="@string/title_activity_settings" >
         </activity>
+        <activity
+            android:name=".EventDescriptionActivity"
+            android:label="@string/title_activity_event_description" >
+        </activity>
+        <activity
+            android:name=".SavedEventsActivity"
+            android:label="@string/title_activity_saved_events" >
+        </activity>
+        <activity
+            android:name=".TestActivity"
+            android:label="@string/title_activity_test" >
+        </activity>
     </application>
 
 </manifest>

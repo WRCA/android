@@ -1,0 +1,25 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context="info.jiangchuan.wrca.MainActivity">
+    <item
+        android:id="@+id/item_saved"
+        android:title="saved events"
+        android:orderInCategory="100"
+        app:showAsAction="always" />
+    <item
+        android:id="@+id/item_all"
+        android:title="all events"
+        android:orderInCategory="100"
+        app:showAsAction="never" />
+    <item
+        android:id="@+id/item_this_week"
+        android:title="this week"
+        android:orderInCategory="100"
+        app:showAsAction="never" />
+    <item
+        android:id="@+id/item_this_month"
+        android:title="this month"
+        android:orderInCategory="100"
+        app:showAsAction="never" />
+</menu>

@@ -15,6 +15,7 @@ public class WRCAApplication extends Application{
     private static WRCAApplication mInstance;
     private RequestQueue mRequestQueue;
     private ImageLoader mImageLoader;
+    private LruBitmapCache mLruBitmapCache;
 
     @Override
     public void onCreate() {
@@ -26,6 +27,23 @@ public class WRCAApplication extends Application{
         return mInstance;
     }
 
+    public ImageLoader getImageLoader() {
+        getRequestQueue();
+        if (mImageLoader == null) {
+            getLruBitmapCache();
+            mImageLoader = new ImageLoader(this.mRequestQueue,
+                    mLruBitmapCache);
+        }
+
+        return this.mImageLoader;
+    }
+
+    public LruBitmapCache getLruBitmapCache() {
+        if (mLruBitmapCache == null)
+            mLruBitmapCache = new LruBitmapCache();
+        return this.mLruBitmapCache;
+    }
+
     public RequestQueue getRequestQueue() {
         if (mRequestQueue == null) {
             mRequestQueue = Volley.newRequestQueue(getApplicationContext());
@@ -33,16 +51,5 @@ public class WRCAApplication extends Application{
 
         return mRequestQueue;
     }
-
-    public ImageLoader getImageLoader() {
-        getRequestQueue();
-        if (mImageLoader == null) {
-            mImageLoader = new ImageLoader(this.mRequestQueue,
-                    new LruBitmapCache());
-        }
-
-        return this.mImageLoader;
-    }
-
 
 }
