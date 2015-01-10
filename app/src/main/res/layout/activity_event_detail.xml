@@ -9,45 +9,77 @@
         android:layout_width="match_parent"
         android:orientation="vertical">
 
-
         <TextView
             android:id="@+id/text_view_title"
-            android:layout_height="wrap_content"
-            android:layout_margin="10dp"
+            android:layout_height="170dp"
             android:layout_width="match_parent"
-            android:textSize="30sp"
-            android:layout_gravity="center"
-            android:gravity="center"/>
+            android:layout_marginBottom="10dp"
+            android:background="@drawable/ic_launcher"
+            android:text="WRCA Activity"
+            android:textSize="20sp"
+            android:gravity="center|bottom"/>
 
-        <TextView
-            android:id="@+id/text_view_time"
-            android:layout_height="wrap_content"
-            android:layout_width="match_parent"
-            android:layout_margin="10dp"
-            android:textSize="30sp"
-            android:layout_gravity="center"
-            android:gravity="center"/>
-
-        <TextView
-            android:id="@+id/text_view_description"
+        <LinearLayout
             android:layout_height="wrap_content"
             android:layout_width="match_parent"
-            android:layout_margin="10dp"
-            android:textSize="30sp"
-            android:layout_gravity="center"
-            android:clickable="true"
-            android:gravity="center"/>
+            android:orientation="vertical"
+            android:padding="10dp">
 
+            <TextView
+                android:layout_height="wrap_content"
+                android:layout_width="match_parent"
+                android:text="TIME"
+                android:textSize="20sp"
+                android:gravity="left"/>
+            <View
+                android:layout_height="1dp"
+                android:layout_width="match_parent"
+                android:padding="5dp"
+                android:background="?android:attr/listDivider"/>
+            <TextView
+                android:id="@+id/text_view_time"
+                android:layout_height="wrap_content"
+                android:layout_width="match_parent"
+                android:textSize="20sp"/>
 
-        <TextView
-            android:id="@+id/text_view_location"
-            android:layout_height="wrap_content"
-            android:layout_width="match_parent"
-            android:textSize="30sp"
-            android:layout_margin="10dp"
-            android:clickable="true"
-            android:layout_gravity="center"
-            android:gravity="center"/>
+            <TextView
+                android:layout_height="wrap_content"
+                android:layout_width="match_parent"
+                android:gravity="left"
+                android:layout_marginTop="10dp"
+                android:text="Description"
+                android:textSize="20sp"/>
+            <View
+                android:layout_height="1dp"
+                android:layout_width="match_parent"
+                android:padding="5dp"
+                android:background="?android:attr/listDivider"/>
+            <TextView
+                android:id="@+id/text_view_description"
+                android:layout_height="100dp"
+                android:layout_width="match_parent"
+                android:inputType="textMultiLine"
+                android:textSize="20sp"
+                android:clickable="true"/>
 
+            <TextView
+                android:layout_height="wrap_content"
+                android:layout_width="match_parent"
+                android:gravity="left"
+                android:layout_marginTop="10dp"
+                android:text="Location"
+                android:textSize="20sp"/>
+            <View
+                android:layout_height="1dp"
+                android:layout_width="match_parent"
+                android:padding="5dp"
+                android:background="?android:attr/listDivider"/>
+            <TextView
+                android:id="@+id/text_view_location"
+                android:layout_height="wrap_content"
+                android:layout_width="match_parent"
+                android:textSize="20sp"
+                android:clickable="true"/>
+        </LinearLayout>
     </LinearLayout>
 </ScrollView>

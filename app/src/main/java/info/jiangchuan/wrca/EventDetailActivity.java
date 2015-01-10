@@ -14,8 +14,9 @@ import android.view.ViewGroup;
 import android.os.Build;
 import android.widget.ImageView;
 import android.util.Log;
+import android.widget.LinearLayout;
 import android.widget.TextView;
-
+import android.graphics.drawable.*;
 
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.ImageLoader;
@@ -44,6 +45,8 @@ public class EventDetailActivity extends ActionBarActivity {
 
         TextView title = (TextView)findViewById(R.id.text_view_title);
         title.setText(event.getTitle());
+        // Drawable d = new BitmapDrawable(getResources(),bitmap);
+        // title.setBackground(d);
 
 
         TextView location = (TextView)findViewById(R.id.text_view_location);
@@ -94,5 +97,8 @@ public class EventDetailActivity extends ActionBarActivity {
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    private class LayoutParams {
     }
 }
