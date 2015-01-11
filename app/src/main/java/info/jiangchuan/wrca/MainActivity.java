@@ -16,6 +16,9 @@ import android.support.v7.app.ActionBar;
 
 import android.app.Activity;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class MainActivity extends Activity {
 
     private TabHost host;
@@ -26,14 +29,11 @@ public class MainActivity extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        List<Event> list = WRCAApplication.getInstance().getSavedEvents();
+        list = Utility.readSavedEventsFromFile();
+        Log.d(TAG, Integer.toString(list.size()));
+        Log.d(TAG, "onCreate");
         createTabUI(savedInstanceState);
-
-    }
-
-    @Override
-    public void onSaveInstanceState(Bundle outState) {
-        //super.onSaveInstanceState(outState);
-        Log.d(TAG, "onSaveInstanceState");
     }
 
     private void createTabUI(Bundle savedInstanceState) {
@@ -48,22 +48,35 @@ public class MainActivity extends Activity {
 
         TabHost.TabSpec	tab1 = host.newTabSpec("tab1");
         TabHost.TabSpec	tab2 = host.newTabSpec("tab2");
-        if (tab1 == null || tab2 == null) {
+        TabHost.TabSpec	tab3 = host.newTabSpec("tab3");
+        if (tab1 == null || tab2 == null || tab3 == null) {
             Log.d(TAG, "tab null");
         }
         tab1.setIndicator("events");
-        tab2.setIndicator("setting");
+        tab2.setIndicator("E-Dir");
+        tab3.setIndicator("setting");
         // TODO: use intent
         tab1.setContent(new Intent(this, EventsActivity.class));
-        tab2.setContent(new Intent(this, SettingsActivity.class));
+        tab2.setContent(new Intent(this, EDirActivity.class));
+        tab3.setContent(new Intent(this, SettingsActivity.class));
 
         host.addTab(tab1);
         host.addTab(tab2);
+        host.addTab(tab3);
     }
 
     @Override
-    protected void onStop() {
+    public void onStop() {
         super.onStop();
+        Log.d(TAG, Integer.toString(WRCAApplication.getInstance().getSavedEvents().size()));
         Log.d(TAG, "onStop");
+        Utility.writeSavedEventsToFile( (ArrayList<Event>)WRCAApplication.getInstance().getSavedEvents());
+    }
+
+    @Override
+    public void onStart() {
+        Log.d(TAG, "onStart");
+        super.onStart();
+      //  Log.d(TAG, Integer.toString(WRCAApplication.getInstance().getSavedEvents().size()));
     }
 }

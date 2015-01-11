@@ -17,6 +17,7 @@ import android.util.Log;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.graphics.drawable.*;
+import android.widget.Toast;
 
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.ImageLoader;
@@ -94,6 +95,12 @@ public class EventDetailActivity extends ActionBarActivity {
         if (id == android.R.id.home) {
             finish();
             return true;
+        } else if (id == R.id.action_save) {
+            Event event = (Event)getIntent().getSerializableExtra("event");
+            WRCAApplication.getInstance().getSavedEvents().add(event);
+            Toast toast = Toast.makeText(this, "event save", Toast.LENGTH_SHORT);
+            toast.show();
+
         }
 
         return super.onOptionsItemSelected(item);

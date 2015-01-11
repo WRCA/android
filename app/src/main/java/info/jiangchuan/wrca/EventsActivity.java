@@ -239,4 +239,10 @@ public class EventsActivity extends ActionBarActivity {
        // Adding request to request queue
        WRCAApplication.getInstance().getRequestQueue().add(eventReq);
    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+        Log.d(TAG, "onStop");
+    }
 }

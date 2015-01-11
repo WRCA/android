@@ -7,6 +7,8 @@ import com.android.volley.RequestQueue;
 import com.android.volley.toolbox.ImageLoader;
 import com.android.volley.toolbox.Volley;
 
+import java.util.ArrayList;
+import java.util.List;
 /**
  * Created by jiangchuan on 1/3/15.
  */
@@ -16,6 +18,7 @@ public class WRCAApplication extends Application{
     private RequestQueue mRequestQueue;
     private ImageLoader mImageLoader;
     private LruBitmapCache mLruBitmapCache;
+    private List<Event> mSavedEvents;
 
     @Override
     public void onCreate() {
@@ -52,4 +55,10 @@ public class WRCAApplication extends Application{
         return mRequestQueue;
     }
 
+    public List<Event> getSavedEvents() {
+        if (mSavedEvents == null) {
+            mSavedEvents = new ArrayList<Event>();
+        }
+        return mSavedEvents;
+    }
 }

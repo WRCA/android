@@ -24,8 +24,10 @@ import com.android.volley.Request;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.util.ArrayList;
 import java.util.Map;
 import java.util.HashMap;
+import java.util.List;
 
 import android.content.Intent;
 
@@ -41,23 +43,29 @@ public class LoginActivity extends ActionBarActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
         mActivity = this;
-        mSharePref = getPreferences(Context.MODE_PRIVATE);
+    }
 
-        String token = sharedPreferencesReadKeyValue(Constants.string_token);
-
-        SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(this);
-        boolean autoLogin = sharedPref.getBoolean(Constants.string_auto_Login, false);
+    @Override
+    public void onStart() {
+        super.onStart();
+        String token = Utility.readStringSharedPreferences(Constants.string_token);
+        boolean autoLogin = Utility.readBooleanSharedPreferences(Constants.string_auto_Login);
         if (autoLogin == true && token != "") {
-           // start MainActivity
+            // start MainActivity
             Intent intent = new Intent(mActivity, MainActivity.class);
             startActivity(intent);
             finish();
         } else {
             Log.d(TAG, "token is empty");
         }
+
     }
 
-
+    @Override
+    public void onStop() {
+        super.onStop();
+        Log.d(TAG, "onStop");
+     }
     public void signup(View view) {
         Intent intent = new Intent(this, SignupActivity.class);
         startActivity(intent);
@@ -89,7 +97,7 @@ public class LoginActivity extends ActionBarActivity {
                                 Utility.showToastMessage(mActivity, response.toString(), Toast.LENGTH_LONG);
                             } else if (result == 1) {
                                 Log.d(TAG, response.getString("token"));
-                                sharedPreferencesWriteKeyPair(Constants.string_token, response.getString("token"));
+                                Utility.writeStringSharedPreferences(Constants.string_token, response.getString("token"));
                                 Intent intent = new Intent(mActivity, MainActivity.class);
                                 startActivity(intent);
                                 finish();
@@ -108,32 +116,17 @@ public class LoginActivity extends ActionBarActivity {
                     @Override
                     public void onErrorResponse(VolleyError error) {
                         Log.e(TAG, "onErrorResponse");
-                        Toast.makeText(mActivity, error.toString(), Toast.LENGTH_LONG);
+                        Toast toast =  Toast.makeText(mActivity, error.toString(), Toast.LENGTH_LONG);
+                        toast.show();
                     }
                 });
 
         WRCAApplication.getInstance().getRequestQueue().add(request);
     }
 
-    private SharedPreferences getSharedPreference() {
-       if (mSharePref == null) {
-       }
-        return mSharePref;
-    }
-    private void sharedPreferencesWriteKeyPair (String key, String value) {
-        if (mSharePref == null) {
-            Log.e(TAG, "getSharedPreference null error");
-            return;
-        }
-        SharedPreferences.Editor editor = mSharePref.edit();
-        editor.putString(key, value); // save the token
-        editor.commit();
-    }
-    private String sharedPreferencesReadKeyValue(String key) {
-        if (mSharePref == null) {
-            Log.e(TAG, "getSharedPreference null error");
-            return null;
-        }
-        return mSharePref.getString(key, null);
+    @Override
+    public void onPause() {
+        super.onPause();
+        Log.d(TAG, "onPause");
     }
 }
