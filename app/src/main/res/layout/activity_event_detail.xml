@@ -9,77 +9,130 @@
         android:layout_width="match_parent"
         android:orientation="vertical">
 
-        <TextView
-            android:id="@+id/text_view_title"
-            android:layout_height="170dp"
+        <!-- top part -->
+        <LinearLayout
+            android:layout_height="200dp"
+            android:id="@+id/linear_layout_image"
             android:layout_width="match_parent"
-            android:layout_marginBottom="10dp"
-            android:background="@drawable/ic_launcher"
-            android:text="WRCA Activity"
-            android:textSize="20sp"
-            android:gravity="center|bottom"/>
+            android:background="@color/color_white">
 
+            <TextView
+                android:id="@+id/text_view_title"
+                android:layout_height="wrap_content"
+                android:layout_width="match_parent"
+                android:layout_gravity="bottom"
+                android:textColor="@color/color_white"
+                android:textSize="20sp"
+                android:layout_marginBottom="10dp"
+                android:gravity="center"
+                android:text="This is a text title"/>
+        </LinearLayout>
+
+        <LinearLayout
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" >
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1px"
+                android:background="@color/color_boarder_line"/>
+
+            <View
+                android:layout_width="match_parent"
+                android:background="@color/color_background"
+                android:layout_height="@dimen/dimen_gap_detail_event"/>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1px"
+                android:background="@color/color_boarder_line"/>
+
+        </LinearLayout>
+
+        <!-- first body part -->
         <LinearLayout
             android:layout_height="wrap_content"
             android:layout_width="match_parent"
-            android:orientation="vertical"
-            android:padding="10dp">
+            android:padding="10dp"
+            android:orientation="vertical">
 
-            <TextView
-                android:layout_height="wrap_content"
-                android:layout_width="match_parent"
-                android:text="TIME"
-                android:textSize="20sp"
-                android:gravity="left"/>
-            <View
-                android:layout_height="1dp"
-                android:layout_width="match_parent"
-                android:padding="5dp"
-                android:background="?android:attr/listDivider"/>
             <TextView
                 android:id="@+id/text_view_time"
                 android:layout_height="wrap_content"
-                android:layout_width="match_parent"
-                android:textSize="20sp"/>
+                android:layout_width="wrap_content"
+                android:layout_gravity="center"
+                android:text="WED, JAN 14 @ 3:30pm - 7:30 PM EST"
+                android:textSize="15sp"/>
 
-            <TextView
-                android:layout_height="wrap_content"
-                android:layout_width="match_parent"
-                android:gravity="left"
-                android:layout_marginTop="10dp"
-                android:text="Description"
-                android:textSize="20sp"/>
             <View
                 android:layout_height="1dp"
                 android:layout_width="match_parent"
-                android:padding="5dp"
+                android:paddingTop="5dp"
+                android:paddingBottom="5dp"
                 android:background="?android:attr/listDivider"/>
             <TextView
                 android:id="@+id/text_view_description"
                 android:layout_height="100dp"
                 android:layout_width="match_parent"
+                android:text="aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
+                aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
+                aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
                 android:inputType="textMultiLine"
-                android:textSize="20sp"
-                android:clickable="true"/>
+                android:textSize="15sp"/>
 
-            <TextView
-                android:layout_height="wrap_content"
-                android:layout_width="match_parent"
-                android:gravity="left"
-                android:layout_marginTop="10dp"
-                android:text="Location"
-                android:textSize="20sp"/>
             <View
                 android:layout_height="1dp"
                 android:layout_width="match_parent"
                 android:padding="5dp"
                 android:background="?android:attr/listDivider"/>
+
+            <TextView
+                android:layout_height="wrap_content"
+                android:layout_width="wrap_content"
+                android:layout_gravity="center"
+                android:text="Learn more"
+                android:clickable="true"/>
+        </LinearLayout>
+
+
+        <LinearLayout
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" >
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1px"
+                android:background="@color/color_boarder_line"/>
+
+            <View
+                android:layout_width="match_parent"
+                android:background="@color/color_background"
+                android:layout_height="@dimen/dimen_gap_detail_event"/>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1px"
+                android:background="@color/color_boarder_line"/>
+
+        </LinearLayout>
+        <!-- second body part, map and location -->
+
+        <LinearLayout
+            android:layout_height="wrap_content"
+            android:layout_width="match_parent"
+            android:padding="10dp"
+            android:orientation="vertical">
             <TextView
                 android:id="@+id/text_view_location"
                 android:layout_height="wrap_content"
-                android:layout_width="match_parent"
-                android:textSize="20sp"
+                android:layout_width="wrap_content"
+                android:layout_gravity="center"
+                android:text="130 Louth St, St Catharines, ON"
+                android:textSize="15sp"
                 android:clickable="true"/>
         </LinearLayout>
+
     </LinearLayout>
 </ScrollView>

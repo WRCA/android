@@ -40,14 +40,27 @@ public class EventDetailActivity extends ActionBarActivity {
 
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
-        Event event = (Event)getIntent().getSerializableExtra("event");
+
+
+        final Event event = (Event)getIntent().getSerializableExtra("event");
         this.setTitle(event.getTitle());
 
 
-        TextView title = (TextView)findViewById(R.id.text_view_title);
-        title.setText(event.getTitle());
-        // Drawable d = new BitmapDrawable(getResources(),bitmap);
-        // title.setBackground(d);
+        // set image
+        LinearLayout linearLayout = (LinearLayout)findViewById(R.id.linear_layout_image);
+        ImageContainer imageContainer = WRCAApplication.getInstance().getImageLoader().get(event.getThumbnailUrl(),new ImageListener() {
+            @Override
+            public void onResponse(ImageContainer response, boolean isImmediate) {
+                mActivity.findViewById(R.id.linear_layout_image).setBackground(new BitmapDrawable(response.getBitmap()));
+                TextView title = (TextView)findViewById(R.id.text_view_title);
+                title.setText(event.getTitle());
+            }
+
+            @Override
+            public void onErrorResponse(VolleyError error) {
+
+            }
+        }, linearLayout.getWidth(), linearLayout.getHeight());
 
 
         TextView location = (TextView)findViewById(R.id.text_view_location);

@@ -217,6 +217,7 @@ public class EventsActivity extends ActionBarActivity {
                                movie.setTitle(obj.getString("title"));
                                movie.setThumbnailUrl(obj.getString("thumbnail_url"));
                                movie.setLocation(obj.getString("location"));
+                               movie.setDescription(obj.getString("description"));
                                movie.setTime(obj.getString("time"));
 
                                // adding movie to movies array
