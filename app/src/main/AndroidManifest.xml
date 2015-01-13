@@ -72,6 +72,10 @@
             android:name=".MemberActivity"
             android:label="@string/title_activity_member" >
         </activity>
+        <activity
+            android:name=".NearbyResultActivity"
+            android:label="@string/title_activity_nearby_result" >
+        </activity>
     </application>
 
 </manifest>

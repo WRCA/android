@@ -13,5 +13,6 @@
     <string name="title_activity_edir">EDirActivity</string>
     <string name="title_activity_nearby">NearbyActivity</string>
     <string name="title_activity_member">MemberActivity</string>
+    <string name="title_activity_nearby_result">NearbyResultActivity</string>
 
 </resources>
