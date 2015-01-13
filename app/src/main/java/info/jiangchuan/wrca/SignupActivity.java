@@ -61,6 +61,7 @@ public class SignupActivity extends ActionBarActivity {
                     @Override
                     public void onResponse(JSONObject response) {
                         Log.d(TAG, "onResponse");
+
                         try {
                             int result = response.getInt("success");
                             if (result == 0) {

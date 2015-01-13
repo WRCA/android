@@ -11,5 +11,7 @@
     <string name="title_activity_saved_events">SavedEventsActivity</string>
     <string name="title_activity_test">TestActivity</string>
     <string name="title_activity_edir">EDirActivity</string>
+    <string name="title_activity_nearby">NearbyActivity</string>
+    <string name="title_activity_member">MemberActivity</string>
 
 </resources>

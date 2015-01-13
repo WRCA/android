@@ -64,6 +64,14 @@
             android:name=".EDirActivity"
             android:label="@string/title_activity_edir" >
         </activity>
+        <activity
+            android:name=".NearbyActivity"
+            android:label="@string/title_activity_nearby" >
+        </activity>
+        <activity
+            android:name=".MemberActivity"
+            android:label="@string/title_activity_member" >
+        </activity>
     </application>
 
 </manifest>
