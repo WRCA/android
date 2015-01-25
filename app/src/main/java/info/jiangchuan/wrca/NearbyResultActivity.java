@@ -76,7 +76,7 @@ public class NearbyResultActivity extends ActionBarActivity {
             }
         });
         // Adding request to request queue
-        WRCAApplication.getInstance().getRequestQueue().add(eventReq);
+        WillowRidge.getInstance().getRequestQueue().add(eventReq);
     }
 
 

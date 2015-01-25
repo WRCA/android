@@ -18,7 +18,7 @@ public class SavedEventsActivity extends ActionBarActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_saved_events);
 
-        ListAdapter adapter = new EventAdapter(this, WRCAApplication.getInstance().getSavedEvents());
+        ListAdapter adapter = new EventAdapter(this, WillowRidge.getInstance().getSavedEvents());
         ListView listView = (ListView)findViewById(R.id.list_view_saved_events);
         listView.setAdapter(adapter);
 

@@ -15,7 +15,7 @@ import com.android.volley.toolbox.ImageLoader;
 import com.android.volley.toolbox.NetworkImageView;
 
 import info.jiangchuan.wrca.R;
-import info.jiangchuan.wrca.WRCAApplication;
+import info.jiangchuan.wrca.WillowRidge;
 import info.jiangchuan.wrca.models.Event;
 
 /**
@@ -25,7 +25,7 @@ public class EventAdapter extends BaseAdapter{
     private Activity activity;
     private LayoutInflater inflater;
     private List<Event> eventItems;
-    ImageLoader imageLoader = WRCAApplication.getInstance().getImageLoader();
+    ImageLoader imageLoader = WillowRidge.getInstance().getImageLoader();
 
     public EventAdapter(Activity activity, List<Event> eventItems) {
         this.activity = activity;
@@ -57,7 +57,7 @@ public class EventAdapter extends BaseAdapter{
             convertView = inflater.inflate(R.layout.list_row_event, null);
 
         if (imageLoader == null)
-            imageLoader = WRCAApplication.getInstance().getImageLoader();
+            imageLoader = WillowRidge.getInstance().getImageLoader();
 
         NetworkImageView thumbNail = (NetworkImageView) convertView
                 .findViewById(R.id.thumbnail);

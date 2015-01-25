@@ -8,15 +8,10 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.TextView;
 
-import com.android.volley.toolbox.NetworkImageView;
-
 import java.util.List;
 
 import info.jiangchuan.wrca.R;
-import info.jiangchuan.wrca.WRCAApplication;
-import info.jiangchuan.wrca.models.Event;
 import info.jiangchuan.wrca.models.Notification;
-import info.jiangchuan.wrca.models.Place;
 
 /**
  * Created by jiangchuan on 1/25/15.

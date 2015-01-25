@@ -18,7 +18,7 @@ import org.json.JSONObject;
 import java.util.HashMap;
 import java.util.Map;
 
-import info.jiangchuan.wrca.util.Utility;
+import info.jiangchuan.wrca.util.ToastUtil;
 
 public class SignupActivity extends ActionBarActivity {
 
@@ -42,12 +42,12 @@ public class SignupActivity extends ActionBarActivity {
         final String strVerificationCode = verificationCode.getText().toString().trim();
 
         if (strVerificationCode.length() == 0) {
-            Utility.showToastMessage(this, "to get verfication code, press button", Toast.LENGTH_SHORT);
+            ToastUtil.showToastMessage(this, "to get verfication code, press button", Toast.LENGTH_SHORT);
             return;
         }
 
         if (strEmail.length() == 0 || strPassword.length() == 0 || strVerificationCode.length() == 0) {
-            Utility.showToastMessage(this, "field cannot be empty", Toast.LENGTH_SHORT);
+            ToastUtil.showToastMessage(this, "field cannot be empty", Toast.LENGTH_SHORT);
             return;
         }
 
@@ -67,16 +67,16 @@ public class SignupActivity extends ActionBarActivity {
                         try {
                             int result = response.getInt("success");
                             if (result == 0) {
-                                Utility.showToastMessage(mActivity, response.toString(), Toast.LENGTH_LONG);
+                                ToastUtil.showToastMessage(mActivity, response.toString(), Toast.LENGTH_LONG);
                             } else if (result == 1) {
-                                Utility.showToastMessage(mActivity, "login success", Toast.LENGTH_LONG);
+                                ToastUtil.showToastMessage(mActivity, "login success", Toast.LENGTH_LONG);
 
                             } else {
-                                Utility.showToastMessage(mActivity, "result code not recognize", Toast.LENGTH_LONG);
+                                ToastUtil.showToastMessage(mActivity, "result code not recognize", Toast.LENGTH_LONG);
                             }
                         } catch (JSONException e) {
                             Log.e(TAG, "JSONException");
-                            Utility.showToastMessage(mActivity, e.toString(), Toast.LENGTH_LONG);
+                            ToastUtil.showToastMessage(mActivity, e.toString(), Toast.LENGTH_LONG);
                         }
                     }
                 },
@@ -90,14 +90,14 @@ public class SignupActivity extends ActionBarActivity {
                     }
                 });
 
-        WRCAApplication.getInstance().getRequestQueue().add(request);
+        WillowRidge.getInstance().getRequestQueue().add(request);
     }
     public void onGetVerificationCode(View view) {
         TextView email = (TextView)findViewById(R.id.edit_text_email);
         final TextView password = (TextView)findViewById(R.id.edit_text_password);
         final String strEmail = email.getText().toString().trim();
         if (strEmail.length() == 0) {
-            Utility.showToastMessage(this, "email field cannot be empty", Toast.LENGTH_SHORT);
+            ToastUtil.showToastMessage(this, "email field cannot be empty", Toast.LENGTH_SHORT);
             return;
         }
 
@@ -111,16 +111,16 @@ public class SignupActivity extends ActionBarActivity {
                         try {
                             int result = response.getInt("success");
                             if (result == 0) {
-                                Utility.showToastMessage(mActivity, response.toString(), Toast.LENGTH_LONG);
+                                ToastUtil.showToastMessage(mActivity, response.toString(), Toast.LENGTH_LONG);
                             } else if (result == 1) {
-                                Utility.showToastMessage(mActivity, response.toString(), Toast.LENGTH_LONG);
+                                ToastUtil.showToastMessage(mActivity, response.toString(), Toast.LENGTH_LONG);
 
                             } else {
-                                Utility.showToastMessage(mActivity, "result code not recognize", Toast.LENGTH_LONG);
+                                ToastUtil.showToastMessage(mActivity, "result code not recognize", Toast.LENGTH_LONG);
                             }
                         } catch (JSONException e) {
                             Log.e(TAG, "JSONException");
-                            Utility.showToastMessage(mActivity, e.toString(), Toast.LENGTH_LONG);
+                            ToastUtil.showToastMessage(mActivity, e.toString(), Toast.LENGTH_LONG);
                         }
                     }
                 },
@@ -134,7 +134,7 @@ public class SignupActivity extends ActionBarActivity {
                     }
                 });
 
-        WRCAApplication.getInstance().getRequestQueue().add(request);
+        WillowRidge.getInstance().getRequestQueue().add(request);
     }
     public void onBack(View view) {
         finish();

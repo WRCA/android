@@ -28,6 +28,7 @@ import org.json.JSONObject;
 import java.util.HashMap;
 import java.util.Map;
 
+import info.jiangchuan.wrca.util.ToastUtil;
 import info.jiangchuan.wrca.util.Utility;
 
 
@@ -100,7 +101,7 @@ public class LoginActivity extends ActionBarActivity {
         final String strEmail = email.getText().toString().trim();
         final String strPassword = password.getText().toString().trim();
         if (strEmail.length() == 0 || strPassword.length() == 0) {
-            Utility.showToastMessage(this, "field cannot be empty", Toast.LENGTH_SHORT);
+            ToastUtil.showToastMessage(this, "field cannot be empty", Toast.LENGTH_SHORT);
             return;
         }
 
@@ -117,7 +118,7 @@ public class LoginActivity extends ActionBarActivity {
                         try {
                             int result = response.getInt("success");
                             if (result == 0) {
-                                Utility.showToastMessage(mActivity, response.toString(), Toast.LENGTH_LONG);
+                                ToastUtil.showToastMessage(mActivity, response.toString(), Toast.LENGTH_LONG);
                             } else if (result == 1) {
                                 Log.d(TAG, response.getString("token"));
                                 Utility.writeStringSharedPreferences(Constants.string_token, response.getString("token"));
@@ -128,11 +129,11 @@ public class LoginActivity extends ActionBarActivity {
                                 startActivity(intent);
                                 finish();
                             } else {
-                                Utility.showToastMessage(mActivity, "result code not recognize", Toast.LENGTH_LONG);
+                                ToastUtil.showToastMessage(mActivity, "result code not recognize", Toast.LENGTH_LONG);
                             }
                         } catch (JSONException e) {
                             Log.e(TAG, "JSONException");
-                            Utility.showToastMessage(mActivity, e.toString(), Toast.LENGTH_LONG);
+                            ToastUtil.showToastMessage(mActivity, e.toString(), Toast.LENGTH_LONG);
                         }
                     }
                 },
@@ -147,7 +148,7 @@ public class LoginActivity extends ActionBarActivity {
                     }
                 });
 
-        WRCAApplication.getInstance().getRequestQueue().add(request);
+        WillowRidge.getInstance().getRequestQueue().add(request);
     }
 
     @Override

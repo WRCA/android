@@ -4,7 +4,6 @@ import android.app.Activity;
 import android.app.LocalActivityManager;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.annotation.Nullable;
 import android.util.Log;
 import android.widget.TabHost;
 
@@ -13,7 +12,6 @@ import java.util.List;
 
 import info.jiangchuan.wrca.models.Event;
 import info.jiangchuan.wrca.util.Utility;
-
 public class MainActivity extends Activity {
 
     private TabHost host;
@@ -36,7 +34,7 @@ public class MainActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        List<Event> list = WRCAApplication.getInstance().getSavedEvents();
+        List<Event> list = WillowRidge.getInstance().getSavedEvents();
         list = Utility.readSavedEventsFromFile();
         Log.d(TAG, Integer.toString(list.size()));
         Log.d(TAG, "onCreate");
@@ -46,7 +44,7 @@ public class MainActivity extends Activity {
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        Utility.saveNotificationList(PushNotificationActivity.getActivity().getList());
+        Utility.saveNotificationList(WillowRidge.getInstance().getNotifications());
     }
 
     public TabHost getHost() {
@@ -71,7 +69,7 @@ public class MainActivity extends Activity {
             Log.d(TAG, "tab null");
         }
         tab1.setIndicator("events");
-        tab2.setIndicator("notification");
+        tab2.setIndicator("push");
         tab3.setIndicator("E-Dir");
         tab4.setIndicator("setting");
         // TODO: use intent
@@ -106,9 +104,9 @@ public class MainActivity extends Activity {
     @Override
     public void onStop() {
         super.onStop();
-        Log.d(TAG, Integer.toString(WRCAApplication.getInstance().getSavedEvents().size()));
+        Log.d(TAG, Integer.toString(WillowRidge.getInstance().getSavedEvents().size()));
         Log.d(TAG, "onStop");
-        Utility.writeSavedEventsToFile( (ArrayList<Event>)WRCAApplication.getInstance().getSavedEvents());
+        Utility.writeSavedEventsToFile( (ArrayList<Event>) WillowRidge.getInstance().getSavedEvents());
     }
 
     @Override

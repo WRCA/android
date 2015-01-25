@@ -39,7 +39,7 @@ public class EventDetailActivity extends ActionBarActivity {
 
         // set image
         LinearLayout linearLayout = (LinearLayout)findViewById(R.id.linear_layout_image);
-        ImageContainer imageContainer = WRCAApplication.getInstance().getImageLoader().get(event.getThumbnailUrl(),new ImageListener() {
+        ImageContainer imageContainer = WillowRidge.getInstance().getImageLoader().get(event.getThumbnailUrl(),new ImageListener() {
             @Override
             public void onResponse(ImageContainer response, boolean isImmediate) {
                 mActivity.findViewById(R.id.linear_layout_image).setBackground(new BitmapDrawable(response.getBitmap()));
@@ -102,7 +102,7 @@ public class EventDetailActivity extends ActionBarActivity {
             return true;
         } else if (id == R.id.action_save) {
             Event event = (Event)getIntent().getSerializableExtra("event");
-            WRCAApplication.getInstance().getSavedEvents().add(event);
+            WillowRidge.getInstance().getSavedEvents().add(event);
             Toast toast = Toast.makeText(this, "event save", Toast.LENGTH_SHORT);
             toast.show();
 

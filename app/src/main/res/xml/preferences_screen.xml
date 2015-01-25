@@ -5,15 +5,52 @@
         android:persistent="true"
         android:key="pref_key_storage_settings">
 
+        <Preference android:title="My Profile">
+            <intent android:action="info.jiangchuan.wrca.profile" />
+        </Preference>
+
         <CheckBoxPreference
             android:id="@+id/checkbox_preference_auto_login"
             android:key="pref_auto_login"
             android:title="Auto Login"
             android:defaultValue="true" />
+    </PreferenceCategory>
+
+
+    <PreferenceCategory
+        android:title="SYSTEM"
+        android:persistent="true"
+        android:key="pref_key_storage_settings">
+
         <CheckBoxPreference
             android:id="@+id/checkbox_preference_push_notifications"
             android:key="pref_notifications"
             android:title="Push Notifications"
             android:defaultValue="true" />
+    </PreferenceCategory>
+
+    <PreferenceCategory
+        android:title="About"
+        android:persistent="true"
+        android:key="pref_key_storage_settings">
+
+        <Preference android:title="Terms of Service">
+            <intent android:action="android.settings.SYNC_SETTINGS" />
+        </Preference>
+
+        <Preference android:title="Privacy Policy">
+            <intent android:action="android.settings.SYNC_SETTINGS" />
+        </Preference>
+    </PreferenceCategory>
+
+    <PreferenceCategory
+        android:title="Others">
+
+        <!--Preference android:title="Log Out">
+            <intent android:action="android.settings.SYNC_SETTINGS" />
+        </Preference-->
+        <Preference
+            android:key="clear_push_history"
+            android:title="Clear Notifications History" />
     </PreferenceCategory>
 </PreferenceScreen>

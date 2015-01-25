@@ -54,7 +54,7 @@ public class GCMIntentService extends GCMBaseIntentService{
         displayMessage(context, message);
 
         // store message
-        PushNotificationActivity.getActivity().getList().add(new
+       WillowRidge.getInstance().getNotifications().add(new
                 info.jiangchuan.wrca.models.Notification(message, TimeUtil.time()));
 
         // notifies user

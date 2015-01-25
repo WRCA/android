@@ -10,17 +10,23 @@ import java.util.ArrayList;
 import java.util.List;
 
 import info.jiangchuan.wrca.models.Event;
+import info.jiangchuan.wrca.models.Notification;
 
 /**
  * Created by jiangchuan on 1/3/15.
  */
-public class WRCAApplication extends Application{
+public class WillowRidge extends Application{
 
-    private static WRCAApplication mInstance;
+    private static WillowRidge mInstance;
     private RequestQueue mRequestQueue;
     private ImageLoader mImageLoader;
     private LruBitmapCache mLruBitmapCache;
     private List<Event> mSavedEvents;
+    private List<Notification> notifications = new ArrayList<Notification>();
+
+    public List<Notification> getNotifications() {
+        return notifications;
+    }
 
     @Override
     public void onCreate() {
@@ -28,7 +34,7 @@ public class WRCAApplication extends Application{
         mInstance = this;
     }
 
-    public static synchronized WRCAApplication getInstance() {
+    public static synchronized WillowRidge getInstance() {
         return mInstance;
     }
 

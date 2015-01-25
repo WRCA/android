@@ -18,16 +18,12 @@ import info.jiangchuan.wrca.util.Utility;
 
 public class PushNotificationActivity extends ActionBarActivity {
 
-    private List<Notification> list = new ArrayList<Notification>();
     private static PushNotificationActivity activity;
 
     public static PushNotificationActivity getActivity() {
         return activity;
     }
 
-    public List<Notification> getList() {
-        return list;
-    }
 
     private ListView listView;
     private NotificationsAdapter adapter;
@@ -55,11 +51,11 @@ public class PushNotificationActivity extends ActionBarActivity {
         getSupportActionBar().setTitle("Notifications");
 
         listView = (ListView) findViewById(R.id.list_view);
-        adapter = new NotificationsAdapter(this, list);
+        adapter = new NotificationsAdapter(this, WillowRidge.getInstance().getNotifications());
         listView.setAdapter(adapter);
         List<Notification> tmp = Utility.readNotificationList();
         if (tmp != null) {
-            list.addAll(tmp);
+            WillowRidge.getInstance().getNotifications().addAll(tmp);
         }
         adapter.notifyDataSetChanged();
     }
