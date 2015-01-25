@@ -1,25 +1,12 @@
 package info.jiangchuan.wrca;
 
-import android.annotation.TargetApi;
-import android.content.Context;
-import android.content.res.Configuration;
-import android.media.Ringtone;
-import android.media.RingtoneManager;
-import android.net.Uri;
-import android.os.Build;
 import android.os.Bundle;
-import android.preference.ListPreference;
-import android.preference.Preference;
 import android.preference.PreferenceActivity;
-import android.preference.PreferenceCategory;
-import android.preference.PreferenceFragment;
-import android.preference.PreferenceManager;
-import android.preference.RingtonePreference;
-import android.preference.CheckBoxPreference;
-import android.text.TextUtils;
+
+import com.google.android.gcm.GCMRegistrar;
 
 
-import java.util.List;
+import info.jiangchuan.wrca.util.Utility;
 
 public class SettingsActivity extends PreferenceActivity {
     private static final boolean ALWAYS_SIMPLE_PREFS = false;
@@ -33,6 +20,15 @@ public class SettingsActivity extends PreferenceActivity {
         //    ActionBar actionBar = getSupportActionBar();
         // actionBar.setDisplayHomeAsUpEnabled(true);
 
+    }
 
+    @Override
+    protected void onStop() {
+        super.onStop();
+        boolean hasNotifications = Utility.readBooleanSharedPreferences(Constants.string_notifications);
+        if (!hasNotifications) {
+            GCMRegistrar.unregister(this);
+        }
     }
 }
+

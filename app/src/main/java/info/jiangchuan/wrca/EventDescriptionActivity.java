@@ -1,22 +1,29 @@
 package info.jiangchuan.wrca;
 
 import android.support.v7.app.ActionBarActivity;
-import android.app.Activity;
 import android.os.Bundle;
-import android.view.Menu;
 import android.view.MenuItem;
-import android.app.ActionBar;
 
 import android.util.Log;
+import android.widget.TextView;
+
+import info.jiangchuan.wrca.models.Event;
 
 public class EventDescriptionActivity extends ActionBarActivity {
 
+    TextView viewTitle;
+    TextView viewContent;
     private static final String TAG = "EventDescriptionActivity";
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_event_description);
-        //getActionBar().setDisplayHomeAsUpEnabled(true);
+        findView();
+        final Event event = (Event)getIntent().getSerializableExtra("event");
+
+        viewTitle.setText(event.getTitle());
+        viewContent.setText(event.getDescription());
+        Log.d("show", event.getDescription());
     }
 
     @Override
@@ -29,4 +36,8 @@ public class EventDescriptionActivity extends ActionBarActivity {
         return super.onOptionsItemSelected(item);
     }
 
+    private void findView() {
+       viewTitle = (TextView) findViewById(R.id.title);
+        viewContent = (TextView) findViewById(R.id.content);
+    }
 }

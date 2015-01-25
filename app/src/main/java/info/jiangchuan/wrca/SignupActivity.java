@@ -18,6 +18,8 @@ import org.json.JSONObject;
 import java.util.HashMap;
 import java.util.Map;
 
+import info.jiangchuan.wrca.util.Utility;
+
 public class SignupActivity extends ActionBarActivity {
 
     private static final String TAG = "SignupActivity";

@@ -1,23 +1,18 @@
 package info.jiangchuan.wrca;
 
-import android.support.v7.app.ActionBarActivity;
-import android.os.Bundle;
-import android.view.Menu;
-import android.view.MenuItem;
-import android.widget.TabHost;
-import android.util.Log;
-
-import android.app.LocalActivityManager;
-import android.widget.TabHost;
-import android.widget.TabHost.TabSpec;
-import android.content.Intent;
-
-import android.support.v7.app.ActionBar;
-
 import android.app.Activity;
+import android.app.LocalActivityManager;
+import android.content.Intent;
+import android.os.Bundle;
+import android.support.annotation.Nullable;
+import android.util.Log;
+import android.widget.TabHost;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import info.jiangchuan.wrca.models.Event;
+import info.jiangchuan.wrca.util.Utility;
 
 public class MainActivity extends Activity {
 
@@ -25,18 +20,40 @@ public class MainActivity extends Activity {
 
     private static final String TAG = "MainActivity";
 
+    public static String name;
+    public static String email;
+    private TabHost tabHost;
+
+    public static MainActivity getActivity() {
+        return activity;
+    }
+
+    public static MainActivity activity;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        activity = this;
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
         List<Event> list = WRCAApplication.getInstance().getSavedEvents();
         list = Utility.readSavedEventsFromFile();
         Log.d(TAG, Integer.toString(list.size()));
         Log.d(TAG, "onCreate");
-        createTabUI(savedInstanceState);
+        setupTabs(savedInstanceState);
     }
 
-    private void createTabUI(Bundle savedInstanceState) {
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        Utility.saveNotificationList(PushNotificationActivity.getActivity().getList());
+    }
+
+    public TabHost getHost() {
+        return host;
+    }
+
+    private void setupTabs(Bundle savedInstanceState) {
         host = (TabHost)findViewById(android.R.id.tabhost);
         if (host == null) {
             Log.d(TAG, "mHost null");
@@ -49,20 +66,41 @@ public class MainActivity extends Activity {
         TabHost.TabSpec	tab1 = host.newTabSpec("tab1");
         TabHost.TabSpec	tab2 = host.newTabSpec("tab2");
         TabHost.TabSpec	tab3 = host.newTabSpec("tab3");
-        if (tab1 == null || tab2 == null || tab3 == null) {
+        TabHost.TabSpec	tab4 = host.newTabSpec("tab4");
+        if (tab1 == null || tab2 == null || tab3 == null || tab4 == null) {
             Log.d(TAG, "tab null");
         }
         tab1.setIndicator("events");
-        tab2.setIndicator("E-Dir");
-        tab3.setIndicator("setting");
+        tab2.setIndicator("notification");
+        tab3.setIndicator("E-Dir");
+        tab4.setIndicator("setting");
         // TODO: use intent
         tab1.setContent(new Intent(this, EventsActivity.class));
-        tab2.setContent(new Intent(this, EDirActivity.class));
-        tab3.setContent(new Intent(this, SettingsActivity.class));
+        tab2.setContent(new Intent(this, PushNotificationActivity.class));
+        tab3.setContent(new Intent(this, EDirActivity.class));
+        tab4.setContent(new Intent(this, SettingsActivity.class));
 
         host.addTab(tab1);
         host.addTab(tab2);
         host.addTab(tab3);
+        host.addTab(tab4);
+
+        host.setOnTabChangedListener(new TabHost.OnTabChangeListener() {
+            @Override
+            public void onTabChanged(String tabId) {
+                int id = host.getCurrentTab();
+                switch (id) {
+                    case 0:
+                        Log.d(TAG, "0");
+                        break;
+                    case 1:
+                        Log.d(TAG, "1");
+                        PushNotificationActivity.getActivity().getAdapter().notifyDataSetChanged();
+                        break;
+                }
+            }
+        });
+        tabHost = host;
     }
 
     @Override
@@ -78,5 +116,10 @@ public class MainActivity extends Activity {
         Log.d(TAG, "onStart");
         super.onStart();
       //  Log.d(TAG, Integer.toString(WRCAApplication.getInstance().getSavedEvents().size()));
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
     }
 }

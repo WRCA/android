@@ -1,4 +1,4 @@
-package info.jiangchuan.wrca;
+package info.jiangchuan.wrca.models;
 
 import java.io.Serializable;
 

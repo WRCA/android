@@ -1,4 +1,4 @@
-package info.jiangchuan.wrca;
+package info.jiangchuan.wrca.adapters;
 
 
 import java.util.List;
@@ -13,16 +13,21 @@ import android.widget.TextView;
 
 import com.android.volley.toolbox.ImageLoader;
 import com.android.volley.toolbox.NetworkImageView;
+
+import info.jiangchuan.wrca.R;
+import info.jiangchuan.wrca.WRCAApplication;
+import info.jiangchuan.wrca.models.Event;
+
 /**
  * Created by jiangchuan on 1/4/15.
  */
-public class CustomListAdapter extends BaseAdapter{
+public class EventAdapter extends BaseAdapter{
     private Activity activity;
     private LayoutInflater inflater;
     private List<Event> eventItems;
     ImageLoader imageLoader = WRCAApplication.getInstance().getImageLoader();
 
-    public CustomListAdapter(Activity activity, List<Event> eventItems) {
+    public EventAdapter(Activity activity, List<Event> eventItems) {
         this.activity = activity;
         this.eventItems = eventItems;
     }
@@ -49,7 +54,7 @@ public class CustomListAdapter extends BaseAdapter{
             inflater = (LayoutInflater) activity
                     .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         if (convertView == null)
-            convertView = inflater.inflate(R.layout.list_row_events, null);
+            convertView = inflater.inflate(R.layout.list_row_event, null);
 
         if (imageLoader == null)
             imageLoader = WRCAApplication.getInstance().getImageLoader();
@@ -57,8 +62,8 @@ public class CustomListAdapter extends BaseAdapter{
         NetworkImageView thumbNail = (NetworkImageView) convertView
                 .findViewById(R.id.thumbnail);
         TextView title = (TextView) convertView.findViewById(R.id.title);
-        TextView rating = (TextView) convertView.findViewById(R.id.rating);
-        TextView time = (TextView) convertView.findViewById(R.id.genre);
+        TextView rating = (TextView) convertView.findViewById(R.id.address);
+        TextView time = (TextView) convertView.findViewById(R.id.time);
         TextView year = (TextView) convertView.findViewById(R.id.releaseYear);
 
         // getting movie data for the row

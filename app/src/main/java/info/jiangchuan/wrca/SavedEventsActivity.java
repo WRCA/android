@@ -8,6 +8,8 @@ import android.util.Log;
 import android.widget.ListAdapter;
 import android.widget.ListView;
 
+import info.jiangchuan.wrca.adapters.EventAdapter;
+
 public class SavedEventsActivity extends ActionBarActivity {
 
     private static final String TAG = "TAG";
@@ -16,7 +18,7 @@ public class SavedEventsActivity extends ActionBarActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_saved_events);
 
-        ListAdapter adapter = new CustomListAdapter(this, WRCAApplication.getInstance().getSavedEvents());
+        ListAdapter adapter = new EventAdapter(this, WRCAApplication.getInstance().getSavedEvents());
         ListView listView = (ListView)findViewById(R.id.list_view_saved_events);
         listView.setAdapter(adapter);
 

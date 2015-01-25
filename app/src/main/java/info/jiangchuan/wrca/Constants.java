@@ -8,4 +8,5 @@ public class Constants {
     public static final String string_auto_Login = "pref_auto_login";
     public static final String string_saved_events = "saved_events";
     public static final String string_saved_file = "saved_file";
+    public static final String string_notifications = "pref_notifications";
 }

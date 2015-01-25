@@ -1,23 +1,26 @@
-package info.jiangchuan.wrca;
+package info.jiangchuan.wrca.util;
 
 import android.content.Context;
-import android.content.Intent;
-import android.preference.PreferenceManager;
-import android.widget.Toast;
-import android.app.Activity;
 import android.content.SharedPreferences;
+import android.preference.PreferenceManager;
+import android.util.Log;
+import android.widget.Toast;
 
+import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
-import java.lang.reflect.Array;
+import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.List;
-import java.io.IOException;
 
-import android.util.Log;
+import info.jiangchuan.wrca.Constants;
+import info.jiangchuan.wrca.WRCAApplication;
+import info.jiangchuan.wrca.models.Event;
+import info.jiangchuan.wrca.models.Notification;
+
 /**
  * Created by jiangchuan on 1/3/15.
  */
@@ -71,5 +74,45 @@ public class Utility {
         Context context = WRCAApplication.getInstance();
         SharedPreferences pref = PreferenceManager.getDefaultSharedPreferences(context);
         return pref.getBoolean(key, false);
+    }
+
+    public static void saveNotificationList(List<Notification> list) {
+        try {
+            File traceFile = new File((WRCAApplication.getInstance()).getExternalFilesDir(null), "TraceFile.txt");
+            if (!traceFile.exists()) {
+                traceFile.createNewFile();
+            }
+
+            PrintWriter writer = new PrintWriter(traceFile);
+            writer.print("");
+            writer.close();
+
+            FileOutputStream fos= new FileOutputStream(traceFile);
+            ObjectOutputStream oos= new ObjectOutputStream(fos);
+            oos.writeObject(list);
+            oos.close();
+            fos.close();
+        } catch (Exception e) {
+
+            Log.d(TAG, e.toString());
+        }
+    }
+
+    public static List<Notification> readNotificationList() {
+        try {
+            File traceFile = new File((WRCAApplication.getInstance()).getExternalFilesDir(null), "TraceFile.txt");
+            if (!traceFile.exists()) {
+                return null;
+            }
+            FileInputStream fis = new FileInputStream(traceFile);
+            ObjectInputStream ois = new ObjectInputStream(fis);
+            List<Notification> list = (ArrayList) ois.readObject();
+            ois.close();
+            fis.close();
+            return list;
+        } catch (Exception e) {
+            return null;
+        }
+
     }
 }

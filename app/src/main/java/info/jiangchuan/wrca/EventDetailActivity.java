@@ -1,31 +1,22 @@
 package info.jiangchuan.wrca;
 
 import android.content.Intent;
-import android.graphics.Bitmap;
 import android.support.v7.app.ActionBarActivity;
-import android.support.v7.app.ActionBar;
-import android.support.v4.app.Fragment;
 import android.os.Bundle;
-import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.ViewGroup;
-import android.os.Build;
 import android.widget.ImageView;
-import android.util.Log;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.graphics.drawable.*;
 import android.widget.Toast;
 
 import com.android.volley.VolleyError;
-import com.android.volley.toolbox.ImageLoader;
-import com.android.volley.toolbox.NetworkImageView;
 import com.android.volley.toolbox.ImageLoader.ImageContainer;
 import com.android.volley.toolbox.ImageLoader.ImageListener;
 
-import java.util.BitSet;
+import info.jiangchuan.wrca.models.Event;
 
 public class EventDetailActivity extends ActionBarActivity {
 
@@ -84,6 +75,7 @@ public class EventDetailActivity extends ActionBarActivity {
             public void onClick(View v) {
                 // start detail activity
                 Intent intent = new Intent(mActivity, EventDescriptionActivity.class);
+                intent.putExtra("event", event);
                 startActivity(intent);
             }
         });

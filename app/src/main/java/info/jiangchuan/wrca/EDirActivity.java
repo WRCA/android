@@ -19,6 +19,7 @@ public class EDirActivity extends ActionBarActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_edir);
         createTabUI(savedInstanceState);
+        getSupportActionBar().setTitle("E-Directory");
     }
 
     @Override

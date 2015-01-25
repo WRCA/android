@@ -2,13 +2,15 @@ package info.jiangchuan.wrca;
 
 import android.app.Application;
 
-import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.toolbox.ImageLoader;
 import com.android.volley.toolbox.Volley;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import info.jiangchuan.wrca.models.Event;
+
 /**
  * Created by jiangchuan on 1/3/15.
  */

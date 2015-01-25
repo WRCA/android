@@ -20,23 +20,27 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 
+import info.jiangchuan.wrca.adapters.PlaceAdapter;
+import info.jiangchuan.wrca.models.Place;
+
 public class NearbyResultActivity extends ActionBarActivity {
 
     private static final String TAG = "NearbyResultActivity";
     private ArrayList<Place> placeList = new ArrayList<Place>();
     private ListView listView;
-    private PlaceListAdapter adapter;
+    private PlaceAdapter adapter;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_nearby_result);
 
         listView = (ListView) findViewById(R.id.list);
-        adapter = new PlaceListAdapter(this, placeList);
+        adapter = new PlaceAdapter(this, placeList);
         listView.setAdapter(adapter);
         String type = getIntent().getStringExtra("place");
         String url = "https://maps.googleapis.com/maps/api/place/textsearch/json?query="+type+
                 "&location=43.012062,-78.80952977&radius=3000"+"&key=AIzaSyBzNeQOQWOXUwgyC6v5JPVlRhralZ2FKWM";
+
 
         Log.d(TAG, url);
         JsonObjectRequest eventReq = new JsonObjectRequest(Request.Method.GET, url, null,

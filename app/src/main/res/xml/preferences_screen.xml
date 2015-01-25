@@ -10,5 +10,10 @@
             android:key="pref_auto_login"
             android:title="Auto Login"
             android:defaultValue="true" />
+        <CheckBoxPreference
+            android:id="@+id/checkbox_preference_push_notifications"
+            android:key="pref_notifications"
+            android:title="Push Notifications"
+            android:defaultValue="true" />
     </PreferenceCategory>
 </PreferenceScreen>

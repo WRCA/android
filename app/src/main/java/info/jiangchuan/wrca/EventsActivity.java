@@ -4,12 +4,10 @@ package info.jiangchuan.wrca;
  * Created by jiangchuan on 1/3/15.
  */
 
-import android.app.Activity;
 import android.os.Bundle;
 import android.view.View;
 
 import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.content.Intent;
 import android.view.Menu;
@@ -23,8 +21,6 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.VolleyLog;
 import com.android.volley.toolbox.JsonObjectRequest;
-import com.android.volley.NetworkResponse;
-import com.android.volley.toolbox.NetworkImageView;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -34,12 +30,16 @@ import android.util.Log;
 import android.support.v7.app.ActionBarActivity;
 
 import android.widget.AbsListView;
+
+import info.jiangchuan.wrca.adapters.EventAdapter;
+import info.jiangchuan.wrca.models.Event;
+
 public class EventsActivity extends ActionBarActivity {
 
     private static final String TAG = "EventsActivity";
     private List<Event> eventsList = new ArrayList<Event>();
     private ListView listView;
-    private CustomListAdapter adapter;
+    private EventAdapter adapter;
     private EventsActivity mActivity;
 
     private int lastItem = 0;
@@ -52,7 +52,7 @@ public class EventsActivity extends ActionBarActivity {
         mActivity = this;
         listView = (ListView) findViewById(R.id.list);
 
-        adapter = new CustomListAdapter(this, eventsList);
+        adapter = new EventAdapter(this, eventsList);
         listView.setAdapter(adapter);
 
         String url = "http://jiangchuan.info/php/index.php?object=events&type=all&offset=" + Integer.toString(lastItem+1);
@@ -138,21 +138,21 @@ public class EventsActivity extends ActionBarActivity {
     }
     private void onEventsThisWeek() {
         eventsList.clear();
-        adapter = new CustomListAdapter(this, eventsList);
+        adapter = new EventAdapter(this, eventsList);
         listView.setAdapter(adapter);
         String url = "http://jiangchuan.info/php/index.php?object=events&type=week";
         getEventsFromURL(url);
     }
     private void onEventsThisMonth() {
         eventsList.clear();
-        adapter = new CustomListAdapter(this, eventsList);
+        adapter = new EventAdapter(this, eventsList);
         listView.setAdapter(adapter);
         String url = "http://jiangchuan.info/php/index.php?object=events&type=month";
         getEventsFromURL(url);
     }
     private void onEventsAll() {
         eventsList.clear();
-        adapter = new CustomListAdapter(this, eventsList);
+        adapter = new EventAdapter(this, eventsList);
         listView.setAdapter(adapter);
         lastItem = 0;
         String url = "http://jiangchuan.info/php/index.php?object=events&type=all&offset=" + Integer.toString(lastItem+1);
