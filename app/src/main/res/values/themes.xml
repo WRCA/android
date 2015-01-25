@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <style
+        name="WillowRidge_theme"
+        parent="Theme.AppCompat.Light">
+
+        <item name="android:actionBarStyle">@style/action_bar</item>
+        <item name="actionBarStyle">@style/action_bar</item>
+    </style>
+
+    <!-- ActionBar styles -->
+    <style name="action_bar" parent="@style/Widget.AppCompat.Light.ActionBar.Solid.Inverse">
+        <item name="android:background">@color/action_bar_color</item>
+        <item name="background">@color/action_bar_color</item>
+    </style>
+
+</resources>

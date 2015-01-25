@@ -1,61 +1,55 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical"
-    android:layout_width="fill_parent"
-    android:layout_height="fill_parent"
-    android:paddingLeft="17dp"
-    android:paddingRight="17dp"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_marginTop="@dimen/margin_top"
+    android:layout_marginLeft="@dimen/margin_side"
+    android:layout_marginRight="@dimen/margin_side"
     >
 
     <EditText
         android:id="@+id/edit_text_email"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="10dp"
+        android:layout_marginBottom="@dimen/margin_gap"
         android:hint="email"
         android:inputType="textEmailAddress"
-        android:padding="10dp"
         />
 
     <EditText
         android:id="@+id/edit_text_password"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="10dp"
+        android:layout_marginBottom="@dimen/margin_gap"
         android:inputType="textPassword"
         android:hint="password"
-        android:padding="10dp"
         />
     <EditText
         android:id="@+id/edit_text_verification_code"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="10dp"
+        android:layout_marginBottom="@dimen/margin_gap"
         android:hint="verification code"
-        android:padding="10dp"
         />
     <Button
         android:id="@+id/button_verification_code"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="10dp"
+        android:layout_marginBottom="@dimen/margin_gap"
         android:text="Get Verification Code"
-        android:onClick="onGetVerificationCode"
-        android:padding="10dp"/>
+        android:onClick="onGetVerificationCode"/>
     <Button
         android:id="@+id/button_submit"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="10dp"
+        android:layout_marginBottom="@dimen/margin_gap"
         android:text="Create Account"
-        android:onClick="onSubmit"
-        android:padding="10dp"/>
+        android:onClick="onSubmit"/>
 
     <TextView android:id="@+id/edit_text_already_memeber"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="10dp"
-        android:padding="5dp"
         android:gravity="center"
         android:onClick="onBack"
         android:clickable="true"

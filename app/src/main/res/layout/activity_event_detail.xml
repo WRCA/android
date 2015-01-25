@@ -120,16 +120,70 @@
             android:layout_height="wrap_content"
             android:layout_width="match_parent"
             android:padding="10dp"
+            android:clickable="true"
+            android:onClick="launchMap"
             android:orientation="vertical">
             <TextView
-                android:id="@+id/text_view_location"
+                android:id="@+id/text_view_address"
                 android:layout_height="wrap_content"
                 android:layout_width="wrap_content"
                 android:layout_gravity="center"
                 android:text="130 Louth St, St Catharines, ON"
                 android:textSize="15sp"
                 android:clickable="true"/>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1px"
+                android:background="@color/color_boarder_line"/>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Navigation on Map"
+                android:layout_gravity="center_horizontal"/>
+        </LinearLayout>
+
+        <LinearLayout
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" >
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1px"
+                android:background="@color/color_boarder_line"/>
+
+            <View
+                android:layout_width="match_parent"
+                android:background="@color/color_background"
+                android:layout_height="@dimen/dimen_gap_detail_event"/>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1px"
+                android:background="@color/color_boarder_line"/>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_height="wrap_content"
+            android:layout_width="match_parent"
+            android:padding="10dp"
+            android:onClick="launchMap"
+            android:orientation="vertical"
+            >
+
+            <Button
+                android:layout_height="wrap_content"
+                android:layout_width="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:padding="@dimen/button_padding_size"
+                android:background="@color/action_bar_color"
+                android:textColor="@color/white"
+                android:text="Share This Event"
+                android:onClick="shareWithFriend"/>
         </LinearLayout>
 
     </LinearLayout>
+
 </ScrollView>

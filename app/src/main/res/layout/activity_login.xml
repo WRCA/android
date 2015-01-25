@@ -1,44 +1,54 @@
 <?xml version="1.0" encoding="utf-8"?>
 <ScrollView
     xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="fill_parent"
-    android:layout_height="fill_parent"
-    android:fillViewport="true">
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
 
     <LinearLayout
+        android:layout_marginLeft="@dimen/margin_side"
+        android:layout_marginRight="@dimen/margin_side"
         android:orientation="vertical"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
+        <ImageView
+            android:layout_width="@dimen/image_size"
+            android:layout_height="@dimen/image_size"
+            android:layout_marginTop="@dimen/margin_top"
+            android:layout_marginBottom="@dimen/margin_gap"
+            android:src="@drawable/ic_launcher"
+            android:layout_gravity="center_horizontal"/>
         <!-- Email -->
         <EditText android:id="@+id/edit_text_email"
-            android:layout_width="fill_parent"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginBottom="@dimen/margin_gap"
             android:inputType="textEmailAddress"
             android:hint="email"
             android:singleLine="true"/>
 
         <!-- Password Label -->
         <EditText android:id="@+id/edit_text_password"
-            android:layout_width="fill_parent"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginBottom="@dimen/margin_gap"
             android:hint="password"
             android:password="true"
             android:singleLine="true"/>
 
 
         <Button android:id="@+id/button_signup"
-            android:layout_width="fill_parent"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginBottom="@dimen/margin_gap"
             android:text="new user?"
             android:onClick="signup"/>
 
         <Button android:id="@+id/button_submit"
-            android:layout_width="fill_parent"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="submit"
             android:onClick="submit"/>
 
     </LinearLayout>
 </ScrollView>
-

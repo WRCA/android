@@ -1,10 +1,14 @@
 package info.jiangchuan.wrca;
 
+import android.content.Intent;
+import android.net.Uri;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ListView;
 
 import com.android.volley.Request;
@@ -33,10 +37,23 @@ public class NearbyResultActivity extends ActionBarActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_nearby_result);
+        getSupportActionBar().setTitle("Nearby Result");
+        setupListView();
+    }
 
+    public void setupListView() {
         listView = (ListView) findViewById(R.id.list);
         adapter = new PlaceAdapter(this, placeList);
         listView.setAdapter(adapter);
+
+        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                Intent intent = new Intent(android.content.Intent.ACTION_VIEW,
+                        Uri.parse("google.navigation:q=" + placeList.get(position).getLocation()));
+                startActivity(intent);
+            }
+        });
         String type = getIntent().getStringExtra("place");
         String url = "https://maps.googleapis.com/maps/api/place/textsearch/json?query="+type+
                 "&location=43.012062,-78.80952977&radius=3000"+"&key=AIzaSyBzNeQOQWOXUwgyC6v5JPVlRhralZ2FKWM";
@@ -77,9 +94,8 @@ public class NearbyResultActivity extends ActionBarActivity {
         });
         // Adding request to request queue
         WillowRidge.getInstance().getRequestQueue().add(eventReq);
+
     }
-
-
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.

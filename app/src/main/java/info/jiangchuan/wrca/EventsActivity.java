@@ -111,10 +111,11 @@ public class EventsActivity extends ActionBarActivity {
         //noinspection SimplifiableIfStatement
 
         switch (id) {
-            case R.id.item_saved:
+            case R.id.item_saved: {
                 Intent intent = new Intent(this, SavedEventsActivity.class);
                 startActivity(intent);
                 break;
+            }
             case R.id.item_this_week:
                 listView.setOnScrollListener(null);
                 onEventsThisWeek();
@@ -129,8 +130,11 @@ public class EventsActivity extends ActionBarActivity {
                 onEventsAll();
                 getSupportActionBar().setTitle("All Events");
                 break;
-            case android.R.id.home:
+            case R.id.action_settings: {
+                Intent intent = new Intent(this, SettingsActivity.class);
+                startActivity(intent);
                 return true;
+            }
             default:
                 break;
         }

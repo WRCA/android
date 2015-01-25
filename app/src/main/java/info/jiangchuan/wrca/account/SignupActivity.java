@@ -1,4 +1,4 @@
-package info.jiangchuan.wrca;
+package info.jiangchuan.wrca.account;
 
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
@@ -18,6 +18,9 @@ import org.json.JSONObject;
 import java.util.HashMap;
 import java.util.Map;
 
+import info.jiangchuan.wrca.CustomRequest;
+import info.jiangchuan.wrca.R;
+import info.jiangchuan.wrca.WillowRidge;
 import info.jiangchuan.wrca.util.ToastUtil;
 
 public class SignupActivity extends ActionBarActivity {

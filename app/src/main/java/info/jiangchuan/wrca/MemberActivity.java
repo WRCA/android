@@ -5,17 +5,36 @@ import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ListView;
+
+import info.jiangchuan.wrca.adapters.SimpleArrayAdapter;
 
 
 public class MemberActivity extends Activity {
 
+    private SimpleArrayAdapter adapter;
+    private ListView listView;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_member);
+        setupListView();
     }
 
+    void setupListView() {
+        String[] category = getResources().getStringArray(R.array.member_category);
+        adapter = new SimpleArrayAdapter(this, category);
+        listView = (ListView) findViewById(R.id.list_view);
+        listView.setAdapter(adapter);
+        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 
+            }
+        });
+    }
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.

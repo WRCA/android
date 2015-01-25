@@ -1,17 +1,15 @@
 package info.jiangchuan.wrca;
 
-import android.support.v7.app.ActionBarActivity;
+import android.content.Intent;
 import android.os.Bundle;
+import android.support.v7.app.ActionBarActivity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.ListView;
 
-import java.util.ArrayList;
 import java.util.List;
 
-import info.jiangchuan.wrca.adapters.EventAdapter;
 import info.jiangchuan.wrca.adapters.NotificationsAdapter;
-import info.jiangchuan.wrca.models.Event;
 import info.jiangchuan.wrca.models.Notification;
 import info.jiangchuan.wrca.util.Utility;
 
@@ -79,11 +77,18 @@ public class PushNotificationActivity extends ActionBarActivity {
         // automatically handle clicks on the Home/Up button, so long
         // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
+        switch (id) {
+            case R.id.action_refresh: {
+                //noinspection SimplifiableIfStatement
+                adapter.notifyDataSetChanged();
+                return true;
+            }
+            case R.id.action_settings: {
+                Intent intent = new Intent(this, SettingsActivity.class);
+                startActivity(intent);
+                return true;
+            }
 
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.action_refresh) {
-            adapter.notifyDataSetChanged();
-            return true;
         }
 
         return super.onOptionsItemSelected(item);

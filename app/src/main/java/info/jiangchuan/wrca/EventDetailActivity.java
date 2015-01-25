@@ -1,15 +1,16 @@
 package info.jiangchuan.wrca;
 
 import android.content.Intent;
-import android.support.v7.app.ActionBarActivity;
+import android.graphics.drawable.BitmapDrawable;
+import android.net.Uri;
 import android.os.Bundle;
+import android.support.v7.app.ActionBarActivity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-import android.graphics.drawable.*;
 import android.widget.Toast;
 
 import com.android.volley.VolleyError;
@@ -23,19 +24,19 @@ public class EventDetailActivity extends ActionBarActivity {
     ImageView mImageView;
     private static final String TAG = "EventDetailActivity";
     private EventDetailActivity mActivity;
+    private Event event;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_event_detail);
         mActivity = this;
-
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
 
 
         final Event event = (Event)getIntent().getSerializableExtra("event");
-        this.setTitle(event.getTitle());
-
+        this.setTitle("Event Detail");
+        this.event = event;
 
         // set image
         LinearLayout linearLayout = (LinearLayout)findViewById(R.id.linear_layout_image);
@@ -54,7 +55,7 @@ public class EventDetailActivity extends ActionBarActivity {
         }, linearLayout.getWidth(), linearLayout.getHeight());
 
 
-        TextView location = (TextView)findViewById(R.id.text_view_location);
+        TextView location = (TextView)findViewById(R.id.text_view_address);
         location.setText(event.getLocation());
 
         TextView time = (TextView)findViewById(R.id.text_view_time);
@@ -111,6 +112,18 @@ public class EventDetailActivity extends ActionBarActivity {
         return super.onOptionsItemSelected(item);
     }
 
-    private class LayoutParams {
+    public void launchMap(View view) {
+        Intent intent = new Intent(android.content.Intent.ACTION_VIEW,
+                Uri.parse("google.navigation:q="+this.event.getLocation()));
+        startActivity(intent);
+
+    }
+
+    public void shareWithFriend(View view) {
+        String message = "";
+        Intent i = new Intent(Intent.ACTION_SEND);
+        i.setType("text/plain");
+        i.putExtra(Intent.EXTRA_TEXT, message);
+        startActivity(Intent.createChooser(i, "Share with friends"));
     }
 }

@@ -71,12 +71,12 @@ public class MainActivity extends Activity {
         tab1.setIndicator("events");
         tab2.setIndicator("push");
         tab3.setIndicator("E-Dir");
-        tab4.setIndicator("setting");
+        tab4.setIndicator("Site");
         // TODO: use intent
         tab1.setContent(new Intent(this, EventsActivity.class));
         tab2.setContent(new Intent(this, PushNotificationActivity.class));
         tab3.setContent(new Intent(this, EDirActivity.class));
-        tab4.setContent(new Intent(this, SettingsActivity.class));
+        tab4.setContent(new Intent(this, WebActivity.class));
 
         host.addTab(tab1);
         host.addTab(tab2);

@@ -3,7 +3,7 @@
 
     <string name="app_name">WRCA</string>
     <string name="hello_world">Hello world!</string>
-    <string name="action_settings">refresh</string>
+
     <string name="title_activity_signup">SignupActivity</string>
     <string name="title_activity_main">MainActivity</string>
     <string name="title_activity_event_detail">EventDetailActivity</string>
@@ -37,4 +37,14 @@
 
 
     <string name="profile_page">profile</string>
+
+    <string name="action_refresh">refresh</string>
+    <string name="action_settings">settings</string>
+
+    <string-array name="member_category">
+        <item name="President">Board of Directors</item>
+        <item name="President">Wind in the Willows</item>
+        <item name="President">Committees and Activity Chairpersons</item>
+        <item name="President">Members</item>
+    </string-array>
 </resources>

@@ -10,4 +10,7 @@
     <color name="feed_bg">#e0e0e0</color>
     <color name="feed_item_bg">#ffffff</color>
     <color name="feed_item_border">#c2c3c8</color>
+
+    <color name="action_bar_color">#03a9f4</color>
+    <color name="feed_item_notification_bg">#81d4fa</color>
 </resources>

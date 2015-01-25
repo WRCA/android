@@ -3,7 +3,7 @@ package info.jiangchuan.wrca;
 import android.os.Bundle;
 import android.preference.Preference;
 import android.preference.PreferenceActivity;
-import android.widget.Toast;
+import android.view.Window;
 
 import com.google.android.gcm.GCMRegistrar;
 
@@ -32,6 +32,7 @@ public class SettingsActivity extends PreferenceActivity {
                 return true;
             }
         });
+
     }
 
     @Override

@@ -1,4 +1,4 @@
-package info.jiangchuan.wrca;
+package info.jiangchuan.wrca.account;
 
 import static info.jiangchuan.wrca.CommonUtilities.DISPLAY_MESSAGE_ACTION;
 import static info.jiangchuan.wrca.CommonUtilities.EXTRA_MESSAGE;
@@ -28,6 +28,15 @@ import org.json.JSONObject;
 import java.util.HashMap;
 import java.util.Map;
 
+import info.jiangchuan.wrca.AlertDialogManager;
+import info.jiangchuan.wrca.ConnectionDetector;
+import info.jiangchuan.wrca.Constants;
+import info.jiangchuan.wrca.CustomRequest;
+import info.jiangchuan.wrca.MainActivity;
+import info.jiangchuan.wrca.R;
+import info.jiangchuan.wrca.ServerUtilities;
+import info.jiangchuan.wrca.WakeLocker;
+import info.jiangchuan.wrca.WillowRidge;
 import info.jiangchuan.wrca.util.ToastUtil;
 import info.jiangchuan.wrca.util.Utility;
 
@@ -118,7 +127,7 @@ public class LoginActivity extends ActionBarActivity {
                         try {
                             int result = response.getInt("success");
                             if (result == 0) {
-                                ToastUtil.showToastMessage(mActivity, response.toString(), Toast.LENGTH_LONG);
+                                ToastUtil.showToastMessage(mActivity, response.get("message").toString(), Toast.LENGTH_LONG);
                             } else if (result == 1) {
                                 Log.d(TAG, response.getString("token"));
                                 Utility.writeStringSharedPreferences(Constants.string_token, response.getString("token"));
