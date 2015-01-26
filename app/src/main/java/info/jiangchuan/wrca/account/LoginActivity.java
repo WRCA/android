@@ -43,7 +43,6 @@ public class LoginActivity extends ActionBarActivity {
     public static String name;
     public static String email;
 
-    GCMService gcmService;
 
     // Asyntask
     AsyncTask<Void, Void, Void> mRegisterTask;
@@ -56,7 +55,6 @@ public class LoginActivity extends ActionBarActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        gcmService = new GCMService(this);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
         mActivity = this;
@@ -64,7 +62,7 @@ public class LoginActivity extends ActionBarActivity {
         if (!NetworkUtil.hasInternet(this)) {
             finish();
         }
-        if (!gcmService.isGCMConfigSet()) {
+        if (!WillowRidge.getInstance().getGcmService().isGCMConfigSet()) {
             finish();
         }
 
@@ -124,7 +122,7 @@ public class LoginActivity extends ActionBarActivity {
                         user.setEmail(strEmail);
                         user.setPassword(strPassword);
                         user.setToken(token);
-                        gcmService.register(user);
+                        WillowRidge.getInstance().getGcmService().register(user);
                         startActivity(intent);
                         finish();
                         break;

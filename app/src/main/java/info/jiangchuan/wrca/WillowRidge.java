@@ -9,6 +9,7 @@ import com.android.volley.toolbox.Volley;
 import java.util.ArrayList;
 import java.util.List;
 
+import info.jiangchuan.wrca.gcm.GCMService;
 import info.jiangchuan.wrca.models.Event;
 import info.jiangchuan.wrca.models.Notification;
 import info.jiangchuan.wrca.models.User;
@@ -25,6 +26,7 @@ public class WillowRidge extends Application{
     private LruBitmapCache mLruBitmapCache;
     private List<Event> events;
     private List<Notification> notifications = new ArrayList<Notification>();
+    GCMService gcmService;
 
     public User getUser() {
         return user;
@@ -36,12 +38,15 @@ public class WillowRidge extends Application{
         return notifications;
     }
 
+    public GCMService getGcmService() {
+        return gcmService;
+    }
+
     @Override
     public void onCreate() {
         super.onCreate();
         mInstance = this;
-
-
+        gcmService = new GCMService(this);
     }
 
     void loadPersistentDate() {

@@ -1,7 +1,8 @@
 package info.jiangchuan.wrca.account;
 
-import android.support.v7.app.ActionBarActivity;
+import android.content.Intent;
 import android.os.Bundle;
+import android.support.v7.app.ActionBarActivity;
 import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
@@ -11,6 +12,7 @@ import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
+import com.google.gson.JsonObject;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -18,10 +20,18 @@ import org.json.JSONObject;
 import java.util.HashMap;
 import java.util.Map;
 
-import info.jiangchuan.wrca.volley.CustomRequest;
+import info.jiangchuan.wrca.Constant;
+import info.jiangchuan.wrca.MainActivity;
 import info.jiangchuan.wrca.R;
 import info.jiangchuan.wrca.WillowRidge;
+import info.jiangchuan.wrca.models.Result;
+import info.jiangchuan.wrca.models.User;
+import info.jiangchuan.wrca.parsers.ResultParser;
+import info.jiangchuan.wrca.rest.Client;
 import info.jiangchuan.wrca.util.ToastUtil;
+import info.jiangchuan.wrca.util.Utility;
+import retrofit.Callback;
+import retrofit.RetrofitError;
 
 public class SignupActivity extends ActionBarActivity {
 
@@ -54,46 +64,39 @@ public class SignupActivity extends ActionBarActivity {
             return;
         }
 
-        String requestURL = "http://jiangchuan.info/php/index.php";
         Map<String, String> map = new HashMap<String, String>();
-        map.put("object", "register");
         map.put("email", strEmail);
         map.put("password", strPassword);
         map.put("verificationCode", strVerificationCode);
-        CustomRequest request = new CustomRequest(Request.Method.POST, requestURL, map,
-                new Response.Listener<JSONObject>() {
+        Client.getApi().register(map, new Callback<JsonObject>() {
+            @Override
+            public void success(JsonObject jsonObject, retrofit.client.Response response) {
+               Result result = ResultParser.parse(jsonObject);
+               switch (response.getStatus()) {
+                   case 200: {
+                       String token = jsonObject.get(Constant.AUTH_TOKEN).toString();
+                       Utility.writeStringSharedPreferences(Constant.AUTH_TOKEN, token);
+                       Intent intent = new Intent(mActivity, MainActivity.class);
+                       User user = WillowRidge.getInstance().getUser();
+                       user.setEmail(strEmail);
+                       user.setPassword(strPassword);
+                       user.setToken(token);
+                       WillowRidge.getInstance().getGcmService().register(user);
+                       startActivity(intent);
+                       finish();
+                       break;
+                   }
+                   default: {
+                       ToastUtil.showToastMessage(mActivity, result.getMessage());
+                   }
+               }
+            }
 
-                    @Override
-                    public void onResponse(JSONObject response) {
-                        Log.d(TAG, "onResponse");
+            @Override
+            public void failure(RetrofitError error) {
 
-                        try {
-                            int result = response.getInt("success");
-                            if (result == 0) {
-                                ToastUtil.showToastMessage(mActivity, response.toString(), Toast.LENGTH_LONG);
-                            } else if (result == 1) {
-                                ToastUtil.showToastMessage(mActivity, "login success", Toast.LENGTH_LONG);
-
-                            } else {
-                                ToastUtil.showToastMessage(mActivity, "result code not recognize", Toast.LENGTH_LONG);
-                            }
-                        } catch (JSONException e) {
-                            Log.e(TAG, "JSONException");
-                            ToastUtil.showToastMessage(mActivity, e.toString(), Toast.LENGTH_LONG);
-                        }
-                    }
-                },
-
-                new Response.ErrorListener() {
-
-                    @Override
-                    public void onErrorResponse(VolleyError error) {
-                        Log.e(TAG, "onErrorResponse");
-                        Toast.makeText(mActivity, error.toString(), Toast.LENGTH_LONG);
-                    }
-                });
-
-        WillowRidge.getInstance().getRequestQueue().add(request);
+            }
+        });
     }
     public void onGetVerificationCode(View view) {
         TextView email = (TextView)findViewById(R.id.edit_text_email);
@@ -103,41 +106,23 @@ public class SignupActivity extends ActionBarActivity {
             ToastUtil.showToastMessage(this, "email field cannot be empty", Toast.LENGTH_SHORT);
             return;
         }
-
-        String requestURL = "http://jiangchuan.info/php/index.php?object=verificationCode&email="+strEmail;
-        JsonObjectRequest request = new JsonObjectRequest(Request.Method.GET, requestURL, null,
-                new Response.Listener<JSONObject>() {
-
-                    @Override
-                    public void onResponse(JSONObject response) {
-                        Log.d(TAG, "onResponse");
-                        try {
-                            int result = response.getInt("success");
-                            if (result == 0) {
-                                ToastUtil.showToastMessage(mActivity, response.toString(), Toast.LENGTH_LONG);
-                            } else if (result == 1) {
-                                ToastUtil.showToastMessage(mActivity, response.toString(), Toast.LENGTH_LONG);
-
-                            } else {
-                                ToastUtil.showToastMessage(mActivity, "result code not recognize", Toast.LENGTH_LONG);
-                            }
-                        } catch (JSONException e) {
-                            Log.e(TAG, "JSONException");
-                            ToastUtil.showToastMessage(mActivity, e.toString(), Toast.LENGTH_LONG);
-                        }
+        Client.getApi().vericode(strEmail, new Callback<JsonObject>() {
+            @Override
+            public void success(JsonObject jsonObject, retrofit.client.Response response) {
+                Result result = ResultParser.parse(jsonObject);
+                switch (result.getStatus()) {
+                    case 200: {
+                        ToastUtil.showToastMessage(mActivity, result.getMessage());
+                        break;
                     }
-                },
+                }
+            }
 
-                new Response.ErrorListener() {
+            @Override
+            public void failure(RetrofitError error) {
 
-                    @Override
-                    public void onErrorResponse(VolleyError error) {
-                        Log.e(TAG, "onErrorResponse");
-                        Toast.makeText(mActivity, error.toString(), Toast.LENGTH_LONG);
-                    }
-                });
-
-        WillowRidge.getInstance().getRequestQueue().add(request);
+            }
+        });
     }
     public void onBack(View view) {
         finish();
