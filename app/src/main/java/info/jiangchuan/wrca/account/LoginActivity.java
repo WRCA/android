@@ -2,6 +2,7 @@ package info.jiangchuan.wrca.account;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.hardware.usb.UsbRequest;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
@@ -21,18 +22,14 @@ import info.jiangchuan.wrca.R;
 import info.jiangchuan.wrca.WillowRidge;
 import info.jiangchuan.wrca.gcm.AlertDialogManager;
 import info.jiangchuan.wrca.gcm.ConnectionDetector;
-import info.jiangchuan.wrca.gcm.GCMService;
 import info.jiangchuan.wrca.models.Result;
 import info.jiangchuan.wrca.models.User;
 import info.jiangchuan.wrca.parsers.ResultParser;
 import info.jiangchuan.wrca.rest.Client;
-import info.jiangchuan.wrca.util.NetworkUtil;
+import info.jiangchuan.wrca.util.SharedPrefUtil;
 import info.jiangchuan.wrca.util.ToastUtil;
-import info.jiangchuan.wrca.util.Utility;
 import retrofit.Callback;
 import retrofit.RetrofitError;
-
-import com.google.android.gcm.GCMRegistrar;
 
 public class LoginActivity extends ActionBarActivity {
 
@@ -58,30 +55,11 @@ public class LoginActivity extends ActionBarActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
         mActivity = this;
-
-        if (!NetworkUtil.hasInternet(this)) {
-            finish();
-        }
-        if (!WillowRidge.getInstance().getGcmService().isGCMConfigSet()) {
-            finish();
-        }
-
     }
 
     @Override
     public void onStart() {
         super.onStart();
-        String token = Utility.readStringSharedPreferences(Constant.AUTH_TOKEN);
-        boolean autoLogin = Utility.readBooleanSharedPreferences(Constant.string_auto_Login);
-        boolean hasNotifications = Utility.readBooleanSharedPreferences(Constant.string_notifications);
-        if (autoLogin == true && token != "") {
-            // start MainActivity
-            Intent intent = new Intent(mActivity, MainActivity.class);
-            startActivity(intent);
-            finish();
-        } else {
-            Log.d(TAG, "token is empty");
-        }
 
     }
 
@@ -116,14 +94,13 @@ public class LoginActivity extends ActionBarActivity {
                 switch (result.getStatus()) {
                     case 200: {
                         String token = jsonObject.get(Constant.AUTH_TOKEN).getAsString();
-                        Utility.writeStringSharedPreferences(Constant.AUTH_TOKEN, token);
-                        Intent intent = new Intent(mActivity, MainActivity.class);
-                        User user = WillowRidge.getInstance().getUser();
+                        SharedPrefUtil.writeStringSharedPreferences(Constant.AUTH_TOKEN, token);
+                        User user = new User();
                         user.setEmail(strEmail);
                         user.setPassword(strPassword);
                         user.setToken(token);
-                        WillowRidge.getInstance().getGcmService().register(user);
-                        startActivity(intent);
+                        Log.i(TAG, "user info was put to intent");
+                        setResult(RESULT_OK, getIntent().putExtra("User", user));
                         finish();
                         break;
                     }
@@ -143,7 +120,6 @@ public class LoginActivity extends ActionBarActivity {
     @Override
     public void onPause() {
         super.onPause();
-        Log.d(TAG, "onPause");
     }
 
 

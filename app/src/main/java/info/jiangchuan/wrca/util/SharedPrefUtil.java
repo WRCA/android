@@ -20,34 +20,9 @@ import info.jiangchuan.wrca.models.Event;
 /**
  * Created by jiangchuan on 1/3/15.
  */
-public class Utility {
+public class SharedPrefUtil {
     private static final String TAG = "Utility";
 
-    public static void writeSavedEventsToFile(ArrayList<Event> list) {
-        try {
-            FileOutputStream fos = WillowRidge.getInstance().openFileOutput(Constant.string_saved_file, Context.MODE_PRIVATE);
-            ObjectOutputStream oos = new ObjectOutputStream(fos);
-            oos.writeObject(list);
-            fos.close();
-            oos.close();
-        } catch (IOException e) {
-           Log.d(TAG, e.toString());
-        }
-    }
-
-    public static List<Event> readSavedEventsFromFile() {
-        try {
-            FileInputStream fis = WillowRidge.getInstance().openFileInput(Constant.string_saved_file);
-            ObjectInputStream ois = new ObjectInputStream(fis);
-            List<Event> list = (List<Event>)ois.readObject();
-            fis.close();
-            ois.close();
-            return list;
-        } catch (Exception e) {
-            Log.d(TAG, e.toString());
-            return null;
-        }
-    }
 
     public static void writeStringSharedPreferences(String key, String val) {
         Context context = WillowRidge.getInstance();

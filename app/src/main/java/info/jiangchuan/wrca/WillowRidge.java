@@ -1,6 +1,7 @@
 package info.jiangchuan.wrca;
 
 import android.app.Application;
+import android.util.Log;
 
 import com.android.volley.RequestQueue;
 import com.android.volley.toolbox.ImageLoader;
@@ -20,23 +21,12 @@ import info.jiangchuan.wrca.util.SerializeUtil;
  */
 public class WillowRidge extends Application{
 
+    private static final String TAG = "WillowRidge" ;
     private static WillowRidge mInstance;
     private RequestQueue mRequestQueue;
     private ImageLoader mImageLoader;
     private LruBitmapCache mLruBitmapCache;
-    private List<Event> events;
-    private List<Notification> notifications = new ArrayList<Notification>();
     GCMService gcmService;
-
-    public User getUser() {
-        return user;
-    }
-
-    private User user = new User();
-
-    public List<Notification> getNotifications() {
-        return notifications;
-    }
 
     public GCMService getGcmService() {
         return gcmService;
@@ -49,17 +39,7 @@ public class WillowRidge extends Application{
         gcmService = new GCMService(this);
     }
 
-    void loadPersistentDate() {
-        List<Notification> tmp = (ArrayList<Notification>)SerializeUtil.deSerialize(Constant.FILE_SAVED_NOTIFICATIONS);
-        if (tmp != null) {
-            notifications.addAll(tmp);
-        }
 
-        List<Event> tmp2 = (ArrayList<Event>)SerializeUtil.deSerialize(Constant.FILE_SAVED_EVENTS);
-        if (tmp2 != null) {
-           events.addAll(tmp2);
-        }
-    }
     public static synchronized WillowRidge getInstance() {
         return mInstance;
     }
@@ -89,10 +69,4 @@ public class WillowRidge extends Application{
         return mRequestQueue;
     }
 
-    public List<Event> getSavedEvents() {
-        if (events == null) {
-            events = new ArrayList<Event>();
-        }
-        return events;
-    }
 }

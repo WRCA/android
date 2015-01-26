@@ -12,5 +12,13 @@ public class Constant {
 
     public static final String FILE_SAVED_EVENTS = "saved_events";
     public static final String FILE_SAVED_NOTIFICATIONS = "saved_notifications";
+    public static final String FILE_SAVED_USER = "saved_user";
+
+
+    /*********  activity contant ************/
+
+    // request and result code
+    public static final int INT_REQUEST_LOGIN = 0;
+    public static final int INT_REQUEST_MAIN = 1;
 
 }

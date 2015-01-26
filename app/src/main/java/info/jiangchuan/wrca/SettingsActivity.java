@@ -6,8 +6,8 @@ import android.preference.PreferenceActivity;
 
 import com.google.android.gcm.GCMRegistrar;
 
+import info.jiangchuan.wrca.util.SharedPrefUtil;
 import info.jiangchuan.wrca.util.ToastUtil;
-import info.jiangchuan.wrca.util.Utility;
 
 public class SettingsActivity extends PreferenceActivity {
     private static final boolean ALWAYS_SIMPLE_PREFS = false;
@@ -25,7 +25,7 @@ public class SettingsActivity extends PreferenceActivity {
             @Override
             public boolean onPreferenceClick(Preference arg0) {
                 //code for what you want it to do
-                WillowRidge.getInstance().getNotifications().clear();
+                MainActivity.getActivity().getUserData().getNotifications().clear();
                 ToastUtil.showToastMessage(WillowRidge.getInstance(), "clear");
                 PushNotificationActivity.getActivity().getAdapter().notifyDataSetChanged();
                 return true;
@@ -37,7 +37,7 @@ public class SettingsActivity extends PreferenceActivity {
     @Override
     protected void onStop() {
         super.onStop();
-        boolean hasNotifications = Utility.readBooleanSharedPreferences(Constant.string_notifications);
+        boolean hasNotifications = SharedPrefUtil.readBooleanSharedPreferences(Constant.string_notifications);
         if (!hasNotifications) {
             GCMRegistrar.unregister(this);
         }

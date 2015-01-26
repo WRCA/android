@@ -169,7 +169,7 @@ public class EventsActivity extends ActionBarActivity {
         // Creating volley request obj
        // String url = "http://jiangchuan.info/php/index.php?object=events&type=all&offset=" + Integer.toString(lastItem + 1);
        // getEventsFromURL(url);
-        User user = WillowRidge.getInstance().getUser();
+        User user = MainActivity.getActivity().getUserData().getUser();
         if (user.getToken() == null || range == null) {
             Log.e(TAG, "param cannot be null");
             return;

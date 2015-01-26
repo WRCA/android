@@ -17,9 +17,13 @@ import info.jiangchuan.wrca.models.Notification;
 /**
  * Created by jiangchuan on 1/25/15.
  */
+/*
+ * serialize object to file
+ */
 public class SerializeUtil {
     static final String TAG = "SerializeUtil";
 
+    // to file
     public static void serialize(String name, Object object) {
         try {
             File traceFile = new File((WillowRidge.getInstance()).getExternalFilesDir(null), name);

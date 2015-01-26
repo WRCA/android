@@ -3,19 +3,11 @@ package info.jiangchuan.wrca.account;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
-import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.android.volley.Request;
-import com.android.volley.Response;
-import com.android.volley.VolleyError;
-import com.android.volley.toolbox.JsonObjectRequest;
 import com.google.gson.JsonObject;
-
-import org.json.JSONException;
-import org.json.JSONObject;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -28,8 +20,8 @@ import info.jiangchuan.wrca.models.Result;
 import info.jiangchuan.wrca.models.User;
 import info.jiangchuan.wrca.parsers.ResultParser;
 import info.jiangchuan.wrca.rest.Client;
+import info.jiangchuan.wrca.util.SharedPrefUtil;
 import info.jiangchuan.wrca.util.ToastUtil;
-import info.jiangchuan.wrca.util.Utility;
 import retrofit.Callback;
 import retrofit.RetrofitError;
 
@@ -75,9 +67,9 @@ public class SignupActivity extends ActionBarActivity {
                switch (response.getStatus()) {
                    case 200: {
                        String token = jsonObject.get(Constant.AUTH_TOKEN).toString();
-                       Utility.writeStringSharedPreferences(Constant.AUTH_TOKEN, token);
+                       SharedPrefUtil.writeStringSharedPreferences(Constant.AUTH_TOKEN, token);
                        Intent intent = new Intent(mActivity, MainActivity.class);
-                       User user = WillowRidge.getInstance().getUser();
+                       User user = MainActivity.getActivity().getUserData().getUser();
                        user.setEmail(strEmail);
                        user.setPassword(strPassword);
                        user.setToken(token);

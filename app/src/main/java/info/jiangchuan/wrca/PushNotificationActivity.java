@@ -7,11 +7,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.ListView;
 
-import java.util.List;
-
 import info.jiangchuan.wrca.adapters.NotificationsAdapter;
-import info.jiangchuan.wrca.models.Notification;
-import info.jiangchuan.wrca.util.Utility;
 
 
 public class PushNotificationActivity extends ActionBarActivity {
@@ -49,7 +45,7 @@ public class PushNotificationActivity extends ActionBarActivity {
         getSupportActionBar().setTitle("Notifications");
 
         listView = (ListView) findViewById(R.id.list_view);
-        adapter = new NotificationsAdapter(this, WillowRidge.getInstance().getNotifications());
+        adapter = new NotificationsAdapter(this, MainActivity.getActivity().getUserData().getNotifications());
         listView.setAdapter(adapter);
         adapter.notifyDataSetChanged();
     }

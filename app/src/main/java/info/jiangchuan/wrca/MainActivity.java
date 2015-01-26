@@ -7,20 +7,18 @@ import android.os.Bundle;
 import android.util.Log;
 import android.widget.TabHost;
 
-import java.util.List;
+import info.jiangchuan.wrca.models.User;
+import info.jiangchuan.wrca.models.UserData;
 
-import info.jiangchuan.wrca.models.Event;
-import info.jiangchuan.wrca.util.SerializeUtil;
-import info.jiangchuan.wrca.util.Utility;
 public class MainActivity extends Activity {
 
     private TabHost host;
 
     private static final String TAG = "MainActivity";
 
-    public static String name;
-    public static String email;
+    private UserData userData = new UserData();
     private TabHost tabHost;
+
 
     public static MainActivity getActivity() {
         return activity;
@@ -31,24 +29,16 @@ public class MainActivity extends Activity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         activity = this;
+        userData.loadUserData();
+        WillowRidge.getInstance().getGcmService().register(userData.getUser());
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
-        List<Event> list = WillowRidge.getInstance().getSavedEvents();
-        list = Utility.readSavedEventsFromFile();
-        Log.d(TAG, Integer.toString(list.size()));
-        Log.d(TAG, "onCreate");
         setupTabs(savedInstanceState);
     }
 
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        SerializeUtil.serialize(Constant.FILE_SAVED_NOTIFICATIONS,
-                WillowRidge.getInstance().getNotifications());
-
-        SerializeUtil.serialize(Constant.FILE_SAVED_EVENTS,
-                WillowRidge.getInstance().getSavedEvents());
     }
 
     public TabHost getHost() {
@@ -114,6 +104,16 @@ public class MainActivity extends Activity {
     public void onStart() {
         super.onStart();
       //  Log.d(TAG, Integer.toString(WRCAApplication.getInstance().getSavedEvents().size()));
+    }
+
+    @Override
+    protected void onPause() {
+        userData.storeUserData();
+        super.onPause();
+    }
+
+    public UserData getUserData() {
+        return userData;
     }
 
     @Override

@@ -11,7 +11,6 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.ImageLoader.ImageContainer;
@@ -20,8 +19,8 @@ import com.android.volley.toolbox.ImageLoader.ImageListener;
 import java.util.List;
 
 import info.jiangchuan.wrca.models.Event;
+import info.jiangchuan.wrca.util.SharedPrefUtil;
 import info.jiangchuan.wrca.util.ToastUtil;
-import info.jiangchuan.wrca.util.Utility;
 
 public class EventDetailActivity extends ActionBarActivity {
 
@@ -103,15 +102,14 @@ public class EventDetailActivity extends ActionBarActivity {
 
         switch (id) {
             case R.id.action_save: {
-                List<Event> list = WillowRidge.getInstance().getSavedEvents();
+                List<Event> list = MainActivity.getActivity().getUserData().getEvents();
                 Event event = (Event)getIntent().getSerializableExtra("event");
-                if (Utility.containsEvent(list, event)) {
+                if (SharedPrefUtil.containsEvent(list, event)) {
                     ToastUtil.showToastMessage(this, "event already saved");
-                    return true;
+                } else {
+                    list.add(event);
+                    ToastUtil.showToastMessage(this, "event saved");
                 }
-
-                list.add(event);
-                ToastUtil.showToastMessage(this, "event saved");
                 return true;
             }
         }

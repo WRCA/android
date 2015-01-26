@@ -1,9 +1,11 @@
 package info.jiangchuan.wrca.models;
 
+import java.io.Serializable;
+
 /**
  * Created by jiangchuan on 1/25/15.
  */
-public class User {
+public class User implements Serializable{
     String name;
     String email;
     String password;
