@@ -11,6 +11,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import info.jiangchuan.wrca.models.Event;
+import info.jiangchuan.wrca.util.SerializeUtil;
 import info.jiangchuan.wrca.util.Utility;
 public class MainActivity extends Activity {
 
@@ -44,7 +45,11 @@ public class MainActivity extends Activity {
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        Utility.saveNotificationList(WillowRidge.getInstance().getNotifications());
+        SerializeUtil.serialize(Constants.FILE_SAVED_NOTIFICATIONS,
+                WillowRidge.getInstance().getNotifications());
+
+        SerializeUtil.serialize(Constants.FILE_SAVED_EVENTS,
+                WillowRidge.getInstance().getSavedEvents());
     }
 
     public TabHost getHost() {
@@ -104,14 +109,10 @@ public class MainActivity extends Activity {
     @Override
     public void onStop() {
         super.onStop();
-        Log.d(TAG, Integer.toString(WillowRidge.getInstance().getSavedEvents().size()));
-        Log.d(TAG, "onStop");
-        Utility.writeSavedEventsToFile( (ArrayList<Event>) WillowRidge.getInstance().getSavedEvents());
     }
 
     @Override
     public void onStart() {
-        Log.d(TAG, "onStart");
         super.onStart();
       //  Log.d(TAG, Integer.toString(WRCAApplication.getInstance().getSavedEvents().size()));
     }

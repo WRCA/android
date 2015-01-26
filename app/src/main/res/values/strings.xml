@@ -43,8 +43,12 @@
 
     <string-array name="member_category">
         <item name="President">Board of Directors</item>
-        <item name="President">Wind in the Willows</item>
-        <item name="President">Committees and Activity Chairpersons</item>
-        <item name="President">Members</item>
+        <item name="Wind">Wind in the Willows</item>
+        <item name="Committees">Committees and Activity Chairpersons</item>
+        <item name="Members">Members</item>
+    </string-array>
+
+    <string-array name="delete">
+        <item name="delete">delete </item>
     </string-array>
 </resources>

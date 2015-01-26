@@ -78,43 +78,13 @@ public class Utility {
         SharedPreferences.Editor editor = pref.edit();
         editor.putBoolean(Constants.string_auto_Login, b);
     }
-    public static void saveNotificationList(List<Notification> list) {
-        try {
-            File traceFile = new File((WillowRidge.getInstance()).getExternalFilesDir(null), "TraceFile.txt");
-            if (!traceFile.exists()) {
-                traceFile.createNewFile();
+
+    public static boolean containsEvent(List<Event> list, Event event) {
+        for (Event e:list) {
+            if (e.getTitle().compareTo(event.getTitle()) == 0) {
+                return true;
             }
-
-            PrintWriter writer = new PrintWriter(traceFile);
-            writer.print("");
-            writer.close();
-
-            FileOutputStream fos= new FileOutputStream(traceFile);
-            ObjectOutputStream oos= new ObjectOutputStream(fos);
-            oos.writeObject(list);
-            oos.close();
-            fos.close();
-        } catch (Exception e) {
-
-            Log.d(TAG, e.toString());
         }
-    }
-
-    public static List<Notification> readNotificationList() {
-        try {
-            File traceFile = new File((WillowRidge.getInstance()).getExternalFilesDir(null), "TraceFile.txt");
-            if (!traceFile.exists()) {
-                return null;
-            }
-            FileInputStream fis = new FileInputStream(traceFile);
-            ObjectInputStream ois = new ObjectInputStream(fis);
-            List<Notification> list = (ArrayList) ois.readObject();
-            ois.close();
-            fis.close();
-            return list;
-        } catch (Exception e) {
-            return null;
-        }
-
+        return false;
     }
 }

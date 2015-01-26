@@ -9,4 +9,8 @@ public class Constants {
     public static final String string_saved_events = "saved_events";
     public static final String string_saved_file = "saved_file";
     public static final String string_notifications = "pref_notifications";
+
+    public static final String FILE_SAVED_EVENTS = "saved_events";
+    public static final String FILE_SAVED_NOTIFICATIONS = "saved_notifications";
+
 }

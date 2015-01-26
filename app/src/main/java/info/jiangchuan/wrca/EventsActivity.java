@@ -50,6 +50,11 @@ public class EventsActivity extends ActionBarActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_events);
         mActivity = this;
+        setupListview();
+        getSupportActionBar().setTitle("All Events");
+    }
+
+    void setupListview() {
         listView = (ListView) findViewById(R.id.list);
 
         adapter = new EventAdapter(this, eventsList);
@@ -86,8 +91,6 @@ public class EventsActivity extends ActionBarActivity {
                 startActivity(intent);
             }
         });
-
-        getSupportActionBar().setTitle("All Events");
     }
 
     @Override

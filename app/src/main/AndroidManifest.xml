@@ -54,6 +54,7 @@
             android:name=".EventsActivity"
             android:label="EventsActivity" />
         <activity
+            android:parentActivityName=".EventsActivity"
             android:name=".EventDetailActivity"
             android:label="@string/title_activity_event_detail" >
         </activity>
@@ -66,6 +67,7 @@
             android:label="@string/title_activity_event_description" >
         </activity>
         <activity
+            android:parentActivityName=".EventsActivity"
             android:name=".SavedEventsActivity"
             android:label="@string/title_activity_saved_events" >
         </activity>
@@ -87,7 +89,8 @@
         </activity>
         <activity
             android:name=".NearbyResultActivity"
-            android:label="@string/title_activity_nearby_result" >
+            android:label="@string/title_activity_nearby_result"
+            android:parentActivityName=".NearbyActivity" >
         </activity>
         <activity
             android:name=".PushNotificationActivity"

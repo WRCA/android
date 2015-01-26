@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical"
-    android:background="@color/feed_item_notification_bg"
     android:padding="@dimen/text_padding_size"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
@@ -11,7 +10,6 @@
     android:padding="@dimen/text_padding_size"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
-    android:textColor="@color/color_white"
     />
 
     <TextView
@@ -20,6 +18,5 @@
         android:layout_height="wrap_content"
         android:layout_gravity="right"
         android:layout_marginTop="5dip"
-        android:textColor="@color/color_white"
         android:textSize="@dimen/rating" />
 </LinearLayout>

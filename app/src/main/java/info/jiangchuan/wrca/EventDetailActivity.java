@@ -17,7 +17,11 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.ImageLoader.ImageContainer;
 import com.android.volley.toolbox.ImageLoader.ImageListener;
 
+import java.util.List;
+
 import info.jiangchuan.wrca.models.Event;
+import info.jiangchuan.wrca.util.ToastUtil;
+import info.jiangchuan.wrca.util.Utility;
 
 public class EventDetailActivity extends ActionBarActivity {
 
@@ -97,16 +101,19 @@ public class EventDetailActivity extends ActionBarActivity {
         // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
 
-        //noinspection SimplifiableIfStatement
-        if (id == android.R.id.home) {
-            finish();
-            return true;
-        } else if (id == R.id.action_save) {
-            Event event = (Event)getIntent().getSerializableExtra("event");
-            WillowRidge.getInstance().getSavedEvents().add(event);
-            Toast toast = Toast.makeText(this, "event save", Toast.LENGTH_SHORT);
-            toast.show();
+        switch (id) {
+            case R.id.action_save: {
+                List<Event> list = WillowRidge.getInstance().getSavedEvents();
+                Event event = (Event)getIntent().getSerializableExtra("event");
+                if (Utility.containsEvent(list, event)) {
+                    ToastUtil.showToastMessage(this, "event already saved");
+                    return true;
+                }
 
+                list.add(event);
+                ToastUtil.showToastMessage(this, "event saved");
+                return true;
+            }
         }
 
         return super.onOptionsItemSelected(item);

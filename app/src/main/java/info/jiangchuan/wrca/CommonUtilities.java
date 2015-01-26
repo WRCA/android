@@ -14,7 +14,7 @@ public class CommonUtilities {
     /**
      * Tag used on log messages.
      */
-    public static final String TAG = "AndroidHive GCM";
+    public static final String TAG = "WRCA GCM";
 
     public static final String DISPLAY_MESSAGE_ACTION =
             "com.jiangchuan.pushnotifications.DISPLAY_MESSAGE";

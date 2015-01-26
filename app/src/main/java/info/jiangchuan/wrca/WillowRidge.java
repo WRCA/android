@@ -11,6 +11,8 @@ import java.util.List;
 
 import info.jiangchuan.wrca.models.Event;
 import info.jiangchuan.wrca.models.Notification;
+import info.jiangchuan.wrca.util.SerializeUtil;
+import info.jiangchuan.wrca.util.Utility;
 
 /**
  * Created by jiangchuan on 1/3/15.
@@ -21,7 +23,7 @@ public class WillowRidge extends Application{
     private RequestQueue mRequestQueue;
     private ImageLoader mImageLoader;
     private LruBitmapCache mLruBitmapCache;
-    private List<Event> mSavedEvents;
+    private List<Event> events;
     private List<Notification> notifications = new ArrayList<Notification>();
 
     public List<Notification> getNotifications() {
@@ -32,8 +34,21 @@ public class WillowRidge extends Application{
     public void onCreate() {
         super.onCreate();
         mInstance = this;
+
+
     }
 
+    void loadPersistentDate() {
+        List<Notification> tmp = (ArrayList<Notification>)SerializeUtil.deSerialize(Constants.FILE_SAVED_NOTIFICATIONS);
+        if (tmp != null) {
+            notifications.addAll(tmp);
+        }
+
+        List<Event> tmp2 = (ArrayList<Event>)SerializeUtil.deSerialize(Constants.FILE_SAVED_EVENTS);
+        if (tmp2 != null) {
+           events.addAll(tmp2);
+        }
+    }
     public static synchronized WillowRidge getInstance() {
         return mInstance;
     }
@@ -64,9 +79,9 @@ public class WillowRidge extends Application{
     }
 
     public List<Event> getSavedEvents() {
-        if (mSavedEvents == null) {
-            mSavedEvents = new ArrayList<Event>();
+        if (events == null) {
+            events = new ArrayList<Event>();
         }
-        return mSavedEvents;
+        return events;
     }
 }
