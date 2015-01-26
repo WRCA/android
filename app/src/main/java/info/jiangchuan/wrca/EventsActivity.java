@@ -4,47 +4,57 @@ package info.jiangchuan.wrca;
  * Created by jiangchuan on 1/3/15.
  */
 
-import android.os.Bundle;
-import android.view.View;
-
-import android.widget.AdapterView;
-import android.widget.ListView;
 import android.content.Intent;
+import android.os.Bundle;
+import android.support.v7.app.ActionBarActivity;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
-
-import java.util.List;
-import java.util.ArrayList;
+import android.view.View;
+import android.widget.AbsListView;
+import android.widget.AdapterView;
+import android.widget.ListView;
 
 import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.VolleyLog;
 import com.android.volley.toolbox.JsonObjectRequest;
+import com.google.gson.JsonArray;
+import com.google.gson.JsonObject;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import android.util.Log;
-import android.support.v7.app.ActionBarActivity;
-
-import android.widget.AbsListView;
+import java.util.ArrayList;
+import java.util.List;
 
 import info.jiangchuan.wrca.adapters.EventAdapter;
 import info.jiangchuan.wrca.models.Event;
+import info.jiangchuan.wrca.models.Result;
+import info.jiangchuan.wrca.models.User;
+import info.jiangchuan.wrca.parsers.EventParser;
+import info.jiangchuan.wrca.parsers.ResultParser;
+import info.jiangchuan.wrca.rest.Client;
+import info.jiangchuan.wrca.util.ToastUtil;
+import retrofit.Callback;
+import retrofit.RetrofitError;
 
 public class EventsActivity extends ActionBarActivity {
 
     private static final String TAG = "EventsActivity";
-    private List<Event> eventsList = new ArrayList<Event>();
+    private List<Event> events = new ArrayList<Event>();
     private ListView listView;
     private EventAdapter adapter;
     private EventsActivity mActivity;
 
     private int lastItem = 0;
+    private boolean isloading = false;
+    private String range = "all";
 
-    private boolean loading = false;
+    final int limit = 6;
+    int offset = 1;
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -52,16 +62,18 @@ public class EventsActivity extends ActionBarActivity {
         mActivity = this;
         setupListview();
         getSupportActionBar().setTitle("All Events");
+
+        range = "all";
+
     }
 
     void setupListview() {
         listView = (ListView) findViewById(R.id.list);
 
-        adapter = new EventAdapter(this, eventsList);
+        adapter = new EventAdapter(this, events);
         listView.setAdapter(adapter);
 
         String url = "http://jiangchuan.info/php/index.php?object=events&type=all&offset=" + Integer.toString(lastItem+1);
-        getEventsFromURL(url);
         listView.setOnScrollListener(new ListView.OnScrollListener() {
             @Override
             public void onScrollStateChanged(AbsListView view,
@@ -75,9 +87,9 @@ public class EventsActivity extends ActionBarActivity {
 
                 // threshold being indicator if bottom of list is hit
 
-                if (loading == false && firstVisibleItem == totalItemCount-5) {
-                    loading = true;
-                    pullMoreData();
+                if (isloading == false && firstVisibleItem == -5) {
+                    isloading = true;
+                    onLoadMore();
                 }
             }
         });
@@ -87,10 +99,12 @@ public class EventsActivity extends ActionBarActivity {
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 //Toast.makeText(this, item + " selected", Toast.LENGTH_LONG).show();
                 Intent intent = new Intent(mActivity, EventDetailActivity.class);
-                intent.putExtra("event", eventsList.get(position));
+                intent.putExtra("event", events.get(position));
                 startActivity(intent);
             }
         });
+
+        refresh();
     }
 
     @Override
@@ -121,16 +135,17 @@ public class EventsActivity extends ActionBarActivity {
             }
             case R.id.item_this_week:
                 listView.setOnScrollListener(null);
-                onEventsThisWeek();
+               // onEventsThisWeek();
                 getSupportActionBar().setTitle("This Week");
                 break;
             case R.id.item_this_month:
                 listView.setOnScrollListener(null);
-                onEventsThisMonth();
+                //onEventsThisMonth();
                 getSupportActionBar().setTitle("This Month");
                 break;
             case R.id.item_all:
-                onEventsAll();
+                range = "all";
+                refresh();
                 getSupportActionBar().setTitle("All Events");
                 break;
             case R.id.action_settings: {
@@ -144,22 +159,22 @@ public class EventsActivity extends ActionBarActivity {
         return super.onOptionsItemSelected(item);
     }
     private void onEventsThisWeek() {
-        eventsList.clear();
-        adapter = new EventAdapter(this, eventsList);
+        events.clear();
+        adapter = new EventAdapter(this, events);
         listView.setAdapter(adapter);
         String url = "http://jiangchuan.info/php/index.php?object=events&type=week";
         getEventsFromURL(url);
     }
     private void onEventsThisMonth() {
-        eventsList.clear();
-        adapter = new EventAdapter(this, eventsList);
+        events.clear();
+        adapter = new EventAdapter(this, events);
         listView.setAdapter(adapter);
         String url = "http://jiangchuan.info/php/index.php?object=events&type=month";
         getEventsFromURL(url);
     }
     private void onEventsAll() {
-        eventsList.clear();
-        adapter = new EventAdapter(this, eventsList);
+        events.clear();
+        adapter = new EventAdapter(this, events);
         listView.setAdapter(adapter);
         lastItem = 0;
         String url = "http://jiangchuan.info/php/index.php?object=events&type=all&offset=" + Integer.toString(lastItem+1);
@@ -177,9 +192,9 @@ public class EventsActivity extends ActionBarActivity {
 
                 // threshold being indicator if bottom of list is hit
 
-                if (loading == false && firstVisibleItem == totalItemCount-5) {
-                    loading = true;
-                    pullMoreData();
+                if (isloading == false && firstVisibleItem == totalItemCount-5) {
+                    isloading = true;
+                    onLoadMore();
                 }
             }
         });
@@ -189,17 +204,58 @@ public class EventsActivity extends ActionBarActivity {
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 //Toast.makeText(this, item + " selected", Toast.LENGTH_LONG).show();
                 Intent intent = new Intent(mActivity, EventDetailActivity.class);
-                intent.putExtra("event", eventsList.get(position));
+                intent.putExtra("event", events.get(position));
                 startActivity(intent);
             }
         });
     }
-    private void pullMoreData() {
+    private void onLoadMore() {
         // Creating volley request obj
-        String url = "http://jiangchuan.info/php/index.php?object=events&type=all&offset=" + Integer.toString(lastItem + 1);
-        Log.d(TAG, "pull more data");
-        getEventsFromURL(url);
-        // Adding request to request queue
+       // String url = "http://jiangchuan.info/php/index.php?object=events&type=all&offset=" + Integer.toString(lastItem + 1);
+       // getEventsFromURL(url);
+        User user = WillowRidge.getInstance().getUser();
+        if (user.getToken() == null || range == null) {
+            Log.e(TAG, "param cannot be null");
+            return;
+        }
+        Client.getApi().events(user.getToken(), range, Integer.toString(offset), Integer.toString(limit), new Callback<JsonObject>() {
+            @Override
+            public void success(JsonObject jsonObject, retrofit.client.Response response) {
+                Log.d(TAG, jsonObject.get(EventParser.EVENTS).getAsJsonArray().toString());
+                Result result = ResultParser.parse(jsonObject);
+                switch (result.getStatus()) {
+                    case 200: {
+                        try {
+                            //JSONArray array = jsonObject.get(EventParser.EVENTS).getAsJsonArray();
+                            JsonArray jsonArray = jsonObject.get(EventParser.EVENTS).getAsJsonArray();
+                            events.addAll(EventParser.parse(jsonArray));
+                            int list_count = jsonObject.get(EventParser.LIST_COUNT).getAsInt();
+                            Log.d(TAG, Integer.toString(list_count));
+                            if (offset + limit > list_count) {
+                                listView.setOnScrollListener(null); // no more data, close
+                            }
+                            offset = offset + limit;
+                            adapter.notifyDataSetChanged();
+                            isloading = false;
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                        break;
+                    }
+                    default: {
+                        listView.setOnScrollListener(null);
+                        ToastUtil.showToastMessage(mActivity, jsonObject.toString());
+                        break;
+                    }
+                }
+            }
+
+            @Override
+            public void failure(RetrofitError error) {
+                listView.setOnScrollListener(null);
+                Log.e(TAG, error.toString());
+            }
+        });
     }
 
    void getEventsFromURL(String url) {
@@ -228,7 +284,7 @@ public class EventsActivity extends ActionBarActivity {
                                movie.setTime(obj.getString("time"));
 
                                // adding movie to movies array
-                               eventsList.add(movie);
+                               events.add(movie);
 
                            }
 
@@ -236,7 +292,7 @@ public class EventsActivity extends ActionBarActivity {
                            e.printStackTrace();
                        }
                        adapter.notifyDataSetChanged();
-                       loading = false;
+                       isloading = false;
                    }
                }, new Response.ErrorListener() {
            @Override
@@ -252,5 +308,9 @@ public class EventsActivity extends ActionBarActivity {
     public void onStop() {
         super.onStop();
         Log.d(TAG, "onStop");
+    }
+
+    private void refresh() {
+      onLoadMore();
     }
 }

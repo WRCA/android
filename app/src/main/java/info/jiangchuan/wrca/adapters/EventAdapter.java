@@ -30,7 +30,9 @@ public class EventAdapter extends BaseAdapter{
     public EventAdapter(Activity activity, List<Event> eventItems) {
         this.activity = activity;
         this.eventItems = eventItems;
+        this.inflater = (LayoutInflater) activity.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
     }
+
 
     @Override
     public int getCount() {
@@ -49,38 +51,49 @@ public class EventAdapter extends BaseAdapter{
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
+        ViewHolder viewHolder;
+        Event m = eventItems.get(position);
 
-        if (inflater == null)
-            inflater = (LayoutInflater) activity
-                    .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        if (convertView == null)
+        if (convertView == null) {
             convertView = inflater.inflate(R.layout.list_row_event, null);
 
-        if (imageLoader == null)
-            imageLoader = WillowRidge.getInstance().getImageLoader();
+            viewHolder = new ViewHolder();
+
+            viewHolder.title = (TextView) convertView.findViewById(R.id.title);
+            viewHolder.time = (TextView) convertView.findViewById(R.id.time);
+            viewHolder.address = (TextView) convertView.findViewById(R.id.address);
+
+            if (imageLoader == null)
+                imageLoader = WillowRidge.getInstance().getImageLoader();
+
+            viewHolder.image = (NetworkImageView) convertView
+                    .findViewById(R.id.thumbnail);
+            viewHolder.image.setImageUrl(m.getThumbnailUrl(), imageLoader);
+
+            convertView.setTag(viewHolder);
+        } else {
+            viewHolder = (ViewHolder) convertView.getTag();
+        }
+
 
         NetworkImageView thumbNail = (NetworkImageView) convertView
                 .findViewById(R.id.thumbnail);
-        TextView title = (TextView) convertView.findViewById(R.id.title);
-        TextView rating = (TextView) convertView.findViewById(R.id.address);
-        TextView time = (TextView) convertView.findViewById(R.id.time);
-        TextView year = (TextView) convertView.findViewById(R.id.releaseYear);
-
-        // getting movie data for the row
-        Event m = eventItems.get(position);
-
-        // thumbnail image
-        thumbNail.setImageUrl(m.getThumbnailUrl(), imageLoader);
 
         // title
-        title.setText(m.getTitle());
+        viewHolder.title.setText(m.getTitle());
 
-        // rating
-        rating.setText("Location: " + String.valueOf(m.getLocation()));
+        // address
+        viewHolder.address.setText("Location: " + String.valueOf(m.getLocation()));
 
         // time
-        time.setText(m.getTime());
+        viewHolder.time.setText(m.getTime());
 
         return convertView;
+    }
+    static class ViewHolder {
+        NetworkImageView image;
+        TextView title;
+        TextView address;
+        TextView time;
     }
 }

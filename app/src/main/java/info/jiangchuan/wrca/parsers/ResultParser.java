@@ -12,7 +12,7 @@ public class ResultParser {
     public static final String RESULT_MESSAGE = "message";
 
     public static Result parse(JsonObject jsonObject) {
-        return new Result( Integer.valueOf( jsonObject.get(RESULT_STATUS).toString()), // status
-                       jsonObject.get(RESULT_MESSAGE).toString()); // message
+        return new Result( Integer.valueOf( jsonObject.get(RESULT_STATUS).getAsString()), // status
+                       jsonObject.get(RESULT_MESSAGE).getAsString()); // message
     }
 }

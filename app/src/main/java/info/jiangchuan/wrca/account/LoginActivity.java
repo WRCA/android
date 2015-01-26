@@ -115,7 +115,7 @@ public class LoginActivity extends ActionBarActivity {
                 Result result = ResultParser.parse(jsonObject);
                 switch (result.getStatus()) {
                     case 200: {
-                        String token = jsonObject.get(Constant.AUTH_TOKEN).toString();
+                        String token = jsonObject.get(Constant.AUTH_TOKEN).getAsString();
                         Utility.writeStringSharedPreferences(Constant.AUTH_TOKEN, token);
                         Intent intent = new Intent(mActivity, MainActivity.class);
                         User user = WillowRidge.getInstance().getUser();
