@@ -18,7 +18,7 @@ import org.json.JSONObject;
 import java.util.HashMap;
 import java.util.Map;
 
-import info.jiangchuan.wrca.CustomRequest;
+import info.jiangchuan.wrca.volley.CustomRequest;
 import info.jiangchuan.wrca.R;
 import info.jiangchuan.wrca.WillowRidge;
 import info.jiangchuan.wrca.util.ToastUtil;

@@ -51,4 +51,7 @@
     <string-array name="delete">
         <item name="delete">delete </item>
     </string-array>
+
+    <!-- gcm -->
+    <string name="gcm_title">willow ridge serivce</string>
 </resources>

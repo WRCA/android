@@ -1,4 +1,4 @@
-package info.jiangchuan.wrca;
+package info.jiangchuan.wrca.gcm;
 
 import java.io.IOException;
 import java.io.OutputStream;
@@ -11,14 +11,16 @@ import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Random;
 
-import static info.jiangchuan.wrca.CommonUtilities.SERVER_URL;
-import static info.jiangchuan.wrca.CommonUtilities.TAG;
-import static info.jiangchuan.wrca.CommonUtilities.displayMessage;
+import static info.jiangchuan.wrca.gcm.CommonUtilities.SERVER_URL;
+import static info.jiangchuan.wrca.gcm.CommonUtilities.TAG;
 
 import android.content.Context;
 import android.util.Log;
 
 import com.google.android.gcm.GCMRegistrar;
+
+import info.jiangchuan.wrca.R;
+import info.jiangchuan.wrca.gcm.CommonUtilities;
 
 /**
  * Created by jiangchuan on 1/24/15.
@@ -78,7 +80,7 @@ public class ServerUtilities {
     /**
      * Unregister this account/device pair within the server.
      */
-    static void unregister(final Context context, final String regId) {
+    public static void unregister(final Context context, final String regId) {
         Log.i(TAG, "unregistering device (regId = " + regId + ")");
         String serverUrl = SERVER_URL + "/unregister";
         Map<String, String> params = new HashMap<String, String>();

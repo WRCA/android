@@ -4,22 +4,18 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
 import android.util.Log;
-import android.widget.Toast;
 
-import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
-import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.List;
 
-import info.jiangchuan.wrca.Constants;
+import info.jiangchuan.wrca.Constant;
 import info.jiangchuan.wrca.WillowRidge;
 import info.jiangchuan.wrca.models.Event;
-import info.jiangchuan.wrca.models.Notification;
 
 /**
  * Created by jiangchuan on 1/3/15.
@@ -29,7 +25,7 @@ public class Utility {
 
     public static void writeSavedEventsToFile(ArrayList<Event> list) {
         try {
-            FileOutputStream fos = WillowRidge.getInstance().openFileOutput(Constants.string_saved_file, Context.MODE_PRIVATE);
+            FileOutputStream fos = WillowRidge.getInstance().openFileOutput(Constant.string_saved_file, Context.MODE_PRIVATE);
             ObjectOutputStream oos = new ObjectOutputStream(fos);
             oos.writeObject(list);
             fos.close();
@@ -41,7 +37,7 @@ public class Utility {
 
     public static List<Event> readSavedEventsFromFile() {
         try {
-            FileInputStream fis = WillowRidge.getInstance().openFileInput(Constants.string_saved_file);
+            FileInputStream fis = WillowRidge.getInstance().openFileInput(Constant.string_saved_file);
             ObjectInputStream ois = new ObjectInputStream(fis);
             List<Event> list = (List<Event>)ois.readObject();
             fis.close();
@@ -76,7 +72,7 @@ public class Utility {
         Context context = WillowRidge.getInstance();
         SharedPreferences pref = PreferenceManager.getDefaultSharedPreferences(context);
         SharedPreferences.Editor editor = pref.edit();
-        editor.putBoolean(Constants.string_auto_Login, b);
+        editor.putBoolean(Constant.string_auto_Login, b);
     }
 
     public static boolean containsEvent(List<Event> list, Event event) {

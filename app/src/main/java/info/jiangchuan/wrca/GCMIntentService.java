@@ -9,14 +9,22 @@ import android.util.Log;
 
 import com.google.android.gcm.GCMBaseIntentService;
 
+import info.jiangchuan.wrca.MainActivity;
+import info.jiangchuan.wrca.R;
+import info.jiangchuan.wrca.WillowRidge;
+import info.jiangchuan.wrca.gcm.ServerUtilities;
 import info.jiangchuan.wrca.util.TimeUtil;
 
-import static info.jiangchuan.wrca.CommonUtilities.SENDER_ID;
-import static info.jiangchuan.wrca.CommonUtilities.displayMessage;
+import static info.jiangchuan.wrca.gcm.CommonUtilities.SENDER_ID;
+import static info.jiangchuan.wrca.gcm.CommonUtilities.displayMessage;
 
 
 /**
  * Created by jiangchuan on 1/24/15.
+ */
+
+/*
+ * note: this class must be put in root package!!!
  */
 public class GCMIntentService extends GCMBaseIntentService{
     private static final String TAG = "GCMIntentService";
@@ -101,9 +109,10 @@ public class GCMIntentService extends GCMBaseIntentService{
                 context.getSystemService(Context.NOTIFICATION_SERVICE);
         Notification notification = new Notification(icon, message, when);
 
-        String title = context.getString(R.string.app_name);
+        String title = context.getString(R.string.gcm_title);
 
         Intent notificationIntent = new Intent(context, MainActivity.class);
+
         // set intent so it does not start a new activity
         notificationIntent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP |
                 Intent.FLAG_ACTIVITY_SINGLE_TOP);

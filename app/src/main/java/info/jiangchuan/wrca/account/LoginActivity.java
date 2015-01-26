@@ -1,13 +1,6 @@
 package info.jiangchuan.wrca.account;
 
-import static info.jiangchuan.wrca.CommonUtilities.DISPLAY_MESSAGE_ACTION;
-import static info.jiangchuan.wrca.CommonUtilities.EXTRA_MESSAGE;
-import static info.jiangchuan.wrca.CommonUtilities.*;
-
-import android.content.BroadcastReceiver;
-import android.content.Context;
 import android.content.Intent;
-import android.content.IntentFilter;
 import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -17,29 +10,29 @@ import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.android.volley.Request;
-import com.android.volley.Response;
-import com.android.volley.VolleyError;
-import com.google.android.gcm.GCMRegistrar;
-
-import org.json.JSONException;
-import org.json.JSONObject;
+import com.google.gson.JsonObject;
 
 import java.util.HashMap;
 import java.util.Map;
 
-import info.jiangchuan.wrca.AlertDialogManager;
-import info.jiangchuan.wrca.ConnectionDetector;
-import info.jiangchuan.wrca.Constants;
-import info.jiangchuan.wrca.CustomRequest;
+import info.jiangchuan.wrca.Constant;
 import info.jiangchuan.wrca.MainActivity;
 import info.jiangchuan.wrca.R;
-import info.jiangchuan.wrca.ServerUtilities;
-import info.jiangchuan.wrca.WakeLocker;
 import info.jiangchuan.wrca.WillowRidge;
+import info.jiangchuan.wrca.gcm.AlertDialogManager;
+import info.jiangchuan.wrca.gcm.ConnectionDetector;
+import info.jiangchuan.wrca.gcm.GCMService;
+import info.jiangchuan.wrca.models.Result;
+import info.jiangchuan.wrca.models.User;
+import info.jiangchuan.wrca.parsers.ResultParser;
+import info.jiangchuan.wrca.rest.Client;
+import info.jiangchuan.wrca.util.NetworkUtil;
 import info.jiangchuan.wrca.util.ToastUtil;
 import info.jiangchuan.wrca.util.Utility;
+import retrofit.Callback;
+import retrofit.RetrofitError;
 
+import com.google.android.gcm.GCMRegistrar;
 
 public class LoginActivity extends ActionBarActivity {
 
@@ -49,6 +42,8 @@ public class LoginActivity extends ActionBarActivity {
 
     public static String name;
     public static String email;
+
+    GCMService gcmService;
 
     // Asyntask
     AsyncTask<Void, Void, Void> mRegisterTask;
@@ -61,14 +56,15 @@ public class LoginActivity extends ActionBarActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        gcmService = new GCMService(this);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
         mActivity = this;
 
-        if (!hasInternet()) {
+        if (!NetworkUtil.hasInternet(this)) {
             finish();
         }
-        if (!isGCMConfigSet()) {
+        if (!gcmService.isGCMConfigSet()) {
             finish();
         }
 
@@ -77,12 +73,9 @@ public class LoginActivity extends ActionBarActivity {
     @Override
     public void onStart() {
         super.onStart();
-        String token = Utility.readStringSharedPreferences(Constants.string_token);
-        boolean autoLogin = Utility.readBooleanSharedPreferences(Constants.string_auto_Login);
-        boolean hasNotifications = Utility.readBooleanSharedPreferences(Constants.string_notifications);
-        if (!hasNotifications) {
-            GCMRegistrar.unregister(this);
-        }
+        String token = Utility.readStringSharedPreferences(Constant.AUTH_TOKEN);
+        boolean autoLogin = Utility.readBooleanSharedPreferences(Constant.string_auto_Login);
+        boolean hasNotifications = Utility.readBooleanSharedPreferences(Constant.string_notifications);
         if (autoLogin == true && token != "") {
             // start MainActivity
             Intent intent = new Intent(mActivity, MainActivity.class);
@@ -113,51 +106,40 @@ public class LoginActivity extends ActionBarActivity {
             ToastUtil.showToastMessage(this, "field cannot be empty", Toast.LENGTH_SHORT);
             return;
         }
-
-        String requestURL = "http://jiangchuan.info/php/index.php";
         Map<String, String> map = new HashMap<String, String>();
-        map.put("object", "login");
         map.put("email", strEmail);
         map.put("password", strPassword);
-        CustomRequest request = new CustomRequest(Request.Method.POST, requestURL, map,
-                new Response.Listener<JSONObject>() {
-
-                    @Override
-                    public void onResponse(JSONObject response) {
-                        try {
-                            int result = response.getInt("success");
-                            if (result == 0) {
-                                ToastUtil.showToastMessage(mActivity, response.get("message").toString(), Toast.LENGTH_LONG);
-                            } else if (result == 1) {
-                                Log.d(TAG, response.getString("token"));
-                                Utility.writeStringSharedPreferences(Constants.string_token, response.getString("token"));
-                                Intent intent = new Intent(mActivity, MainActivity.class);
-                                mActivity.email = strEmail;
-                                mActivity.name = "user";
-                                registerGCM();
-                                startActivity(intent);
-                                finish();
-                            } else {
-                                ToastUtil.showToastMessage(mActivity, "result code not recognize", Toast.LENGTH_LONG);
-                            }
-                        } catch (JSONException e) {
-                            Log.e(TAG, "JSONException");
-                            ToastUtil.showToastMessage(mActivity, e.toString(), Toast.LENGTH_LONG);
-                        }
+        Client.getApi().login(map, new Callback<JsonObject>() {
+            @Override
+            public void success(JsonObject jsonObject, retrofit.client.Response response) {
+                String msg = jsonObject.toString();
+                Log.d(TAG, jsonObject.toString());
+                Result result = ResultParser.parse(jsonObject);
+                switch (result.getStatus()) {
+                    case 200: {
+                        String token = jsonObject.get(Constant.AUTH_TOKEN).toString();
+                        Utility.writeStringSharedPreferences(Constant.AUTH_TOKEN, token);
+                        Intent intent = new Intent(mActivity, MainActivity.class);
+                        User user = WillowRidge.getInstance().getUser();
+                        user.setEmail(strEmail);
+                        user.setPassword(strPassword);
+                        user.setToken(token);
+                        gcmService.register(user);
+                        startActivity(intent);
+                        finish();
+                        break;
                     }
-                },
-
-                new Response.ErrorListener() {
-
-                    @Override
-                    public void onErrorResponse(VolleyError error) {
-                        Log.e(TAG, "onErrorResponse");
-                        Toast toast =  Toast.makeText(mActivity, error.toString(), Toast.LENGTH_LONG);
-                        toast.show();
+                    default: {
+                        ToastUtil.showToastMessage(mActivity, result.getMessage());
                     }
-                });
+                }
+            }
 
-        WillowRidge.getInstance().getRequestQueue().add(request);
+            @Override
+            public void failure(RetrofitError error) {
+
+            }
+        });
     }
 
     @Override
@@ -166,119 +148,11 @@ public class LoginActivity extends ActionBarActivity {
         Log.d(TAG, "onPause");
     }
 
-    public boolean hasInternet() {
-        cd = new ConnectionDetector(getApplicationContext());
 
-        // Check if Internet present
-        if (!cd.isConnectingToInternet()) {
-            // Internet Connection is not present
-            alert.showAlertDialog(this,
-                    "Internet Connection Error",
-                    "Please connect to working Internet connection", false);
-            // stop executing code by return
-            return false;
-        }
-        return true;
-    }
-
-    public void registerGCM() {
-        // Make sure the device has the proper dependencies.
-        GCMRegistrar.checkDevice(mActivity);
-
-        // Make sure the manifest was properly set - comment out this line
-        // while developing the app, then uncomment it when it's ready.
-        GCMRegistrar.checkManifest(mActivity);
-
-
-        registerReceiver(mHandleMessageReceiver, new IntentFilter(
-                DISPLAY_MESSAGE_ACTION));
-
-        // Get GCM registration id
-        final String regId = GCMRegistrar.getRegistrationId(mActivity);
-
-        // Check if regid already presents
-        if (regId.equals("")) {
-            // Registration is not present, register now with GCM
-            GCMRegistrar.register(mActivity, SENDER_ID);
-            Log.d("GCM", "register on google");
-        } else {
-            // Device is already registered on GCM
-            if (GCMRegistrar.isRegisteredOnServer(mActivity)) {
-                // Skips registration.
-            } else {
-                // Try to register again, but not in the UI thread.
-                // It's also necessary to cancel the thread onDestroy(),
-                // hence the use of AsyncTask instead of a raw thread.
-                final Context context = mActivity;
-                mRegisterTask = new AsyncTask<Void, Void, Void>() {
-
-                    @Override
-                    protected Void doInBackground(Void... params) {
-                        // Register on our server
-                        // On server creates a new user
-                        Log.d("GCM", "lets register");
-                        ServerUtilities.register(context, name, email, regId);
-                        return null;
-                    }
-
-                    @Override
-                    protected void onPostExecute(Void result) {
-                        mRegisterTask = null;
-                    }
-
-                };
-                mRegisterTask.execute(null, null, null);
-            }
-        }
-    }
-
-    /**
-     * Receiving push messages
-     * */
-    private final BroadcastReceiver mHandleMessageReceiver = new BroadcastReceiver() {
-        @Override
-        public void onReceive(Context context, Intent intent) {
-            String newMessage = intent.getExtras().getString(EXTRA_MESSAGE);
-            // Waking up mobile if it is sleeping
-            WakeLocker.acquire(getApplicationContext());
-
-            /**
-             * Take appropriate action on this message
-             * depending upon your app requirement
-             * For now i am just displaying it on the screen
-             * */
-
-            Toast.makeText(getApplicationContext(), "New Message: " + newMessage, Toast.LENGTH_LONG).show();
-
-            // Releasing wake lock
-            WakeLocker.release();
-        }
-    };
 
     @Override
     protected void onDestroy() {
-        if (mRegisterTask != null) {
-            mRegisterTask.cancel(true);
-        }
-        try {
-            unregisterReceiver(mHandleMessageReceiver);
-            GCMRegistrar.onDestroy(this);
-        } catch (Exception e) {
-            Log.e("UnRegister Receiver Error", "> " + e.getMessage());
-        }
         super.onDestroy();
     }
 
-    private boolean isGCMConfigSet() {
-        // Check if GCM configuration is set
-        if (SERVER_URL == null || SENDER_ID == null || SERVER_URL.length() == 0
-                || SENDER_ID.length() == 0) {
-            // GCM sernder id / server url is missing
-            alert.showAlertDialog(this, "Configuration Error!",
-                    "Please set your Server URL and GCM Sender ID", false);
-            // stop executing code by return
-            return false;
-        }
-        return true;
-    }
 }

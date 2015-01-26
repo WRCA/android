@@ -1,4 +1,4 @@
-package info.jiangchuan.wrca;
+package info.jiangchuan.wrca.gcm;
 
 import android.content.Context;
 import android.content.Intent;

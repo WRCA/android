@@ -7,7 +7,6 @@ import android.os.Bundle;
 import android.util.Log;
 import android.widget.TabHost;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import info.jiangchuan.wrca.models.Event;
@@ -45,10 +44,10 @@ public class MainActivity extends Activity {
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        SerializeUtil.serialize(Constants.FILE_SAVED_NOTIFICATIONS,
+        SerializeUtil.serialize(Constant.FILE_SAVED_NOTIFICATIONS,
                 WillowRidge.getInstance().getNotifications());
 
-        SerializeUtil.serialize(Constants.FILE_SAVED_EVENTS,
+        SerializeUtil.serialize(Constant.FILE_SAVED_EVENTS,
                 WillowRidge.getInstance().getSavedEvents());
     }
 

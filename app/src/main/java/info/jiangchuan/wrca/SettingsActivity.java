@@ -3,7 +3,6 @@ package info.jiangchuan.wrca;
 import android.os.Bundle;
 import android.preference.Preference;
 import android.preference.PreferenceActivity;
-import android.view.Window;
 
 import com.google.android.gcm.GCMRegistrar;
 
@@ -38,7 +37,7 @@ public class SettingsActivity extends PreferenceActivity {
     @Override
     protected void onStop() {
         super.onStop();
-        boolean hasNotifications = Utility.readBooleanSharedPreferences(Constants.string_notifications);
+        boolean hasNotifications = Utility.readBooleanSharedPreferences(Constant.string_notifications);
         if (!hasNotifications) {
             GCMRegistrar.unregister(this);
         }
