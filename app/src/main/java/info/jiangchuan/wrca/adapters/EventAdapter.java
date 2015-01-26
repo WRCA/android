@@ -31,6 +31,7 @@ public class EventAdapter extends BaseAdapter{
         this.activity = activity;
         this.eventItems = eventItems;
         this.inflater = (LayoutInflater) activity.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        imageLoader = WillowRidge.getInstance().getImageLoader();
     }
 
 
@@ -62,22 +63,13 @@ public class EventAdapter extends BaseAdapter{
             viewHolder.title = (TextView) convertView.findViewById(R.id.title);
             viewHolder.time = (TextView) convertView.findViewById(R.id.time);
             viewHolder.address = (TextView) convertView.findViewById(R.id.address);
-
-            if (imageLoader == null)
-                imageLoader = WillowRidge.getInstance().getImageLoader();
-
             viewHolder.image = (NetworkImageView) convertView
                     .findViewById(R.id.thumbnail);
-            viewHolder.image.setImageUrl(m.getThumbnailUrl(), imageLoader);
 
             convertView.setTag(viewHolder);
         } else {
             viewHolder = (ViewHolder) convertView.getTag();
         }
-
-
-        NetworkImageView thumbNail = (NetworkImageView) convertView
-                .findViewById(R.id.thumbnail);
 
         // title
         viewHolder.title.setText(m.getTitle());
@@ -88,6 +80,8 @@ public class EventAdapter extends BaseAdapter{
         // time
         viewHolder.time.setText(m.getTime());
 
+        // image
+        viewHolder.image.setImageUrl(m.getThumbnailUrl(), imageLoader);
         return convertView;
     }
     static class ViewHolder {

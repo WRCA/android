@@ -55,6 +55,9 @@ public class EventsActivity extends ActionBarActivity {
 
     final int limit = 6;
     int offset = 1;
+
+    private ListView.OnScrollListener listener = new Listener();
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -62,9 +65,6 @@ public class EventsActivity extends ActionBarActivity {
         mActivity = this;
         setupListview();
         getSupportActionBar().setTitle("All Events");
-
-        range = "all";
-
     }
 
     void setupListview() {
@@ -74,25 +74,7 @@ public class EventsActivity extends ActionBarActivity {
         listView.setAdapter(adapter);
 
         String url = "http://jiangchuan.info/php/index.php?object=events&type=all&offset=" + Integer.toString(lastItem+1);
-        listView.setOnScrollListener(new ListView.OnScrollListener() {
-            @Override
-            public void onScrollStateChanged(AbsListView view,
-                                             int scrollState) {
-                // Do nothing
-            }
-
-            @Override
-            public void onScroll(AbsListView view, int firstVisibleItem,
-                                 int visibleItemCount, int totalItemCount) {
-
-                // threshold being indicator if bottom of list is hit
-
-                if (isloading == false && firstVisibleItem == -5) {
-                    isloading = true;
-                    onLoadMore();
-                }
-            }
-        });
+        listView.setOnScrollListener(listener);
 
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
@@ -104,6 +86,7 @@ public class EventsActivity extends ActionBarActivity {
             }
         });
 
+        range = "all";
         refresh();
     }
 
@@ -134,18 +117,15 @@ public class EventsActivity extends ActionBarActivity {
                 break;
             }
             case R.id.item_this_week:
-                listView.setOnScrollListener(null);
-               // onEventsThisWeek();
+                onEventsThisWeek();
                 getSupportActionBar().setTitle("This Week");
                 break;
             case R.id.item_this_month:
-                listView.setOnScrollListener(null);
-                //onEventsThisMonth();
+                onEventsThisMonth();
                 getSupportActionBar().setTitle("This Month");
                 break;
             case R.id.item_all:
-                range = "all";
-                refresh();
+                onEventsAll();
                 getSupportActionBar().setTitle("All Events");
                 break;
             case R.id.action_settings: {
@@ -160,54 +140,30 @@ public class EventsActivity extends ActionBarActivity {
     }
     private void onEventsThisWeek() {
         events.clear();
+        offset = 1; // reset
+        listView.setOnScrollListener(listener);
         adapter = new EventAdapter(this, events);
         listView.setAdapter(adapter);
-        String url = "http://jiangchuan.info/php/index.php?object=events&type=week";
-        getEventsFromURL(url);
+        range = "week";
+        refresh();
     }
     private void onEventsThisMonth() {
         events.clear();
+        offset = 1; // reset
+        listView.setOnScrollListener(listener);
         adapter = new EventAdapter(this, events);
         listView.setAdapter(adapter);
-        String url = "http://jiangchuan.info/php/index.php?object=events&type=month";
-        getEventsFromURL(url);
+        range = "month";
+        refresh();
     }
     private void onEventsAll() {
         events.clear();
+        offset = 1; // reset
+        listView.setOnScrollListener(listener);
         adapter = new EventAdapter(this, events);
         listView.setAdapter(adapter);
-        lastItem = 0;
-        String url = "http://jiangchuan.info/php/index.php?object=events&type=all&offset=" + Integer.toString(lastItem+1);
-        getEventsFromURL(url);
-        listView.setOnScrollListener(new ListView.OnScrollListener() {
-            @Override
-            public void onScrollStateChanged(AbsListView view,
-                                             int scrollState) {
-                // Do nothing
-            }
-
-            @Override
-            public void onScroll(AbsListView view, int firstVisibleItem,
-                                 int visibleItemCount, int totalItemCount) {
-
-                // threshold being indicator if bottom of list is hit
-
-                if (isloading == false && firstVisibleItem == totalItemCount-5) {
-                    isloading = true;
-                    onLoadMore();
-                }
-            }
-        });
-
-        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                //Toast.makeText(this, item + " selected", Toast.LENGTH_LONG).show();
-                Intent intent = new Intent(mActivity, EventDetailActivity.class);
-                intent.putExtra("event", events.get(position));
-                startActivity(intent);
-            }
-        });
+        range = "all";
+        refresh();
     }
     private void onLoadMore() {
         // Creating volley request obj
@@ -221,7 +177,6 @@ public class EventsActivity extends ActionBarActivity {
         Client.getApi().events(user.getToken(), range, Integer.toString(offset), Integer.toString(limit), new Callback<JsonObject>() {
             @Override
             public void success(JsonObject jsonObject, retrofit.client.Response response) {
-                Log.d(TAG, jsonObject.get(EventParser.EVENTS).getAsJsonArray().toString());
                 Result result = ResultParser.parse(jsonObject);
                 switch (result.getStatus()) {
                     case 200: {
@@ -233,8 +188,9 @@ public class EventsActivity extends ActionBarActivity {
                             Log.d(TAG, Integer.toString(list_count));
                             if (offset + limit > list_count) {
                                 listView.setOnScrollListener(null); // no more data, close
+                            } else {
+                                offset = offset + limit;
                             }
-                            offset = offset + limit;
                             adapter.notifyDataSetChanged();
                             isloading = false;
                         } catch (JSONException e) {
@@ -258,52 +214,6 @@ public class EventsActivity extends ActionBarActivity {
         });
     }
 
-   void getEventsFromURL(String url) {
-       JsonObjectRequest eventReq = new JsonObjectRequest(Request.Method.GET, url, null,
-               new Response.Listener<JSONObject>() {
-                   @Override
-                   public void onResponse(JSONObject response) {
-                       try {
-                           // Parsing json
-                           int code = response.getInt("success");
-                           if (code == 0) {
-                               listView.setOnScrollListener(null);
-                               Log.d(TAG, "no data left");
-                               return;
-                           }
-                           String json = response.getString("events");
-                           JSONArray arr = new JSONArray(json);
-                           lastItem += arr.length();
-                           for (int i = 0; i < arr.length(); i++) {
-                               JSONObject obj = arr.getJSONObject(i);
-                               Event movie = new Event();
-                               movie.setTitle(obj.getString("title"));
-                               movie.setThumbnailUrl(obj.getString("thumbnail_url"));
-                               movie.setLocation(obj.getString("location"));
-                               movie.setDescription(obj.getString("description"));
-                               movie.setTime(obj.getString("time"));
-
-                               // adding movie to movies array
-                               events.add(movie);
-
-                           }
-
-                       } catch (JSONException e) {
-                           e.printStackTrace();
-                       }
-                       adapter.notifyDataSetChanged();
-                       isloading = false;
-                   }
-               }, new Response.ErrorListener() {
-           @Override
-           public void onErrorResponse(VolleyError error) {
-               VolleyLog.d(TAG, "Error: " + error.getMessage());
-           }
-       });
-       // Adding request to request queue
-       WillowRidge.getInstance().getRequestQueue().add(eventReq);
-   }
-
     @Override
     public void onStop() {
         super.onStop();
@@ -312,5 +222,22 @@ public class EventsActivity extends ActionBarActivity {
 
     private void refresh() {
       onLoadMore();
+    }
+
+    class Listener implements AbsListView.OnScrollListener {
+
+        @Override
+        public void onScrollStateChanged(AbsListView view, int scrollState) {
+
+        }
+
+        @Override
+        public void onScroll(AbsListView view, int firstVisibleItem, int visibleItemCount, int totalItemCount) {
+            // threshold being indicator if bottom of list is hit
+            if (isloading == false && firstVisibleItem == totalItemCount - 5) {
+                isloading = true;
+                onLoadMore();
+            }
+        }
     }
 }
