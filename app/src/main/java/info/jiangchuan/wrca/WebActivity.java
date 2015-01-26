@@ -34,7 +34,7 @@ public class WebActivity extends ActionBarActivity{
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_web);
-        getSupportActionBar().setTitle("WRCA Web");
+        getSupportActionBar().setTitle("WRCA Site");
 
         setupBrowser();
     }
