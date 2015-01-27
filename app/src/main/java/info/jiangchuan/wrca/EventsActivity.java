@@ -4,6 +4,7 @@ package info.jiangchuan.wrca;
  * Created by jiangchuan on 1/3/15.
  */
 
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
@@ -15,17 +16,10 @@ import android.widget.AbsListView;
 import android.widget.AdapterView;
 import android.widget.ListView;
 
-import com.android.volley.Request;
-import com.android.volley.Response;
-import com.android.volley.VolleyError;
-import com.android.volley.VolleyLog;
-import com.android.volley.toolbox.JsonObjectRequest;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 
-import org.json.JSONArray;
 import org.json.JSONException;
-import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -48,6 +42,7 @@ public class EventsActivity extends ActionBarActivity {
     private ListView listView;
     private EventAdapter adapter;
     private EventsActivity mActivity;
+    private ProgressDialog pDialog;
 
     private int lastItem = 0;
     private boolean isloading = false;
@@ -63,8 +58,12 @@ public class EventsActivity extends ActionBarActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_events);
         mActivity = this;
+        pDialog = new ProgressDialog(this);
+
+        showPDialog();
         setupListview();
         getSupportActionBar().setTitle("All Events");
+
     }
 
     void setupListview() {
@@ -199,6 +198,7 @@ public class EventsActivity extends ActionBarActivity {
                             }
                             adapter.notifyDataSetChanged();
                             isloading = false;
+                            hidePDialog();
                         } catch (JSONException e) {
                             e.printStackTrace();
                         }
@@ -216,6 +216,7 @@ public class EventsActivity extends ActionBarActivity {
             public void failure(RetrofitError error) {
                 listView.setOnScrollListener(null);
                 Log.e(TAG, error.toString());
+                hidePDialog();
             }
         });
     }
@@ -245,5 +246,14 @@ public class EventsActivity extends ActionBarActivity {
                 onLoadMore();
             }
         }
+    }
+
+    private void hidePDialog() {
+        pDialog.dismiss();
+    }
+
+    private void showPDialog() {
+        pDialog.setMessage("Loading...");
+        pDialog.show();
     }
 }
