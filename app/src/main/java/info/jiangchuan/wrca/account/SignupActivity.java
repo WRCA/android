@@ -1,8 +1,10 @@
 package info.jiangchuan.wrca.account;
 
+import android.app.Dialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
+import android.text.TextUtils;
 import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -16,10 +18,13 @@ import info.jiangchuan.wrca.Constant;
 import info.jiangchuan.wrca.MainActivity;
 import info.jiangchuan.wrca.R;
 import info.jiangchuan.wrca.WillowRidge;
+import info.jiangchuan.wrca.dialogs.GetVeriCodeDialog;
 import info.jiangchuan.wrca.models.Result;
 import info.jiangchuan.wrca.models.User;
 import info.jiangchuan.wrca.parsers.ResultParser;
 import info.jiangchuan.wrca.rest.Client;
+import info.jiangchuan.wrca.rest.RestConst;
+import info.jiangchuan.wrca.util.NetworkUtil;
 import info.jiangchuan.wrca.util.SharedPrefUtil;
 import info.jiangchuan.wrca.util.ToastUtil;
 import retrofit.Callback;
@@ -30,48 +35,52 @@ public class SignupActivity extends ActionBarActivity {
     private static final String TAG = "SignupActivity";
     private SignupActivity mActivity;
 
+    TextView txtEmail;
+    TextView txtPassword;
+    TextView txtVericode;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_signup);
         mActivity = this;
-        //getActionBar().setDisplayHomeAsUpEnabled(true);
+        txtEmail = (TextView)findViewById(R.id.edit_text_email);
+        txtPassword = (TextView)findViewById(R.id.edit_text_password);
+        txtVericode = (TextView)findViewById(R.id.edit_text_verification_code);
     }
 
     public void onSubmit(View view) {
-        TextView email = (TextView)findViewById(R.id.edit_text_email);
-        TextView password = (TextView)findViewById(R.id.edit_text_password);
-        TextView verificationCode = (TextView)findViewById(R.id.edit_text_verification_code);
-        final String strEmail = email.getText().toString().trim();
-        final String strPassword = password.getText().toString().trim();
-        final String strVerificationCode = verificationCode.getText().toString().trim();
+        final String email = txtEmail.getText().toString().trim();
+        final String password = txtPassword.getText().toString().trim();
+        final String vericode = txtVericode.getText().toString().trim();
 
-        if (strVerificationCode.length() == 0) {
-            ToastUtil.showToast(this, "to get verfication code, press button", Toast.LENGTH_SHORT);
+        if (TextUtils.isEmpty(vericode)) {
+            ToastUtil.showToast(this, "To get verification Code, please click Get Verification Code Button");
             return;
         }
 
-        if (strEmail.length() == 0 || strPassword.length() == 0 || strVerificationCode.length() == 0) {
-            ToastUtil.showToast(this, "field cannot be empty", Toast.LENGTH_SHORT);
+        if (TextUtils.isEmpty(email)
+                || TextUtils.isEmpty(password)
+                || TextUtils.isEmpty(vericode)) {
+            ToastUtil.showToast(this, "field cannot be empty");
             return;
         }
 
         Map<String, String> map = new HashMap<String, String>();
-        map.put("email", strEmail);
-        map.put("password", strPassword);
-        map.put("verificationCode", strVerificationCode);
+        map.put(RestConst.REQ_PARAM_EMAIL, email);
+        map.put(RestConst.REQ_PARAM_PASS, password);
+        map.put(RestConst.REQ_PARAM_VERICODE, vericode);
         Client.getApi().register(map, new Callback<JsonObject>() {
             @Override
             public void success(JsonObject jsonObject, retrofit.client.Response response) {
                Result result = ResultParser.parse(jsonObject);
                switch (response.getStatus()) {
-                   case 200: {
+                   case RestConst.INT_STATUS_200: {
                        String token = jsonObject.get(Constant.STRING_AUTH_TOKEN).toString();
                        SharedPrefUtil.writeString(Constant.STRING_AUTH_TOKEN, token);
                        Intent intent = new Intent(mActivity, MainActivity.class);
                        User user = WillowRidge.getInstance().getUser();
-                       user.setEmail(strEmail);
-                       user.setPassword(strPassword);
+                       user.setEmail(email);
                        user.setToken(token);
                        WillowRidge.getInstance().getGcmService().register(user);
                        startActivity(intent);
@@ -79,7 +88,7 @@ public class SignupActivity extends ActionBarActivity {
                        break;
                    }
                    default: {
-                       ToastUtil.showToast(mActivity, result.getMessage());
+                       ToastUtil.showToast(getApplication(), result.getMessage());
                    }
                }
             }
@@ -91,30 +100,8 @@ public class SignupActivity extends ActionBarActivity {
         });
     }
     public void onGetVerificationCode(View view) {
-        TextView email = (TextView)findViewById(R.id.edit_text_email);
-        final TextView password = (TextView)findViewById(R.id.edit_text_password);
-        final String strEmail = email.getText().toString().trim();
-        if (strEmail.length() == 0) {
-            ToastUtil.showToast(this, "email field cannot be empty", Toast.LENGTH_SHORT);
-            return;
-        }
-        Client.getApi().vericode(strEmail, new Callback<JsonObject>() {
-            @Override
-            public void success(JsonObject jsonObject, retrofit.client.Response response) {
-                Result result = ResultParser.parse(jsonObject);
-                switch (result.getStatus()) {
-                    case 200: {
-                        ToastUtil.showToast(mActivity, result.getMessage());
-                        break;
-                    }
-                }
-            }
-
-            @Override
-            public void failure(RetrofitError error) {
-
-            }
-        });
+        Dialog dialog = new GetVeriCodeDialog(this);
+        dialog.show();
     }
     public void onBack(View view) {
         finish();

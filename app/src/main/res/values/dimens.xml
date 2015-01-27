@@ -36,6 +36,6 @@
 
     <!-- dialog control-->
     <dimen name="button_fix_width"> 150dp </dimen>
-    <dimen name="btton_fix_margin"> 5dp </dimen>
+    <dimen name="button_fix_margin"> 5dp </dimen>
     <dimen name="button_fix_padding">5dp</dimen>
 </resources>

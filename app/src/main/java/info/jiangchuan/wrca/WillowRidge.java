@@ -7,7 +7,6 @@ import com.android.volley.toolbox.ImageLoader;
 import com.android.volley.toolbox.Volley;
 
 import info.jiangchuan.wrca.gcm.GCMService;
-import info.jiangchuan.wrca.models.App;
 import info.jiangchuan.wrca.models.User;
 
 /**

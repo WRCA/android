@@ -9,25 +9,27 @@ import android.util.Log;
 import android.widget.TabHost;
 
 import info.jiangchuan.wrca.dialogs.OpenWifiSettingDialog;
-import info.jiangchuan.wrca.models.App;
 import info.jiangchuan.wrca.models.User;
 import info.jiangchuan.wrca.util.NetworkUtil;
 import info.jiangchuan.wrca.util.PersisUtil;
 
-public class MainActivity extends Activity {
-
-    private TabHost host;
+public class MainActivity extends Activity
+        implements TabHost.OnTabChangeListener{
 
     private static final String TAG = "MainActivity";
 
-    private App userData;
+    final int TAB_EVENTS = 0;
+    final int TAB_NOTIFICATIONS = 1;
+    final int TAB_EDIR = 2;
+    final int TAB_SITE = 3;
+
+    public static MainActivity activity;
     private TabHost tabHost;
 
     public static MainActivity getActivity() {
         return activity;
     }
 
-    public static MainActivity activity;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -42,24 +44,24 @@ public class MainActivity extends Activity {
         super.onDestroy();
     }
 
-    public TabHost getHost() {
-        return host;
+    public TabHost getTabHost() {
+        return tabHost;
     }
 
     private void setupTabs(Bundle savedInstanceState) {
-        host = (TabHost)findViewById(android.R.id.tabhost);
-        if (host == null) {
+        tabHost = (TabHost)findViewById(android.R.id.tabhost);
+        if (tabHost == null) {
             Log.d(TAG, "mHost null");
         }
 
         LocalActivityManager localActivityManager = new LocalActivityManager(this, false);
         localActivityManager.dispatchCreate(savedInstanceState);
-        host.setup(localActivityManager);
+        tabHost.setup(localActivityManager);
 
-        TabHost.TabSpec	tab1 = host.newTabSpec("tab1");
-        TabHost.TabSpec	tab2 = host.newTabSpec("tab2");
-        TabHost.TabSpec	tab3 = host.newTabSpec("tab3");
-        TabHost.TabSpec	tab4 = host.newTabSpec("tab4");
+        TabHost.TabSpec	tab1 = tabHost.newTabSpec("tab1");
+        TabHost.TabSpec	tab2 = tabHost.newTabSpec("tab2");
+        TabHost.TabSpec	tab3 = tabHost.newTabSpec("tab3");
+        TabHost.TabSpec	tab4 = tabHost.newTabSpec("tab4");
         if (tab1 == null || tab2 == null || tab3 == null || tab4 == null) {
             Log.d(TAG, "tab null");
         }
@@ -73,25 +75,12 @@ public class MainActivity extends Activity {
         tab3.setContent(new Intent(this, EDirActivity.class));
         tab4.setContent(new Intent(this, WebActivity.class));
 
-        host.addTab(tab1);
-        host.addTab(tab2);
-        host.addTab(tab3);
-        host.addTab(tab4);
+        tabHost.addTab(tab1);
+        tabHost.addTab(tab2);
+        tabHost.addTab(tab3);
+        tabHost.addTab(tab4);
 
-        host.setOnTabChangedListener(new TabHost.OnTabChangeListener() {
-            @Override
-            public void onTabChanged(String tabId) {
-                int id = host.getCurrentTab();
-                switch (id) {
-                    case 0:
-                        break;
-                    case 1:
-                        PushNotificationActivity.getActivity().getAdapter().notifyDataSetChanged();
-                        break;
-                }
-            }
-        });
-        tabHost = host;
+        tabHost.setOnTabChangedListener(this);
     }
 
     @Override
@@ -124,5 +113,21 @@ public class MainActivity extends Activity {
     @Override
     protected void onResume() {
         super.onResume();
+    }
+
+    @Override
+    public void onTabChanged(String tabId) {
+        int id = tabHost.getCurrentTab();
+        switch (id) {
+            case TAB_EVENTS:
+                break;
+            case TAB_NOTIFICATIONS:
+                PushNotificationActivity.getActivity().getAdapter().notifyDataSetChanged();
+                break;
+            case TAB_EDIR:
+                break;
+            case TAB_SITE:
+                break;
+        }
     }
 }

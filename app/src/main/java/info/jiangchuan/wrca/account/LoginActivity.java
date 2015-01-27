@@ -6,6 +6,7 @@ import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
@@ -40,8 +41,8 @@ public class LoginActivity extends ActionBarActivity {
     private static final String TAG = "LoginActivity";
     private SharedPreferences mSharePref;
 
-    public static String name;
-    public static String email;
+    public static TextView txtEmail;
+    public static TextView txtPassword;
 
 
     // Asyntask
@@ -57,6 +58,8 @@ public class LoginActivity extends ActionBarActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
+        txtEmail = (TextView)findViewById(R.id.edit_text_email);
+        txtPassword = (TextView)findViewById(R.id.edit_text_password);
     }
 
     @Override
@@ -84,17 +87,21 @@ public class LoginActivity extends ActionBarActivity {
     }
 
     public void submit(View view) {
-        TextView email = (TextView)findViewById(R.id.edit_text_email);
-        TextView password = (TextView)findViewById(R.id.edit_text_password);
-        final String strEmail = email.getText().toString().trim();
-        final String strPassword = password.getText().toString().trim();
-        if (strEmail.length() == 0 || strPassword.length() == 0) {
+        final String email = txtEmail.getText().toString().trim();
+        final String password = txtPassword.getText().toString().trim();
+        if (TextUtils.isEmpty(email) || TextUtils.isEmpty(password)) {
             ToastUtil.showToast(this, "field cannot be empty", Toast.LENGTH_SHORT);
             return;
         }
+
+        if (NetworkUtil.hasInternet(this) == false) {
+           ToastUtil.showToast(this, R.string.toast_system_offline);
+            return;
+        }
+
         Map<String, String> map = new HashMap<String, String>();
-        map.put("email", strEmail);
-        map.put("password", strPassword);
+        map.put(RestConst.REQ_PARAM_EMAIL, email);
+        map.put(RestConst.REQ_PARAM_PASS, password);
         Client.getApi().login(map, new Callback<JsonObject>() {
             @Override
             public void success(JsonObject jsonObject, retrofit.client.Response response) {
@@ -102,7 +109,7 @@ public class LoginActivity extends ActionBarActivity {
                 Log.d(TAG, jsonObject.toString());
                 Result result = ResultParser.parse(jsonObject);
                 switch (result.getStatus()) {
-                    case 200: {
+                    case RestConst.INT_STATUS_200: {
                         String token = jsonObject.get(RestConst.REQ_PARAM_TOKEN).getAsString();
                         SharedPrefUtil.writeString(Constant.STRING_AUTH_TOKEN, token);
                         WillowRidge.getInstance().getUser().setToken(token);
@@ -119,7 +126,6 @@ public class LoginActivity extends ActionBarActivity {
 
             @Override
             public void failure(RetrofitError error) {
-
             }
         });
     }

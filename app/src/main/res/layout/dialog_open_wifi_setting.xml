@@ -4,7 +4,7 @@
     android:layout_height="match_parent">
 
     <Button
-        android:layout_margin="@dimen/btton_fix_margin"
+        android:layout_margin="@dimen/button_fix_margin"
         android:padding="@dimen/button_fix_padding"
         android:id="@+id/btn_cancel"
         android:background="@color/action_bar_color"
@@ -14,7 +14,7 @@
         android:text="Cancel"/>
     <Button
         android:id="@+id/btn_wifi_setting"
-        android:layout_margin="@dimen/btton_fix_margin"
+        android:layout_margin="@dimen/button_fix_margin"
         android:padding="@dimen/button_fix_padding"
         android:background="@color/action_bar_color"
         android:textColor="@color/white"

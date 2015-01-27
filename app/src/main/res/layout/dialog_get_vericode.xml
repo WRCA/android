@@ -4,6 +4,12 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="@dimen/button_fix_padding"
+        android:layout_marginBottom="@dimen/margin_gap"
+        android:text="@string/dialog_used_by_resident"/>
     <EditText
         android:id="@+id/txt_email"
         android:layout_width="match_parent"

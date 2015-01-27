@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <style
-        name="WillowRidge_theme"
+    <style name="WillowRidge_theme"
         parent="Theme.AppCompat.Light">
 
         <item name="android:actionBarStyle">@style/action_bar</item>

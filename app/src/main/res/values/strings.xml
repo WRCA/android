@@ -65,4 +65,10 @@
     <!-- toast message -->
     <string name="toast_system_error">system error</string>
     <string name="toast_system_offline">Not connected to Internet</string>
+
+
+    <!-- dialog message -->
+    <string name="dialog_used_by_resident">Reminder: the verification code allows Willow Ridge Community residents using this app,
+    please fill in your email that has backup in Willow Ridge Civic Assocation to get your code and register. Thank you! </string>
+
 </resources>
