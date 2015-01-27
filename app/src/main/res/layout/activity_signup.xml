@@ -37,12 +37,16 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginBottom="@dimen/margin_gap"
+        android:background="@color/action_bar_color"
+        android:textColor="@color/white"
         android:text="Get Verification Code"
         android:onClick="onGetVerificationCode"/>
     <Button
         android:id="@+id/button_submit"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:background="@color/action_bar_color"
+        android:textColor="@color/white"
         android:layout_marginBottom="@dimen/margin_gap"
         android:text="Create Account"
         android:onClick="onSubmit"/>
@@ -52,6 +56,8 @@
         android:layout_height="wrap_content"
         android:gravity="center"
         android:onClick="onBack"
+        android:textSize="@dimen/abc_text_size_medium_material"
+        android:textColor="@color/action_bar_color"
         android:clickable="true"
         android:text="Already a member?"/>
 </LinearLayout>

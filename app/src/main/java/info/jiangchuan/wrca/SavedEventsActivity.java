@@ -1,6 +1,5 @@
 package info.jiangchuan.wrca;
 
-import android.app.Dialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
@@ -11,12 +10,9 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.BaseAdapter;
-import android.widget.ListAdapter;
 import android.widget.ListView;
 
 import info.jiangchuan.wrca.adapters.EventAdapter;
-import info.jiangchuan.wrca.dialogs.DeleteItemDialog;
-import info.jiangchuan.wrca.util.ToastUtil;
 
 public class SavedEventsActivity extends ActionBarActivity {
 

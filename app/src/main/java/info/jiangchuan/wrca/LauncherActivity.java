@@ -66,6 +66,7 @@ public class LauncherActivity extends Activity{
 
     private boolean isUserReady() {
         User user = WillowRidge.getInstance().getUser();
+        PersisUtil.clear(user);
         PersisUtil.read(user);
         return user.isAutoLogin() == true &&
                 TextUtils.isEmpty(user.getToken()) == false;

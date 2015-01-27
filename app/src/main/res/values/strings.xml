@@ -58,4 +58,6 @@
 
     <!-- preference string -->
     <string name="share_pref_auto_login">login</string>
+    <string name="share_pref_clear_history">clear_history</string>
+    <string name="share_pref_log_out">logout</string>
 </resources>

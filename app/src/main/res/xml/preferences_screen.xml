@@ -50,7 +50,10 @@
             <intent android:action="android.settings.SYNC_SETTINGS" />
         </Preference-->
         <Preference
-            android:key="clear_push_history"
+            android:key="@string/share_pref_clear_history"
             android:title="Clear Notifications History" />
+        <Preference
+            android:key="@string/share_pref_log_out"
+            android:title="Log out" />
     </PreferenceCategory>
 </PreferenceScreen>

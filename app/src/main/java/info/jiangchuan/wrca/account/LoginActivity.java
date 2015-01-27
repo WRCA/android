@@ -1,12 +1,15 @@
 package info.jiangchuan.wrca.account;
 
+import android.app.Dialog;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
+import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -19,6 +22,7 @@ import info.jiangchuan.wrca.Constant;
 import info.jiangchuan.wrca.MainActivity;
 import info.jiangchuan.wrca.R;
 import info.jiangchuan.wrca.WillowRidge;
+import info.jiangchuan.wrca.dialogs.ForgetPassDialog;
 import info.jiangchuan.wrca.gcm.AlertDialogManager;
 import info.jiangchuan.wrca.gcm.ConnectionDetector;
 import info.jiangchuan.wrca.models.Result;
@@ -29,6 +33,7 @@ import info.jiangchuan.wrca.util.SharedPrefUtil;
 import info.jiangchuan.wrca.util.ToastUtil;
 import retrofit.Callback;
 import retrofit.RetrofitError;
+import retrofit.client.Response;
 
 
 public class LoginActivity extends ActionBarActivity {
@@ -124,4 +129,8 @@ public class LoginActivity extends ActionBarActivity {
         super.onDestroy();
     }
 
+    public void forgetPassword(View view) {
+        final Dialog dialog = new ForgetPassDialog(this);
+        dialog.show();
+    }
 }

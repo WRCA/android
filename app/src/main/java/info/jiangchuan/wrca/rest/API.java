@@ -38,4 +38,9 @@ public interface API {
             @Query(RestConst.REQ_PARAM_OFFSET) String offset,
             @Query(RestConst.REQ_PARAM_LIMIT) String limit,
             Callback<JsonObject> callback);
+
+    @GET(RestConst.PATH_account_password)
+    void password(
+            @Query("email") String email,
+            Callback<JsonObject> callback);
 }

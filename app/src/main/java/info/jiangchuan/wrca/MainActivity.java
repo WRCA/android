@@ -109,7 +109,6 @@ public class MainActivity extends Activity {
         super.onPause();
         User user = WillowRidge.getInstance().getUser();
         PersisUtil.write(user);
-        PersisUtil.clear(user);
     }
 
 

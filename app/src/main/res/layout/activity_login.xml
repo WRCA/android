@@ -40,15 +40,30 @@
         <Button android:id="@+id/button_signup"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:background="@color/action_bar_color"
+            android:textColor="@color/color_white"
             android:layout_marginBottom="@dimen/margin_gap"
             android:text="new user?"
             android:onClick="signup"/>
 
         <Button android:id="@+id/button_submit"
             android:layout_width="match_parent"
+            android:background="@color/action_bar_color"
             android:layout_height="wrap_content"
+            android:textColor="@color/color_white"
             android:text="submit"
             android:onClick="submit"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/action_bar_color"
+            android:text="Forget Password?"
+            android:textSize="@dimen/abc_text_size_medium_material"
+            android:clickable="true"
+            android:onClick="forgetPassword"
+            android:layout_marginTop="@dimen/margin_gap"
+            android:layout_gravity="center_horizontal"/>
 
     </LinearLayout>
 </ScrollView>
