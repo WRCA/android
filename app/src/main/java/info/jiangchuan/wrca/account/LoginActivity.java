@@ -29,6 +29,7 @@ import info.jiangchuan.wrca.models.Result;
 import info.jiangchuan.wrca.parsers.ResultParser;
 import info.jiangchuan.wrca.rest.Client;
 import info.jiangchuan.wrca.rest.RestConst;
+import info.jiangchuan.wrca.util.DialogUtil;
 import info.jiangchuan.wrca.util.NetworkUtil;
 import info.jiangchuan.wrca.util.SharedPrefUtil;
 import info.jiangchuan.wrca.util.ToastUtil;
@@ -57,6 +58,7 @@ public class LoginActivity extends ActionBarActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        DialogUtil.setup(this);
         setContentView(R.layout.activity_login);
         txtEmail = (TextView)findViewById(R.id.edit_text_email);
         txtPassword = (TextView)findViewById(R.id.edit_text_password);
@@ -102,9 +104,11 @@ public class LoginActivity extends ActionBarActivity {
         Map<String, String> map = new HashMap<String, String>();
         map.put(RestConst.REQ_PARAM_EMAIL, email);
         map.put(RestConst.REQ_PARAM_PASS, password);
+        DialogUtil.showProgressDialog("Waiting...");
         Client.getApi().login(map, new Callback<JsonObject>() {
             @Override
             public void success(JsonObject jsonObject, retrofit.client.Response response) {
+                DialogUtil.hideProgressDialog();
                 String msg = jsonObject.toString();
                 Log.d(TAG, jsonObject.toString());
                 Result result = ResultParser.parse(jsonObject);
@@ -126,6 +130,7 @@ public class LoginActivity extends ActionBarActivity {
 
             @Override
             public void failure(RetrofitError error) {
+                DialogUtil.hideProgressDialog();
             }
         });
     }

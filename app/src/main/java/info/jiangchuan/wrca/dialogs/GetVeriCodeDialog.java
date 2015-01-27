@@ -1,6 +1,7 @@
 package info.jiangchuan.wrca.dialogs;
 
 import android.app.Dialog;
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.os.Bundle;
 import android.text.TextUtils;
@@ -15,6 +16,7 @@ import info.jiangchuan.wrca.models.Result;
 import info.jiangchuan.wrca.parsers.ResultParser;
 import info.jiangchuan.wrca.rest.Client;
 import info.jiangchuan.wrca.rest.RestConst;
+import info.jiangchuan.wrca.util.DialogUtil;
 import info.jiangchuan.wrca.util.NetworkUtil;
 import info.jiangchuan.wrca.util.ToastUtil;
 import retrofit.Callback;
@@ -37,6 +39,7 @@ public class GetVeriCodeDialog extends Dialog implements android.view.View.OnCli
         setContentView(R.layout.dialog_get_vericode);
         setTitle("Get Verification Code");
         ((Button)findViewById(R.id.btn_send)).setOnClickListener(this);
+        DialogUtil.setup(context);
     }
 
     @Override
@@ -53,21 +56,26 @@ public class GetVeriCodeDialog extends Dialog implements android.view.View.OnCli
                    ToastUtil.showToast(context, "email cannot be empty");
                    break;
                }
+               DialogUtil.showProgressDialog("waiting...");
                Client.getApi().vericode(email, new Callback<JsonObject>() {
                    @Override
                    public void success(JsonObject jsonObject, retrofit.client.Response response) {
+                       DialogUtil.hideProgressDialog();
                        Result result = ResultParser.parse(jsonObject);
                        switch (result.getStatus()) {
                            case RestConst.INT_STATUS_200: {
                                ToastUtil.showToast(context, result.getMessage());
                                break;
                            }
+                           default: {
+                               ToastUtil.showToast(context, result.getMessage());
+                           }
                        }
                    }
 
                    @Override
                    public void failure(RetrofitError error) {
-
+                       DialogUtil.hideProgressDialog();
                    }
                });
                break;

@@ -10,6 +10,7 @@ import android.widget.TabHost;
 
 import info.jiangchuan.wrca.dialogs.OpenWifiSettingDialog;
 import info.jiangchuan.wrca.models.User;
+import info.jiangchuan.wrca.util.DialogUtil;
 import info.jiangchuan.wrca.util.NetworkUtil;
 import info.jiangchuan.wrca.util.PersisUtil;
 
@@ -34,6 +35,7 @@ public class MainActivity extends Activity
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         activity = this;
+        DialogUtil.setup(this);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         setupTabs(savedInstanceState);

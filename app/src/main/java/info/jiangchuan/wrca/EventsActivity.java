@@ -31,6 +31,7 @@ import info.jiangchuan.wrca.models.User;
 import info.jiangchuan.wrca.parsers.EventParser;
 import info.jiangchuan.wrca.parsers.ResultParser;
 import info.jiangchuan.wrca.rest.Client;
+import info.jiangchuan.wrca.util.DialogUtil;
 import info.jiangchuan.wrca.util.ToastUtil;
 import retrofit.Callback;
 import retrofit.RetrofitError;
@@ -42,7 +43,6 @@ public class EventsActivity extends ActionBarActivity {
     private ListView listView;
     private EventAdapter adapter;
     private EventsActivity mActivity;
-    private ProgressDialog pDialog;
 
     private int lastItem = 0;
     private boolean isloading = false;
@@ -58,9 +58,8 @@ public class EventsActivity extends ActionBarActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_events);
         mActivity = this;
-        pDialog = new ProgressDialog(this);
 
-        showPDialog();
+        DialogUtil.showProgressDialog("Loading...");
         setupListview();
         getSupportActionBar().setTitle("All Events");
 
@@ -198,7 +197,7 @@ public class EventsActivity extends ActionBarActivity {
                             }
                             adapter.notifyDataSetChanged();
                             isloading = false;
-                            hidePDialog();
+                            DialogUtil.hideProgressDialog();
                         } catch (JSONException e) {
                             e.printStackTrace();
                         }
@@ -216,7 +215,7 @@ public class EventsActivity extends ActionBarActivity {
             public void failure(RetrofitError error) {
                 listView.setOnScrollListener(null);
                 Log.e(TAG, error.toString());
-                hidePDialog();
+                DialogUtil.hideProgressDialog();
             }
         });
     }
@@ -246,14 +245,5 @@ public class EventsActivity extends ActionBarActivity {
                 onLoadMore();
             }
         }
-    }
-
-    private void hidePDialog() {
-        pDialog.dismiss();
-    }
-
-    private void showPDialog() {
-        pDialog.setMessage("Loading...");
-        pDialog.show();
     }
 }
