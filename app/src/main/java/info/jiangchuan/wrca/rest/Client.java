@@ -11,7 +11,7 @@ public class Client {
         if (api == null) {
             RestAdapter.Builder adapterBuilder = new RestAdapter.Builder();
             RestAdapter adapter = adapterBuilder
-                    .setEndpoint(Constant.DOMAIN_WillowRidge)
+                    .setEndpoint(RestConst.DOMAIN_WillowRidge)
                     .build();
 
             api = adapter.create(API.class);

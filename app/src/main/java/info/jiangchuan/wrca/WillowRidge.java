@@ -14,6 +14,7 @@ import info.jiangchuan.wrca.gcm.GCMService;
 import info.jiangchuan.wrca.models.Event;
 import info.jiangchuan.wrca.models.Notification;
 import info.jiangchuan.wrca.models.User;
+import info.jiangchuan.wrca.models.UserData;
 import info.jiangchuan.wrca.util.SerializeUtil;
 
 /**
@@ -26,7 +27,13 @@ public class WillowRidge extends Application{
     private RequestQueue mRequestQueue;
     private ImageLoader mImageLoader;
     private LruBitmapCache mLruBitmapCache;
+
+    private UserData userData = new UserData();
     GCMService gcmService;
+
+    public UserData getUserData() {
+        return userData;
+    }
 
     public GCMService getGcmService() {
         return gcmService;

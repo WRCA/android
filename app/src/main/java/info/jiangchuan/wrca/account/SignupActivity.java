@@ -66,8 +66,8 @@ public class SignupActivity extends ActionBarActivity {
                Result result = ResultParser.parse(jsonObject);
                switch (response.getStatus()) {
                    case 200: {
-                       String token = jsonObject.get(Constant.AUTH_TOKEN).toString();
-                       SharedPrefUtil.writeStringSharedPreferences(Constant.AUTH_TOKEN, token);
+                       String token = jsonObject.get(Constant.STRING_AUTH_TOKEN).toString();
+                       SharedPrefUtil.writeString(Constant.STRING_AUTH_TOKEN, token);
                        Intent intent = new Intent(mActivity, MainActivity.class);
                        User user = MainActivity.getActivity().getUserData().getUser();
                        user.setEmail(strEmail);

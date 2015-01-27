@@ -3,9 +3,8 @@ package info.jiangchuan.wrca.rest;
 /**
  * Created by jiangchuan on 1/25/15.
  */
-public class Constant {
+public class RestConst {
     /******** rest api ***********/
-
     // account system
     public static final String PATH_verificationCode = "/account/verificationCode";
     public static final String PATH_account_register = "/account/register";

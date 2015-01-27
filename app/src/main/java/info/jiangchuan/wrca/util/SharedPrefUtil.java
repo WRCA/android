@@ -3,14 +3,7 @@ package info.jiangchuan.wrca.util;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
-import android.util.Log;
 
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
-import java.util.ArrayList;
 import java.util.List;
 
 import info.jiangchuan.wrca.Constant;
@@ -24,20 +17,20 @@ public class SharedPrefUtil {
     private static final String TAG = "Utility";
 
 
-    public static void writeStringSharedPreferences(String key, String val) {
+    public static void writeString(String key, String val) {
         Context context = WillowRidge.getInstance();
         SharedPreferences pref = PreferenceManager.getDefaultSharedPreferences(context);
         SharedPreferences.Editor editor = pref.edit();
         editor.putString(key ,val);
         editor.commit();
     }
-    public static String readStringSharedPreferences(String key) {
+    public static String readString(String key) {
         Context context = WillowRidge.getInstance();
         SharedPreferences pref = PreferenceManager.getDefaultSharedPreferences(context);
         return pref.getString(key, null);
     }
 
-    public static boolean readBooleanSharedPreferences(String key) {
+    public static boolean readBoolean(String key) {
         Context context = WillowRidge.getInstance();
         SharedPreferences pref = PreferenceManager.getDefaultSharedPreferences(context);
         return pref.getBoolean(key, false);
@@ -47,7 +40,7 @@ public class SharedPrefUtil {
         Context context = WillowRidge.getInstance();
         SharedPreferences pref = PreferenceManager.getDefaultSharedPreferences(context);
         SharedPreferences.Editor editor = pref.edit();
-        editor.putBoolean(Constant.string_auto_Login, b);
+        editor.putBoolean(Constant.STRING_AUTO_LOGIN, b);
     }
 
     public static boolean containsEvent(List<Event> list, Event event) {

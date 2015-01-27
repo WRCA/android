@@ -57,7 +57,7 @@ public class SavedEventsActivity extends ActionBarActivity {
     }
 
     void setupListView() {
-        adapter = new EventAdapter(this, MainActivity.getActivity().getUserData().getEvents());
+        adapter = new EventAdapter(this, WillowRidge.getInstance().getUserData().getEvents());
         listView = (ListView)findViewById(R.id.list_view_saved_events);
         registerForContextMenu(listView);
         listView.setAdapter(adapter);

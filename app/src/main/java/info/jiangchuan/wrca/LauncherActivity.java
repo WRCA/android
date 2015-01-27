@@ -30,52 +30,45 @@ public class LauncherActivity extends Activity{
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        /*
+         * check system env
+         * check user env
+         */
+        if (isSystemRead() == false) {
+            finish();
+        }
+        User user = WillowRidge.getInstance().getUserData().loadUser();
+        if (user == null) {
+            // no user info
+            Intent intent = new Intent(this, LoginActivity.class);
+            startActivity(intent);
+            finish();
+        } else {
+            if (user.isAutoLogin() == true &&
+                    TextUtils.isEmpty(user.getToken()) == false) {
+                // start MainActivity
+                Intent intent = new Intent(this, MainActivity.class);
+                startActivity(intent);
+                finish();
+            } else {
+                // require login
+                Intent intent = new Intent(this, LoginActivity.class);
+                startActivity(intent);
+                finish();
+            }
+        }
 
+    }
+
+    private boolean isSystemRead() {
         // check network connection
         if (!NetworkUtil.hasInternet(this)) {
-            finish();
+            return false;
         }
         // check gcm service
         if (!WillowRidge.getInstance().getGcmService().isGCMConfigSet()) {
-            finish();
+            return false;
         }
-
-        String token = SharedPrefUtil.readStringSharedPreferences(Constant.AUTH_TOKEN);
-        boolean autoLogin = SharedPrefUtil.readBooleanSharedPreferences(Constant.string_auto_Login);
-        boolean hasNotifications = SharedPrefUtil.readBooleanSharedPreferences(Constant.string_notifications);
-        if (autoLogin == true && TextUtils.isEmpty(token) == false) {
-            // start MainActivity
-            Intent intent = new Intent(this, MainActivity.class);
-            startActivityForResult(intent, Constant.INT_REQUEST_MAIN);
-        } else {
-            Intent intent = new Intent(this, LoginActivity.class);
-            startActivityForResult(intent, Constant.INT_REQUEST_LOGIN);
-        }
-    }
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        Log.d(TAG, "onActivityResult");
-        super.onActivityResult(requestCode, resultCode, data);
-        switch (requestCode) {
-            case Constant.INT_REQUEST_LOGIN: {
-                if (resultCode == RESULT_OK) {
-                    // launch main actiivty
-                    Intent intent = new Intent(this, MainActivity.class);
-                    User user = (User)data.getSerializableExtra("User");
-                    SerializeUtil.serialize(Constant.FILE_SAVED_USER, user);
-                    startActivityForResult(intent, Constant.INT_REQUEST_MAIN);
-                } else {
-                   // RESULT_CANCEL OR OTHER CODE
-                    finish();
-                }
-                break;
-            }
-            case Constant.INT_REQUEST_MAIN: {
-                // access main activity result code, may have future use
-                finish();
-                break;
-            }
-        }
-
+        return true;
     }
 }

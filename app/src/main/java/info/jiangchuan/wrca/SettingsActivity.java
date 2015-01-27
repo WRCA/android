@@ -37,7 +37,7 @@ public class SettingsActivity extends PreferenceActivity {
     @Override
     protected void onStop() {
         super.onStop();
-        boolean hasNotifications = SharedPrefUtil.readBooleanSharedPreferences(Constant.string_notifications);
+        boolean hasNotifications = SharedPrefUtil.readBoolean(Constant.string_notifications);
         if (!hasNotifications) {
             GCMRegistrar.unregister(this);
         }

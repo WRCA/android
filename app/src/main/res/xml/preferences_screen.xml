@@ -11,7 +11,7 @@
 
         <CheckBoxPreference
             android:id="@+id/checkbox_preference_auto_login"
-            android:key="pref_auto_login"
+            android:key="login"
             android:title="Auto Login"
             android:defaultValue="true" />
     </PreferenceCategory>

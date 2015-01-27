@@ -6,28 +6,35 @@ import java.util.ArrayList;
 import java.util.List;
 
 import info.jiangchuan.wrca.Constant;
-import info.jiangchuan.wrca.WillowRidge;
 import info.jiangchuan.wrca.util.SerializeUtil;
+import info.jiangchuan.wrca.util.SharedPrefUtil;
 
 /**
  * Created by jiangchuan on 1/26/15.
  */
 public class UserData {
     private static final String TAG = "UserData";
+
+    // user saved events
     private List<Event> events = new ArrayList<Event>();
+
+    // saved notifications
     private List<Notification> notifications = new ArrayList<Notification>();
+
+    // user account & preference
     private User user = new User();
 
     public User getUser() {
         return user;
     }
 
-
     public List<Notification> getNotifications() {
         return notifications;
     }
 
-    public void loadUserData() {
+    public void input() {
+        notifications.clear();
+        events.clear();
         List<Notification> tmp = (ArrayList<Notification>) SerializeUtil.deSerialize(Constant.FILE_SAVED_NOTIFICATIONS);
         if (tmp != null) {
             Log.d(TAG, "notif:" + Integer.toString(notifications.size()));
@@ -40,17 +47,13 @@ public class UserData {
             events.addAll(tmp2);
         }
 
-        this.user = (User)SerializeUtil.deSerialize(Constant.FILE_SAVED_USER);
+        this.user = loadUser();
     }
 
-    public void storeUserData() {
-        Log.d(TAG, "notif:" + Integer.toString(notifications.size()));
+    public void output() {
         SerializeUtil.serialize(Constant.FILE_SAVED_NOTIFICATIONS, notifications);
-
-        Log.d(TAG, "events:" + Integer.toString(events.size()));
         SerializeUtil.serialize(Constant.FILE_SAVED_EVENTS, events);
-
-        SerializeUtil.serialize(Constant.FILE_SAVED_USER, user);
+        storeUser();
     }
 
     public List<Event> getEvents() {
@@ -60,7 +63,18 @@ public class UserData {
     public void setUser(User user) {
         this.user = user;
     }
+
     public void storeUser() {
-        SerializeUtil.serialize(Constant.FILE_SAVED_USER, user);
+        SharedPrefUtil.writeString(Constant.STRING_AUTH_TOKEN, user.getToken());
+        SharedPrefUtil.writeBoolean(Constant.STRING_SILENCE, user.isSilent());
+        SharedPrefUtil.writeBoolean(Constant.STRING_NOTIFICATION, user.isNotification());
+        SharedPrefUtil.writeBoolean(Constant.STRING_AUTO_LOGIN, user.isAutoLogin());
+    }
+    public User loadUser() {
+        user.setToken(SharedPrefUtil.readString(Constant.STRING_AUTH_TOKEN));
+        user.setAutoLogin(SharedPrefUtil.readBoolean(Constant.STRING_AUTO_LOGIN));
+        user.setNotification(SharedPrefUtil.readBoolean(Constant.STRING_NOTIFICATION));
+        user.setNotification(SharedPrefUtil.readBoolean(Constant.STRING_SILENCE));
+        return user;
     }
 }

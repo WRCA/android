@@ -7,7 +7,6 @@ import android.os.Bundle;
 import android.util.Log;
 import android.widget.TabHost;
 
-import info.jiangchuan.wrca.models.User;
 import info.jiangchuan.wrca.models.UserData;
 
 public class MainActivity extends Activity {
@@ -16,7 +15,7 @@ public class MainActivity extends Activity {
 
     private static final String TAG = "MainActivity";
 
-    private UserData userData = new UserData();
+    private UserData userData;
     private TabHost tabHost;
 
 
@@ -29,7 +28,8 @@ public class MainActivity extends Activity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         activity = this;
-        userData.loadUserData();
+        userData = WillowRidge.getInstance().getUserData();
+        userData.input();
         WillowRidge.getInstance().getGcmService().register(userData.getUser());
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
@@ -108,7 +108,7 @@ public class MainActivity extends Activity {
 
     @Override
     protected void onPause() {
-        userData.storeUserData();
+        userData.output();
         super.onPause();
     }
 

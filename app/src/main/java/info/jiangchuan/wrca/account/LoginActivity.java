@@ -2,7 +2,6 @@ package info.jiangchuan.wrca.account;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.hardware.usb.UsbRequest;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
@@ -23,18 +22,18 @@ import info.jiangchuan.wrca.WillowRidge;
 import info.jiangchuan.wrca.gcm.AlertDialogManager;
 import info.jiangchuan.wrca.gcm.ConnectionDetector;
 import info.jiangchuan.wrca.models.Result;
-import info.jiangchuan.wrca.models.User;
 import info.jiangchuan.wrca.parsers.ResultParser;
 import info.jiangchuan.wrca.rest.Client;
+import info.jiangchuan.wrca.rest.RestConst;
 import info.jiangchuan.wrca.util.SharedPrefUtil;
 import info.jiangchuan.wrca.util.ToastUtil;
 import retrofit.Callback;
 import retrofit.RetrofitError;
 
+
 public class LoginActivity extends ActionBarActivity {
 
     private static final String TAG = "LoginActivity";
-    private LoginActivity mActivity;
     private SharedPreferences mSharePref;
 
     public static String name;
@@ -54,7 +53,6 @@ public class LoginActivity extends ActionBarActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
-        mActivity = this;
     }
 
     @Override
@@ -93,19 +91,17 @@ public class LoginActivity extends ActionBarActivity {
                 Result result = ResultParser.parse(jsonObject);
                 switch (result.getStatus()) {
                     case 200: {
-                        String token = jsonObject.get(Constant.AUTH_TOKEN).getAsString();
-                        SharedPrefUtil.writeStringSharedPreferences(Constant.AUTH_TOKEN, token);
-                        User user = new User();
-                        user.setEmail(strEmail);
-                        user.setPassword(strPassword);
-                        user.setToken(token);
-                        Log.i(TAG, "user info was put to intent");
-                        setResult(RESULT_OK, getIntent().putExtra("User", user));
+                        String token = jsonObject.get(RestConst.REQ_PARAM_TOKEN).getAsString();
+                        SharedPrefUtil.writeString(Constant.STRING_AUTH_TOKEN, token);
+                        WillowRidge.getInstance().getUserData().getUser().setToken(token);
+                        WillowRidge.getInstance().getUserData().storeUser();
+                        Intent intent = new Intent(getApplication(), MainActivity.class);
+                        startActivity(intent);
                         finish();
                         break;
                     }
                     default: {
-                        ToastUtil.showToastMessage(mActivity, result.getMessage());
+                        ToastUtil.showToastMessage(getApplication(), result.getMessage());
                     }
                 }
             }
