@@ -9,6 +9,7 @@ import android.util.Log;
 import info.jiangchuan.wrca.account.LoginActivity;
 import info.jiangchuan.wrca.models.User;
 import info.jiangchuan.wrca.util.NetworkUtil;
+import info.jiangchuan.wrca.util.PersisUtil;
 import info.jiangchuan.wrca.util.SerializeUtil;
 import info.jiangchuan.wrca.util.SharedPrefUtil;
 
@@ -34,19 +35,9 @@ public class LauncherActivity extends Activity{
          * check system env
          * check user env
          */
-        if (isSystemRead() == false) {
-            finish();
-        }
-        User user = WillowRidge.getInstance().getUserData().loadUser();
-        if (user == null) {
-            // no user info
-            Intent intent = new Intent(this, LoginActivity.class);
-            startActivity(intent);
-            finish();
-        } else {
-            if (user.isAutoLogin() == true &&
-                    TextUtils.isEmpty(user.getToken()) == false) {
-                // start MainActivity
+        if (isSystemReady()) {
+            if (isUserReady()) {
+                // auto login
                 Intent intent = new Intent(this, MainActivity.class);
                 startActivity(intent);
                 finish();
@@ -56,11 +47,12 @@ public class LauncherActivity extends Activity{
                 startActivity(intent);
                 finish();
             }
-        }
+        } else {
 
+        }
     }
 
-    private boolean isSystemRead() {
+    private boolean isSystemReady() {
         // check network connection
         if (!NetworkUtil.hasInternet(this)) {
             return false;
@@ -70,5 +62,12 @@ public class LauncherActivity extends Activity{
             return false;
         }
         return true;
+    }
+
+    private boolean isUserReady() {
+        User user = WillowRidge.getInstance().getUser();
+        PersisUtil.read(user);
+        return user.isAutoLogin() == true &&
+                TextUtils.isEmpty(user.getToken()) == false;
     }
 }

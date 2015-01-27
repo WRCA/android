@@ -41,8 +41,8 @@ public class GCMIntentService extends GCMBaseIntentService{
         Log.i(TAG, "Device registered: regId = " + registrationId);
         displayMessage(context, "Your device registred with GCM");
         ServerUtilities.register(context,
-                MainActivity.getActivity().getUserData().getUser().getName(),
-                MainActivity.getActivity().getUserData().getUser().getEmail(),
+                WillowRidge.getInstance().getUser().getName(),
+                WillowRidge.getInstance().getUser().getEmail(),
                 registrationId);
     }
 
@@ -65,7 +65,7 @@ public class GCMIntentService extends GCMBaseIntentService{
         displayMessage(context, message);
 
         // store message
-       MainActivity.getActivity().getUserData().getNotifications().add(new
+       WillowRidge.getInstance().getUser().getNotifications().add(new
                 info.jiangchuan.wrca.models.Notification(message, TimeUtil.time()));
 
         // notifies user

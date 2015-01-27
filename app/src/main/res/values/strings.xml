@@ -54,4 +54,8 @@
 
     <!-- gcm -->
     <string name="gcm_title">willow ridge serivce</string>
+
+
+    <!-- preference string -->
+    <string name="share_pref_auto_login">login</string>
 </resources>

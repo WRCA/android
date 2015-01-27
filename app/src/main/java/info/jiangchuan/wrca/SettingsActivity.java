@@ -25,7 +25,7 @@ public class SettingsActivity extends PreferenceActivity {
             @Override
             public boolean onPreferenceClick(Preference arg0) {
                 //code for what you want it to do
-                MainActivity.getActivity().getUserData().getNotifications().clear();
+                WillowRidge.getInstance().getUser().getNotifications().clear();
                 ToastUtil.showToastMessage(WillowRidge.getInstance(), "clear");
                 PushNotificationActivity.getActivity().getAdapter().notifyDataSetChanged();
                 return true;

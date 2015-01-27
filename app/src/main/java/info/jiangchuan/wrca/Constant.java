@@ -7,7 +7,7 @@ public class Constant {
 
     // private data
     public static final String STRING_AUTH_TOKEN = "token";
-    public static final String STRING_AUTO_LOGIN = "login";
+    public static final String STRING_AUTO_LOGIN = "login"; // must match R.string.
     public static final String STRING_NOTIFICATION = "notification";
     public static final String STRING_SILENCE = "silence";
     public static final String STRING_LOGIN_STATE = "login_state";

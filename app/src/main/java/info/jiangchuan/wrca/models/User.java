@@ -1,6 +1,8 @@
 package info.jiangchuan.wrca.models;
 
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by jiangchuan on 1/25/15.
@@ -11,8 +13,7 @@ public class User implements Serializable{
     String name;
     String email;
     String password;
-    String token;   // api key
-
+    String token;
 
     boolean login;
 
@@ -20,6 +21,12 @@ public class User implements Serializable{
     boolean autoLogin; // auto login
     boolean silent;    // no sound
     boolean notification; // require notifications
+
+    // user saved events
+    private List<Event> events = new ArrayList<Event>();
+
+    // saved notifications
+    private List<Notification> notifications = new ArrayList<Notification>();
 
 
     public boolean isNotification() {
@@ -45,7 +52,6 @@ public class User implements Serializable{
     public void setAutoLogin(boolean autoLogin) {
         this.autoLogin = autoLogin;
     }
-
 
     public String getToken() {
         return token;
@@ -85,5 +91,21 @@ public class User implements Serializable{
 
     public void setLogin(boolean login) {
         this.login = login;
+    }
+
+    public List<Event> getEvents() {
+        return events;
+    }
+
+    public void setEvents(List<Event> events) {
+        this.events = events;
+    }
+
+    public List<Notification> getNotifications() {
+        return notifications;
+    }
+
+    public void setNotifications(List<Notification> notifications) {
+        this.notifications = notifications;
     }
 }

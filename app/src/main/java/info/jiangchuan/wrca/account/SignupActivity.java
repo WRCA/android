@@ -69,7 +69,7 @@ public class SignupActivity extends ActionBarActivity {
                        String token = jsonObject.get(Constant.STRING_AUTH_TOKEN).toString();
                        SharedPrefUtil.writeString(Constant.STRING_AUTH_TOKEN, token);
                        Intent intent = new Intent(mActivity, MainActivity.class);
-                       User user = MainActivity.getActivity().getUserData().getUser();
+                       User user = WillowRidge.getInstance().getUser();
                        user.setEmail(strEmail);
                        user.setPassword(strPassword);
                        user.setToken(token);

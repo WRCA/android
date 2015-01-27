@@ -38,7 +38,7 @@ public class SavedEventsActivity extends ActionBarActivity {
 
     @Override
     public boolean onContextItemSelected(MenuItem item) {
-        MainActivity.getActivity().getUserData().getEvents().remove(this.item);
+        WillowRidge.getInstance().getUser().getEvents().remove(this.item);
         if (adapter == null) {
             return true;
         }
@@ -50,14 +50,14 @@ public class SavedEventsActivity extends ActionBarActivity {
     @Override
     public void onCreateContextMenu(ContextMenu menu, View v, ContextMenu.ContextMenuInfo menuInfo) {
         AdapterView.AdapterContextMenuInfo info = (AdapterView.AdapterContextMenuInfo)menuInfo;
-        menu.setHeaderTitle(MainActivity.getActivity().getUserData()
+        menu.setHeaderTitle(WillowRidge.getInstance().getUser()
                 .getEvents().get(info.position).getTitle());
         menu.add("delete");
         this.item = info.position;
     }
 
     void setupListView() {
-        adapter = new EventAdapter(this, WillowRidge.getInstance().getUserData().getEvents());
+        adapter = new EventAdapter(this, WillowRidge.getInstance().getUser().getEvents());
         listView = (ListView)findViewById(R.id.list_view_saved_events);
         registerForContextMenu(listView);
         listView.setAdapter(adapter);
@@ -67,7 +67,7 @@ public class SavedEventsActivity extends ActionBarActivity {
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 Intent intent = new Intent(activity, EventDetailActivity.class);
                 intent.putExtra("event",
-                        MainActivity.getActivity().getUserData().getEvents().get(position));
+                        WillowRidge.getInstance().getUser().getEvents().get(position));
                 startActivity(intent);
             }
         });

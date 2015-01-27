@@ -7,7 +7,9 @@ import android.os.Bundle;
 import android.util.Log;
 import android.widget.TabHost;
 
-import info.jiangchuan.wrca.models.UserData;
+import info.jiangchuan.wrca.models.App;
+import info.jiangchuan.wrca.models.User;
+import info.jiangchuan.wrca.util.PersisUtil;
 
 public class MainActivity extends Activity {
 
@@ -15,9 +17,8 @@ public class MainActivity extends Activity {
 
     private static final String TAG = "MainActivity";
 
-    private UserData userData;
+    private App userData;
     private TabHost tabHost;
-
 
     public static MainActivity getActivity() {
         return activity;
@@ -28,9 +29,6 @@ public class MainActivity extends Activity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         activity = this;
-        userData = WillowRidge.getInstance().getUserData();
-        userData.input();
-        WillowRidge.getInstance().getGcmService().register(userData.getUser());
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         setupTabs(savedInstanceState);
@@ -108,13 +106,12 @@ public class MainActivity extends Activity {
 
     @Override
     protected void onPause() {
-        userData.output();
         super.onPause();
+        User user = WillowRidge.getInstance().getUser();
+        PersisUtil.write(user);
+        PersisUtil.clear(user);
     }
 
-    public UserData getUserData() {
-        return userData;
-    }
 
     @Override
     protected void onResume() {

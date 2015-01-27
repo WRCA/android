@@ -45,7 +45,7 @@ public class PushNotificationActivity extends ActionBarActivity {
         getSupportActionBar().setTitle("Notifications");
 
         listView = (ListView) findViewById(R.id.list_view);
-        adapter = new NotificationsAdapter(this, MainActivity.getActivity().getUserData().getNotifications());
+        adapter = new NotificationsAdapter(this, WillowRidge.getInstance().getUser().getNotifications());
         listView.setAdapter(adapter);
         adapter.notifyDataSetChanged();
     }
