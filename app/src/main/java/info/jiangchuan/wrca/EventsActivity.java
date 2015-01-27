@@ -101,6 +101,11 @@ public class EventsActivity extends ActionBarActivity {
     public void onBackPressed() {
         finish();
     }
+
+    public ListView getListView() {
+        return listView;
+    }
+
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         // Handle action bar item clicks here. The action bar will
@@ -121,6 +126,7 @@ public class EventsActivity extends ActionBarActivity {
                 getSupportActionBar().setTitle("This Week");
                 break;
             case R.id.item_this_month:
+
                 onEventsThisMonth();
                 getSupportActionBar().setTitle("This Month");
                 break;

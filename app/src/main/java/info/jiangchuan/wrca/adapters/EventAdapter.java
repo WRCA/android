@@ -9,11 +9,13 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.ListView;
 import android.widget.TextView;
 
 import com.android.volley.toolbox.ImageLoader;
 import com.android.volley.toolbox.NetworkImageView;
 
+import info.jiangchuan.wrca.EventsActivity;
 import info.jiangchuan.wrca.R;
 import info.jiangchuan.wrca.WillowRidge;
 import info.jiangchuan.wrca.models.Event;

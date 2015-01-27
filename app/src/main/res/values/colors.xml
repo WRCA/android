@@ -13,4 +13,7 @@
 
     <color name="action_bar_color">#03a9f4</color>
     <color name="feed_item_notification_bg">#81d4fa</color>
+
+    <drawable name="focused"> #03a9f4</drawable>
+
 </resources>
