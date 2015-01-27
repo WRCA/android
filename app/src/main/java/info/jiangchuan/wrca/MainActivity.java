@@ -1,14 +1,17 @@
 package info.jiangchuan.wrca;
 
 import android.app.Activity;
+import android.app.Dialog;
 import android.app.LocalActivityManager;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.widget.TabHost;
 
+import info.jiangchuan.wrca.dialogs.OpenWifiSettingDialog;
 import info.jiangchuan.wrca.models.App;
 import info.jiangchuan.wrca.models.User;
+import info.jiangchuan.wrca.util.NetworkUtil;
 import info.jiangchuan.wrca.util.PersisUtil;
 
 public class MainActivity extends Activity {
@@ -81,10 +84,8 @@ public class MainActivity extends Activity {
                 int id = host.getCurrentTab();
                 switch (id) {
                     case 0:
-                        Log.d(TAG, "0");
                         break;
                     case 1:
-                        Log.d(TAG, "1");
                         PushNotificationActivity.getActivity().getAdapter().notifyDataSetChanged();
                         break;
                 }
@@ -99,9 +100,17 @@ public class MainActivity extends Activity {
     }
 
     @Override
+    protected void onPostResume() {
+        super.onPostResume();
+        if (NetworkUtil.hasInternet(this) == false) {
+            Dialog dialog = new OpenWifiSettingDialog(this);
+            dialog.show();
+        }
+    }
+
+    @Override
     public void onStart() {
         super.onStart();
-      //  Log.d(TAG, Integer.toString(WRCAApplication.getInstance().getSavedEvents().size()));
     }
 
     @Override

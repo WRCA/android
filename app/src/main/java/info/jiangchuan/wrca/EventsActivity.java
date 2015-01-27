@@ -206,7 +206,7 @@ public class EventsActivity extends ActionBarActivity {
                     }
                     default: {
                         listView.setOnScrollListener(null);
-                        ToastUtil.showToastMessage(mActivity, jsonObject.toString());
+                        ToastUtil.showToast(mActivity, jsonObject.toString());
                         break;
                     }
                 }

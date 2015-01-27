@@ -47,12 +47,12 @@ public class SignupActivity extends ActionBarActivity {
         final String strVerificationCode = verificationCode.getText().toString().trim();
 
         if (strVerificationCode.length() == 0) {
-            ToastUtil.showToastMessage(this, "to get verfication code, press button", Toast.LENGTH_SHORT);
+            ToastUtil.showToast(this, "to get verfication code, press button", Toast.LENGTH_SHORT);
             return;
         }
 
         if (strEmail.length() == 0 || strPassword.length() == 0 || strVerificationCode.length() == 0) {
-            ToastUtil.showToastMessage(this, "field cannot be empty", Toast.LENGTH_SHORT);
+            ToastUtil.showToast(this, "field cannot be empty", Toast.LENGTH_SHORT);
             return;
         }
 
@@ -79,7 +79,7 @@ public class SignupActivity extends ActionBarActivity {
                        break;
                    }
                    default: {
-                       ToastUtil.showToastMessage(mActivity, result.getMessage());
+                       ToastUtil.showToast(mActivity, result.getMessage());
                    }
                }
             }
@@ -95,7 +95,7 @@ public class SignupActivity extends ActionBarActivity {
         final TextView password = (TextView)findViewById(R.id.edit_text_password);
         final String strEmail = email.getText().toString().trim();
         if (strEmail.length() == 0) {
-            ToastUtil.showToastMessage(this, "email field cannot be empty", Toast.LENGTH_SHORT);
+            ToastUtil.showToast(this, "email field cannot be empty", Toast.LENGTH_SHORT);
             return;
         }
         Client.getApi().vericode(strEmail, new Callback<JsonObject>() {
@@ -104,7 +104,7 @@ public class SignupActivity extends ActionBarActivity {
                 Result result = ResultParser.parse(jsonObject);
                 switch (result.getStatus()) {
                     case 200: {
-                        ToastUtil.showToastMessage(mActivity, result.getMessage());
+                        ToastUtil.showToast(mActivity, result.getMessage());
                         break;
                     }
                 }

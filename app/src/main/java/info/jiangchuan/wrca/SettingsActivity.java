@@ -43,7 +43,7 @@ public class SettingsActivity extends PreferenceActivity {
             public boolean onPreferenceClick(Preference arg0) {
                 //code for what you want it to do
                 WillowRidge.getInstance().getUser().getNotifications().clear();
-                ToastUtil.showToastMessage(WillowRidge.getInstance(), "clear");
+                ToastUtil.showToast(WillowRidge.getInstance(), "clear");
                 PushNotificationActivity.getActivity().getAdapter().notifyDataSetChanged();
                 return true;
             }

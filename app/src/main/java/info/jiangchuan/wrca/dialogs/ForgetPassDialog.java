@@ -51,20 +51,20 @@ public class ForgetPassDialog extends Dialog implements android.view.View.OnClic
                 Log.d(TAG, "onclick");
                 String email = editText.getText().toString();
                 if (TextUtils.isEmpty(email)) {
-                    ToastUtil.showToastMessage(context, "email cannot be empty");
+                    ToastUtil.showToast(context, "email cannot be empty");
                     return;
                 }
                 Client.getApi().password(email, new Callback<JsonObject>() {
                     @Override
                     public void success(JsonObject jsonObject, Response response) {
                         Result result = ResultParser.parse(jsonObject);
-                        ToastUtil.showToastMessage(context, result.getMessage());
+                        ToastUtil.showToast(context, result.getMessage());
                         dismiss();
                     }
 
                     @Override
                     public void failure(RetrofitError error) {
-
+                        dismiss();
                     }
                 });
             }

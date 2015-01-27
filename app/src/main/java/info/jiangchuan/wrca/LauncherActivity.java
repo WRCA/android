@@ -1,17 +1,20 @@
 package info.jiangchuan.wrca;
 
 import android.app.Activity;
+import android.app.Dialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.util.Log;
 
 import info.jiangchuan.wrca.account.LoginActivity;
+import info.jiangchuan.wrca.dialogs.OpenWifiSettingDialog;
 import info.jiangchuan.wrca.models.User;
 import info.jiangchuan.wrca.util.NetworkUtil;
 import info.jiangchuan.wrca.util.PersisUtil;
 import info.jiangchuan.wrca.util.SerializeUtil;
 import info.jiangchuan.wrca.util.SharedPrefUtil;
+import info.jiangchuan.wrca.util.ToastUtil;
 
 /**
  * Created by jiangchuan on 1/26/15.
@@ -53,10 +56,6 @@ public class LauncherActivity extends Activity{
     }
 
     private boolean isSystemReady() {
-        // check network connection
-        if (!NetworkUtil.hasInternet(this)) {
-            return false;
-        }
         // check gcm service
         if (!WillowRidge.getInstance().getGcmService().isGCMConfigSet()) {
             return false;

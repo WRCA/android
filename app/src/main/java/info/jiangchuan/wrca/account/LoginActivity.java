@@ -6,10 +6,8 @@ import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
-import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
-import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -23,17 +21,18 @@ import info.jiangchuan.wrca.MainActivity;
 import info.jiangchuan.wrca.R;
 import info.jiangchuan.wrca.WillowRidge;
 import info.jiangchuan.wrca.dialogs.ForgetPassDialog;
+import info.jiangchuan.wrca.dialogs.OpenWifiSettingDialog;
 import info.jiangchuan.wrca.gcm.AlertDialogManager;
 import info.jiangchuan.wrca.gcm.ConnectionDetector;
 import info.jiangchuan.wrca.models.Result;
 import info.jiangchuan.wrca.parsers.ResultParser;
 import info.jiangchuan.wrca.rest.Client;
 import info.jiangchuan.wrca.rest.RestConst;
+import info.jiangchuan.wrca.util.NetworkUtil;
 import info.jiangchuan.wrca.util.SharedPrefUtil;
 import info.jiangchuan.wrca.util.ToastUtil;
 import retrofit.Callback;
 import retrofit.RetrofitError;
-import retrofit.client.Response;
 
 
 public class LoginActivity extends ActionBarActivity {
@@ -61,9 +60,17 @@ public class LoginActivity extends ActionBarActivity {
     }
 
     @Override
+    protected void onPostResume() {
+        super.onPostResume();
+        if (NetworkUtil.hasInternet(this) == false) {
+            Dialog dialog = new OpenWifiSettingDialog(this);
+            dialog.show();
+        }
+    }
+
+    @Override
     public void onStart() {
         super.onStart();
-
     }
 
     @Override
@@ -82,7 +89,7 @@ public class LoginActivity extends ActionBarActivity {
         final String strEmail = email.getText().toString().trim();
         final String strPassword = password.getText().toString().trim();
         if (strEmail.length() == 0 || strPassword.length() == 0) {
-            ToastUtil.showToastMessage(this, "field cannot be empty", Toast.LENGTH_SHORT);
+            ToastUtil.showToast(this, "field cannot be empty", Toast.LENGTH_SHORT);
             return;
         }
         Map<String, String> map = new HashMap<String, String>();
@@ -105,7 +112,7 @@ public class LoginActivity extends ActionBarActivity {
                         break;
                     }
                     default: {
-                        ToastUtil.showToastMessage(getApplication(), result.getMessage());
+                        ToastUtil.showToast(getApplication(), result.getMessage());
                     }
                 }
             }

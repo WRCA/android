@@ -60,4 +60,9 @@
     <string name="share_pref_auto_login">login</string>
     <string name="share_pref_clear_history">clear_history</string>
     <string name="share_pref_log_out">logout</string>
+
+
+    <!-- toast message -->
+    <string name="toast_system_error">system error</string>
+    <string name="toast_system_offline">Not connected to Internet</string>
 </resources>

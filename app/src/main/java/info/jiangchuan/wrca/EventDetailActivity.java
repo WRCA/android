@@ -105,10 +105,10 @@ public class EventDetailActivity extends ActionBarActivity {
                 List<Event> list = WillowRidge.getInstance().getUser().getEvents();
                 Event event = (Event)getIntent().getSerializableExtra("event");
                 if (SharedPrefUtil.containsEvent(list, event)) {
-                    ToastUtil.showToastMessage(this, "event already saved");
+                    ToastUtil.showToast(this, "event already saved");
                 } else {
                     list.add(event);
-                    ToastUtil.showToastMessage(this, "event saved");
+                    ToastUtil.showToast(this, "event saved");
                 }
                 return true;
             }
