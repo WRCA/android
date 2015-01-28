@@ -2,7 +2,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="info.jiangchuan.wrca.EventDetailActivity$PlaceholderFragment">
+    tools:context="info.jiangchuan.wrca.ui.EventDetailActivity$PlaceholderFragment">
 
    <ImageView
        android:id="@+id/image_view_background"

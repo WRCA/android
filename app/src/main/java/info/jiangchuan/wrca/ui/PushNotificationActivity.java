@@ -1,16 +1,20 @@
-package info.jiangchuan.wrca;
+package info.jiangchuan.wrca.ui;
 
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ListView;
 
+import info.jiangchuan.wrca.R;
+import info.jiangchuan.wrca.WillowRidge;
 import info.jiangchuan.wrca.adapters.NotificationsAdapter;
 
 
-public class PushNotificationActivity extends ActionBarActivity {
+public class PushNotificationActivity extends ActionBarActivity implements AdapterView.OnItemClickListener{
 
     private static PushNotificationActivity activity;
 
@@ -43,13 +47,16 @@ public class PushNotificationActivity extends ActionBarActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_push_notification);
         getSupportActionBar().setTitle("Notifications");
+        setupListView();
+    }
 
+    void setupListView() {
         listView = (ListView) findViewById(R.id.list_view);
         adapter = new NotificationsAdapter(this, WillowRidge.getInstance().getUser().getNotifications());
         listView.setAdapter(adapter);
         adapter.notifyDataSetChanged();
+        listView.setOnItemClickListener(this);
     }
-
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -93,5 +100,13 @@ public class PushNotificationActivity extends ActionBarActivity {
     public ListView getListView() {
 
         return listView;
+    }
+
+    @Override
+    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+        Intent intent = new Intent(this, NotificationDetailActivity.class);
+        intent.putExtra("notification", WillowRidge.getInstance().getUser()
+                .getNotifications().get(position));
+        startActivity(intent);
     }
 }

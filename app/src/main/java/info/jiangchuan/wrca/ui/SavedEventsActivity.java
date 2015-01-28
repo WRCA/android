@@ -1,4 +1,4 @@
-package info.jiangchuan.wrca;
+package info.jiangchuan.wrca.ui;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -12,6 +12,8 @@ import android.widget.AdapterView;
 import android.widget.BaseAdapter;
 import android.widget.ListView;
 
+import info.jiangchuan.wrca.R;
+import info.jiangchuan.wrca.WillowRidge;
 import info.jiangchuan.wrca.adapters.EventAdapter;
 
 public class SavedEventsActivity extends ActionBarActivity {

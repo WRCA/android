@@ -3,19 +3,18 @@
 <RelativeLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/relative_layout"
-    android:layout_marginTop="@dimen/feed_item_margin"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:background="@color/selector_list_row"
-    android:padding="8dp" >
+    android:padding="@dimen/gap" >
      
         <!-- Thumbnail Image -->
      <com.android.volley.toolbox.NetworkImageView
     android:id="@+id/thumbnail"
-    android:layout_width="80dp"
-    android:layout_height="100dp"
+    android:layout_width="@dimen/image"
+    android:layout_height="@dimen/image"
     android:layout_alignParentLeft="true"
-    android:layout_marginRight="8dp" />
+    android:layout_marginRight="@dimen/gap" />
      
         <!-- Title -->
      <TextView
@@ -27,23 +26,25 @@
     android:textSize="@dimen/title"
     android:textStyle="bold" />
 
+    <!--address-->
     <TextView
         android:id="@+id/address"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:layout_below="@id/title"
-        android:layout_marginTop="5dip"
+        android:layout_marginTop="@dimen/gap"
         android:layout_toRightOf="@+id/thumbnail"
-        android:textSize="@dimen/rating" />
+        android:textSize="@dimen/address" />
 
+    <!--time-->
     <TextView
         android:id="@+id/time"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:layout_below="@id/address"
-        android:layout_marginTop="5dp"
+        android:layout_marginTop="@dimen/gap"
         android:layout_toRightOf="@+id/thumbnail"
-        android:textSize="@dimen/genre" />
+        android:textSize="@dimen/time" />
 
 </RelativeLayout>
 

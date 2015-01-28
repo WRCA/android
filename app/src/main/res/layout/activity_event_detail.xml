@@ -178,7 +178,7 @@
                 android:layout_width="wrap_content"
                 android:layout_gravity="center_horizontal"
                 android:padding="@dimen/button_padding_size"
-                android:background="@color/action_bar_color"
+                android:background="@color/color_major"
                 android:textColor="@color/white"
                 android:text="Share This Event"
                 android:onClick="shareWithFriend"/>

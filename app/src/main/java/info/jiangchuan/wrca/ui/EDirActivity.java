@@ -1,4 +1,4 @@
-package info.jiangchuan.wrca;
+package info.jiangchuan.wrca.ui;
 
 import android.app.LocalActivityManager;
 import android.content.Intent;
@@ -7,9 +7,9 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.widget.ArrayAdapter;
-import android.widget.SpinnerAdapter;
 import android.widget.TabHost;
+
+import info.jiangchuan.wrca.R;
 
 public class EDirActivity extends ActionBarActivity {
 

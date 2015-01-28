@@ -1,4 +1,4 @@
-package info.jiangchuan.wrca;
+package info.jiangchuan.wrca.ui;
 
 import android.content.Intent;
 import android.net.Uri;
@@ -24,6 +24,8 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 
+import info.jiangchuan.wrca.R;
+import info.jiangchuan.wrca.WillowRidge;
 import info.jiangchuan.wrca.adapters.PlaceAdapter;
 import info.jiangchuan.wrca.models.Place;
 

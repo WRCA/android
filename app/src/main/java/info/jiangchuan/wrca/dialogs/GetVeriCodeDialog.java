@@ -71,10 +71,12 @@ public class GetVeriCodeDialog extends Dialog implements android.view.View.OnCli
                                ToastUtil.showToast(context, result.getMessage());
                            }
                        }
+                       dismiss();
                    }
 
                    @Override
                    public void failure(RetrofitError error) {
+                       dismiss();
                        DialogUtil.hideProgressDialog();
                    }
                });

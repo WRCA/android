@@ -1,4 +1,4 @@
-package info.jiangchuan.wrca;
+package info.jiangchuan.wrca.ui;
 
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
@@ -7,6 +7,7 @@ import android.view.MenuItem;
 import android.util.Log;
 import android.widget.TextView;
 
+import info.jiangchuan.wrca.R;
 import info.jiangchuan.wrca.models.Event;
 
 public class EventDescriptionActivity extends ActionBarActivity {

@@ -2,12 +2,12 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="info.jiangchuan.wrca.PushNotificationActivity">
+    tools:context="info.jiangchuan.wrca.ui.PushNotificationActivity">
 
     <ListView
         android:id="@+id/list_view"
+        android:listSelector="@color/selector_list_row"
         android:layout_height="wrap_content"
         android:layout_width="match_parent">
-
     </ListView>
 </LinearLayout>

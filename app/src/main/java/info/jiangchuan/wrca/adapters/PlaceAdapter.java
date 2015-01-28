@@ -64,7 +64,7 @@ public class PlaceAdapter extends BaseAdapter{
         TextView title = (TextView) convertView.findViewById(R.id.name);
         TextView rating = (TextView) convertView.findViewById(R.id.address);
         TextView time = (TextView) convertView.findViewById(R.id.time);
-        TextView year = (TextView) convertView.findViewById(R.id.releaseYear);
+        //TextView year = (TextView) convertView.findViewById(R.id.releaseYear);
 
         // getting movie data for the row
         Place m = eventItems.get(position);

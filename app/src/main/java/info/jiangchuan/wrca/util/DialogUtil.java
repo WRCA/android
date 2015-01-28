@@ -18,6 +18,6 @@ public class DialogUtil {
     }
 
     public static void hideProgressDialog() {
-       dialog.hide();
+       dialog.dismiss();
     }
 }

@@ -24,6 +24,7 @@ import info.jiangchuan.wrca.models.User;
 import info.jiangchuan.wrca.parsers.ResultParser;
 import info.jiangchuan.wrca.rest.Client;
 import info.jiangchuan.wrca.rest.RestConst;
+import info.jiangchuan.wrca.util.DialogUtil;
 import info.jiangchuan.wrca.util.NetworkUtil;
 import info.jiangchuan.wrca.util.SharedPrefUtil;
 import info.jiangchuan.wrca.util.ToastUtil;
@@ -44,6 +45,7 @@ public class SignupActivity extends ActionBarActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_signup);
         mActivity = this;
+        DialogUtil.setup(this);
         txtEmail = (TextView)findViewById(R.id.edit_text_email);
         txtPassword = (TextView)findViewById(R.id.edit_text_password);
         txtVericode = (TextView)findViewById(R.id.edit_text_verification_code);
@@ -70,32 +72,34 @@ public class SignupActivity extends ActionBarActivity {
         map.put(RestConst.REQ_PARAM_EMAIL, email);
         map.put(RestConst.REQ_PARAM_PASS, password);
         map.put(RestConst.REQ_PARAM_VERICODE, vericode);
+        DialogUtil.showProgressDialog("waiting...");
         Client.getApi().register(map, new Callback<JsonObject>() {
             @Override
             public void success(JsonObject jsonObject, retrofit.client.Response response) {
-               Result result = ResultParser.parse(jsonObject);
-               switch (response.getStatus()) {
-                   case RestConst.INT_STATUS_200: {
-                       String token = jsonObject.get(Constant.STRING_AUTH_TOKEN).toString();
-                       SharedPrefUtil.writeString(Constant.STRING_AUTH_TOKEN, token);
-                       Intent intent = new Intent(mActivity, MainActivity.class);
-                       User user = WillowRidge.getInstance().getUser();
-                       user.setEmail(email);
-                       user.setToken(token);
-                       WillowRidge.getInstance().getGcmService().register(user);
-                       startActivity(intent);
-                       finish();
-                       break;
-                   }
-                   default: {
-                       ToastUtil.showToast(getApplication(), result.getMessage());
-                   }
-               }
+                DialogUtil.hideProgressDialog();
+                Result result = ResultParser.parse(jsonObject);
+                switch (response.getStatus()) {
+                    case RestConst.INT_STATUS_200: {
+                        String token = jsonObject.get(Constant.STRING_AUTH_TOKEN).toString();
+                        SharedPrefUtil.writeString(Constant.STRING_AUTH_TOKEN, token);
+                        Intent intent = new Intent(mActivity, MainActivity.class);
+                        User user = WillowRidge.getInstance().getUser();
+                        user.setEmail(email);
+                        user.setToken(token);
+                        WillowRidge.getInstance().getGcmService().register(user);
+                        startActivity(intent);
+                        finish();
+                        break;
+                    }
+                    default: {
+                        ToastUtil.showToast(getApplication(), result.getMessage());
+                    }
+                }
             }
 
             @Override
             public void failure(RetrofitError error) {
-
+                DialogUtil.hideProgressDialog();
             }
         });
     }

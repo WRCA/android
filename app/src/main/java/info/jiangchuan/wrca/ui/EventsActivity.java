@@ -1,14 +1,15 @@
-package info.jiangchuan.wrca;
+package info.jiangchuan.wrca.ui;
 
 /**
  * Created by jiangchuan on 1/3/15.
  */
 
-import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -24,6 +25,8 @@ import org.json.JSONException;
 import java.util.ArrayList;
 import java.util.List;
 
+import info.jiangchuan.wrca.R;
+import info.jiangchuan.wrca.WillowRidge;
 import info.jiangchuan.wrca.adapters.EventAdapter;
 import info.jiangchuan.wrca.models.Event;
 import info.jiangchuan.wrca.models.Result;
@@ -36,7 +39,8 @@ import info.jiangchuan.wrca.util.ToastUtil;
 import retrofit.Callback;
 import retrofit.RetrofitError;
 
-public class EventsActivity extends ActionBarActivity {
+public class EventsActivity extends ActionBarActivity implements AbsListView.OnScrollListener,
+        AdapterView.OnItemClickListener{
 
     private static final String TAG = "EventsActivity";
     private List<Event> events = new ArrayList<Event>();
@@ -51,10 +55,11 @@ public class EventsActivity extends ActionBarActivity {
     final int limit = 6;
     int offset = 1;
 
-    private ListView.OnScrollListener listener = new Listener();
+    View footer;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
+        DialogUtil.setup(this);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_events);
         mActivity = this;
@@ -63,29 +68,18 @@ public class EventsActivity extends ActionBarActivity {
         setupListview();
         getSupportActionBar().setTitle("All Events");
 
+
     }
 
     void setupListview() {
         listView = (ListView) findViewById(R.id.list);
-
+        footer = ((LayoutInflater)getSystemService(Context.LAYOUT_INFLATER_SERVICE)).inflate(R.layout.list_footer, null, false);
+        listView.addFooterView(footer, null, false);
         adapter = new EventAdapter(this, events);
         listView.setAdapter(adapter);
-
-        String url = "http://jiangchuan.info/php/index.php?object=events&type=all&offset=" + Integer.toString(lastItem+1);
-        listView.setOnScrollListener(listener);
-
-        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                //Toast.makeText(this, item + " selected", Toast.LENGTH_LONG).show();
-                Intent intent = new Intent(mActivity, EventDetailActivity.class);
-                intent.putExtra("event", events.get(position));
-                startActivity(intent);
-            }
-        });
-
-        range = "all";
-        refresh();
+        footer.setVisibility(View.GONE);
+        listView.setOnScrollListener(this);
+        listView.setOnItemClickListener(this);
     }
 
     @Override
@@ -145,7 +139,7 @@ public class EventsActivity extends ActionBarActivity {
     private void onEventsThisWeek() {
         events.clear();
         offset = 1; // reset
-        listView.setOnScrollListener(listener);
+        listView.setOnScrollListener(this);
         adapter = new EventAdapter(this, events);
         listView.setAdapter(adapter);
         range = "week";
@@ -154,7 +148,7 @@ public class EventsActivity extends ActionBarActivity {
     private void onEventsThisMonth() {
         events.clear();
         offset = 1; // reset
-        listView.setOnScrollListener(listener);
+        listView.setOnScrollListener(this);
         adapter = new EventAdapter(this, events);
         listView.setAdapter(adapter);
         range = "month";
@@ -163,24 +157,28 @@ public class EventsActivity extends ActionBarActivity {
     private void onEventsAll() {
         events.clear();
         offset = 1; // reset
-        listView.setOnScrollListener(listener);
+        listView.setOnScrollListener(this);
         adapter = new EventAdapter(this, events);
         listView.setAdapter(adapter);
         range = "all";
         refresh();
     }
     private void onLoadMore() {
-        // Creating volley request obj
-       // String url = "http://jiangchuan.info/php/index.php?object=events&type=all&offset=" + Integer.toString(lastItem + 1);
-       // getEventsFromURL(url);
         User user = WillowRidge.getInstance().getUser();
         if (user.getToken() == null || range == null) {
             Log.e(TAG, "param cannot be null");
             return;
         }
+        if (footer != null && isloading == false) {
+            footer.setVisibility(View.VISIBLE);
+        }
         Client.getApi().events(user.getToken(), range, Integer.toString(offset), Integer.toString(limit), new Callback<JsonObject>() {
             @Override
             public void success(JsonObject jsonObject, retrofit.client.Response response) {
+                DialogUtil.hideProgressDialog();
+                if (footer != null) {
+                    footer.setVisibility(View.GONE);
+                }
                 Result result = ResultParser.parse(jsonObject);
                 switch (result.getStatus()) {
                     case 200: {
@@ -189,21 +187,22 @@ public class EventsActivity extends ActionBarActivity {
                             JsonArray jsonArray = jsonObject.get(EventParser.EVENTS).getAsJsonArray();
                             events.addAll(EventParser.parse(jsonArray));
                             int list_count = jsonObject.get(EventParser.LIST_COUNT).getAsInt();
-                            Log.d(TAG, Integer.toString(list_count));
                             if (offset + limit > list_count) {
                                 listView.setOnScrollListener(null); // no more data, close
+                                listView.removeFooterView(footer);
                             } else {
                                 offset = offset + limit;
                             }
                             adapter.notifyDataSetChanged();
                             isloading = false;
-                            DialogUtil.hideProgressDialog();
                         } catch (JSONException e) {
                             e.printStackTrace();
                         }
                         break;
                     }
                     default: {
+                        // other err
+                        isloading = false;
                         listView.setOnScrollListener(null);
                         ToastUtil.showToast(mActivity, jsonObject.toString());
                         break;
@@ -213,8 +212,10 @@ public class EventsActivity extends ActionBarActivity {
 
             @Override
             public void failure(RetrofitError error) {
+                if (footer != null) {
+                    footer.setVisibility(View.GONE);
+                }
                 listView.setOnScrollListener(null);
-                Log.e(TAG, error.toString());
                 DialogUtil.hideProgressDialog();
             }
         });
@@ -230,20 +231,27 @@ public class EventsActivity extends ActionBarActivity {
       onLoadMore();
     }
 
-    class Listener implements AbsListView.OnScrollListener {
+    @Override
+    public void onScrollStateChanged(AbsListView view, int scrollState) {
 
-        @Override
-        public void onScrollStateChanged(AbsListView view, int scrollState) {
+    }
 
-        }
-
-        @Override
-        public void onScroll(AbsListView view, int firstVisibleItem, int visibleItemCount, int totalItemCount) {
-            // threshold being indicator if bottom of list is hit
-            if (isloading == false && firstVisibleItem == totalItemCount - 5) {
-                isloading = true;
-                onLoadMore();
-            }
+    @Override
+    public void onScroll(AbsListView view, int firstVisibleItem, int visibleItemCount, int totalItemCount) {
+        int num = visibleItemCount + firstVisibleItem;
+        if (isloading == false && num >= totalItemCount
+                && footer != null && footer.getVisibility() == View.GONE) {
+            isloading = true;
+            footer.setVisibility(View.VISIBLE);
+            onLoadMore();
         }
     }
+
+    @Override
+    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+        Intent intent = new Intent(mActivity, EventDetailActivity.class);
+        intent.putExtra("event", events.get(position));
+        startActivity(intent);
+    }
 }
+

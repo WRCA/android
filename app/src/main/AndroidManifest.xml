@@ -58,59 +58,60 @@
             android:label="@string/title_activity_main" >
         </activity>
         <activity
-            android:name=".EventsActivity"
+            android:name=".ui.EventsActivity"
             android:label="EventsActivity" />
         <activity
-            android:parentActivityName=".EventsActivity"
-            android:name=".EventDetailActivity"
+            android:parentActivityName=".ui.EventsActivity"
+            android:name=".ui.EventDetailActivity"
             android:label="@string/title_activity_event_detail" >
         </activity>
         <activity
-            android:name=".SettingsActivity"
+            android:name=".ui.SettingsActivity"
             android:label="@string/title_activity_settings" >
         </activity>
         <activity
-            android:name=".EventDescriptionActivity"
+            android:name=".ui.EventDescriptionActivity"
             android:label="@string/title_activity_event_description" >
         </activity>
         <activity
-            android:parentActivityName=".EventsActivity"
-            android:name=".SavedEventsActivity"
+            android:parentActivityName=".ui.EventsActivity"
+            android:name=".ui.SavedEventsActivity"
             android:label="@string/title_activity_saved_events" >
         </activity>
         <activity
-            android:name=".TestActivity"
-            android:label="@string/title_activity_test" >
-        </activity>
-        <activity
-            android:name=".EDirActivity"
+            android:name=".ui.EDirActivity"
             android:label="@string/title_activity_edir" >
         </activity>
         <activity
-            android:name=".NearbyActivity"
+            android:name=".ui.NearbyActivity"
             android:label="@string/title_activity_nearby" >
         </activity>
         <activity
-            android:name=".MemberActivity"
+            android:name=".ui.MemberActivity"
             android:label="@string/title_activity_member" >
         </activity>
         <activity
-            android:name=".NearbyResultActivity"
+            android:name=".ui.NearbyResultActivity"
             android:label="@string/title_activity_nearby_result"
-            android:parentActivityName=".NearbyActivity" >
+            android:parentActivityName=".ui.NearbyActivity" >
         </activity>
         <activity
-            android:name=".PushNotificationActivity"
+            android:name=".ui.PushNotificationActivity"
             android:label="@string/title_activity_push_notification" >
         </activity>
 
         <activity
-            android:name=".WebActivity"
+            android:name=".ui.WebActivity"
             android:label="WebActivity">
         </activity>
 
         <activity
-            android:name=".ProfileActivity"
+            android:name=".ui.NotificationDetailActivity"
+            android:parentActivityName=".ui.PushNotificationActivity"
+            android:label="@string/title_activity_notification_detail"/>
+
+        <activity
+            android:name=".ui.ProfileActivity"
             android:label="Profile">
 
             <intent-filter>

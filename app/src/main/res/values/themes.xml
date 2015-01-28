@@ -9,8 +9,8 @@
 
     <!-- ActionBar styles -->
     <style name="action_bar" parent="@style/Widget.AppCompat.Light.ActionBar.Solid.Inverse">
-        <item name="android:background">@color/action_bar_color</item>
-        <item name="background">@color/action_bar_color</item>
+        <item name="android:background">@color/color_major</item>
+        <item name="background">@color/color_major</item>
     </style>
 
 </resources>

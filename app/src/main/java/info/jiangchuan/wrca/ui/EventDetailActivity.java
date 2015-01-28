@@ -1,4 +1,4 @@
-package info.jiangchuan.wrca;
+package info.jiangchuan.wrca.ui;
 
 import android.content.Intent;
 import android.graphics.drawable.BitmapDrawable;
@@ -18,6 +18,8 @@ import com.android.volley.toolbox.ImageLoader.ImageListener;
 
 import java.util.List;
 
+import info.jiangchuan.wrca.R;
+import info.jiangchuan.wrca.WillowRidge;
 import info.jiangchuan.wrca.models.Event;
 import info.jiangchuan.wrca.util.SharedPrefUtil;
 import info.jiangchuan.wrca.util.ToastUtil;

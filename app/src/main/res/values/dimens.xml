@@ -3,10 +3,12 @@
     <dimen name="activity_horizontal_margin">16dp</dimen>
     <dimen name="activity_vertical_margin">16dp</dimen>
 
-    <dimen name="title">17dp</dimen>
-    <dimen name="rating">15dip</dimen>
-    <dimen name="genre">13dip</dimen>
-    <dimen name="year">12dip</dimen>
+    <!-- list row view -->
+    <dimen name="image">80dp</dimen>
+    <dimen name="title">14dp</dimen>
+    <dimen name="address">14dip</dimen>
+    <dimen name="time">14dip</dimen>
+    <dimen name="gap">5dp</dimen>
 
 
     <dimen name="feed_item_margin">10dp</dimen>

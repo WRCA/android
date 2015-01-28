@@ -15,6 +15,7 @@ import info.jiangchuan.wrca.R;
 import info.jiangchuan.wrca.models.Result;
 import info.jiangchuan.wrca.parsers.ResultParser;
 import info.jiangchuan.wrca.rest.Client;
+import info.jiangchuan.wrca.util.DialogUtil;
 import info.jiangchuan.wrca.util.ToastUtil;
 import retrofit.Callback;
 import retrofit.RetrofitError;
@@ -37,6 +38,7 @@ public class ForgetPassDialog extends Dialog implements android.view.View.OnClic
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.dialog_forget_password);
+        DialogUtil.setup(context);
         setTitle("Retrieve Password");
         ((Button)findViewById(R.id.btn_send)).setOnClickListener(this);
     }
@@ -54,9 +56,11 @@ public class ForgetPassDialog extends Dialog implements android.view.View.OnClic
                     ToastUtil.showToast(context, "email cannot be empty");
                     return;
                 }
+                DialogUtil.showProgressDialog("wait...");
                 Client.getApi().password(email, new Callback<JsonObject>() {
                     @Override
                     public void success(JsonObject jsonObject, Response response) {
+                        DialogUtil.hideProgressDialog();
                         Result result = ResultParser.parse(jsonObject);
                         ToastUtil.showToast(context, result.getMessage());
                         dismiss();
@@ -64,6 +68,7 @@ public class ForgetPassDialog extends Dialog implements android.view.View.OnClic
 
                     @Override
                     public void failure(RetrofitError error) {
+                        DialogUtil.hideProgressDialog();
                         dismiss();
                     }
                 });

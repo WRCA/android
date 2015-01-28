@@ -1,4 +1,4 @@
-package info.jiangchuan.wrca;
+package info.jiangchuan.wrca.ui;
 
 import android.app.Activity;
 import android.support.v7.app.ActionBarActivity;
@@ -9,6 +9,7 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
 
+import info.jiangchuan.wrca.R;
 import info.jiangchuan.wrca.adapters.SimpleArrayAdapter;
 
 

@@ -1,7 +1,9 @@
-package info.jiangchuan.wrca;
+package info.jiangchuan.wrca.ui;
 
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
+
+import info.jiangchuan.wrca.R;
 
 /**
  * Created by jiangchuan on 1/25/15.
