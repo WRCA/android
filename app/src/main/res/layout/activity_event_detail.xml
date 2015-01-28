@@ -62,7 +62,6 @@
                 android:layout_height="wrap_content"
                 android:layout_width="wrap_content"
                 android:layout_gravity="center"
-                android:text="WED, JAN 14 @ 3:30pm - 7:30 PM EST"
                 android:textSize="15sp"/>
 
             <View

@@ -5,6 +5,7 @@ import android.graphics.drawable.BitmapDrawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -24,7 +25,8 @@ import info.jiangchuan.wrca.models.Event;
 import info.jiangchuan.wrca.util.SharedPrefUtil;
 import info.jiangchuan.wrca.util.ToastUtil;
 
-public class EventDetailActivity extends ActionBarActivity {
+public class EventDetailActivity extends ActionBarActivity
+        implements View.OnClickListener{
 
     ImageView mImageView;
     private static final String TAG = "EventDetailActivity";
@@ -32,13 +34,10 @@ public class EventDetailActivity extends ActionBarActivity {
     private Event event;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        mActivity = this;
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_event_detail);
-        mActivity = this;
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-
-
-
         final Event event = (Event)getIntent().getSerializableExtra("event");
         this.setTitle("Event Detail");
         this.event = event;
@@ -68,24 +67,7 @@ public class EventDetailActivity extends ActionBarActivity {
 
         TextView description = (TextView)findViewById(R.id.text_view_description);
         description.setText(event.getDescription());
-
-        location.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                // start map activity
-            }
-        });
-
-        description.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                // start detail activity
-                Intent intent = new Intent(mActivity, EventDescriptionActivity.class);
-                intent.putExtra("event", event);
-                startActivity(intent);
-            }
-        });
-
+        description.setOnClickListener(this);
     }
 
     @Override
@@ -132,5 +114,16 @@ public class EventDetailActivity extends ActionBarActivity {
         i.setType("text/plain");
         i.putExtra(Intent.EXTRA_TEXT, message);
         startActivity(Intent.createChooser(i, "Share with friends"));
+    }
+
+    @Override
+    public void onClick(View v) {
+        switch (v.getId()) {
+            case R.id.text_view_description: {
+                Intent intent = new Intent(mActivity, EventDescriptionActivity.class);
+                intent.putExtra("event", event);
+                startActivity(intent);
+            }
+        }
     }
 }

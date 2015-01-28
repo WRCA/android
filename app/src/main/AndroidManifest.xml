@@ -69,10 +69,13 @@
             android:name=".ui.SettingsActivity"
             android:label="@string/title_activity_settings" >
         </activity>
+
         <activity
+            android:parentActivityName=".ui.EventDetailActivity"
             android:name=".ui.EventDescriptionActivity"
-            android:label="@string/title_activity_event_description" >
+            android:label="@string/title_activity_event_description">
         </activity>
+
         <activity
             android:parentActivityName=".ui.EventsActivity"
             android:name=".ui.SavedEventsActivity"
@@ -120,6 +123,14 @@
             </intent-filter>
         </activity>
 
+        <activity
+            android:name=".ui.TermsUseActivity"
+            android:label="Terms of Use">
+           <intent-filter>
+               <action android:name="info.jiangchuan.wrca.terms"/>
+               <category android:name="android.intent.category.DEFAULT" />
+           </intent-filter>
+        </activity>
 
         <receiver
             android:name="com.google.android.gcm.GCMBroadcastReceiver"

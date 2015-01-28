@@ -59,18 +59,19 @@ public class EventsActivity extends ActionBarActivity implements AbsListView.OnS
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
-        DialogUtil.setup(this);
+        mActivity = this;
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_events);
-        mActivity = this;
-
+        DialogUtil.setup(this);
         DialogUtil.showProgressDialog("Loading...");
         setupListview();
-        getSupportActionBar().setTitle("All Events");
-
-
+        setupActionBar();
+        Log.d(TAG, "events onCreate");
     }
 
+    void setupActionBar() {
+        getSupportActionBar().setTitle("All Events");
+    }
     void setupListview() {
         listView = (ListView) findViewById(R.id.list);
         footer = ((LayoutInflater)getSystemService(Context.LAYOUT_INFLATER_SERVICE)).inflate(R.layout.list_footer, null, false);
@@ -204,7 +205,7 @@ public class EventsActivity extends ActionBarActivity implements AbsListView.OnS
                         // other err
                         isloading = false;
                         listView.setOnScrollListener(null);
-                        ToastUtil.showToast(mActivity, jsonObject.toString());
+                        ToastUtil.showToast(mActivity, result.getMessage());
                         break;
                     }
                 }

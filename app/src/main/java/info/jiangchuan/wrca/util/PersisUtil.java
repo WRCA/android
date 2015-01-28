@@ -45,7 +45,7 @@ public class PersisUtil {
         SerializeUtil.serialize(Constant.FILE_SAVED_NOTIFICATIONS, user.getNotifications());
         SerializeUtil.serialize(Constant.FILE_SAVED_EVENTS, user.getEvents());
         SharedPrefUtil.writeString(Constant.STRING_AUTH_TOKEN, user.getToken());
-        //SharedPrefUtil.writeBoolean(Constant.STRING_AUTO_LOGIN, user.isAutoLogin());
+//        SharedPrefUtil.writeBoolean(Constant.STRING_AUTO_LOGIN, user.isAutoLogin());
     }
 
 }

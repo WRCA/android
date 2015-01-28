@@ -58,7 +58,6 @@ public class LoginActivity extends ActionBarActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        DialogUtil.setup(this);
         setContentView(R.layout.activity_login);
         txtEmail = (TextView)findViewById(R.id.edit_text_email);
         txtPassword = (TextView)findViewById(R.id.edit_text_password);
@@ -104,6 +103,7 @@ public class LoginActivity extends ActionBarActivity {
         Map<String, String> map = new HashMap<String, String>();
         map.put(RestConst.REQ_PARAM_EMAIL, email);
         map.put(RestConst.REQ_PARAM_PASS, password);
+        DialogUtil.setup(this);
         DialogUtil.showProgressDialog("Waiting...");
         Client.getApi().login(map, new Callback<JsonObject>() {
             @Override

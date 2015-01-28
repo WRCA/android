@@ -35,11 +35,10 @@
         android:key="pref_key_storage_settings">
 
         <Preference android:title="Terms of Service">
-            <intent android:action="android.settings.SYNC_SETTINGS" />
+            <intent android:action="info.jiangchuan.wrca.terms" />
         </Preference>
 
         <Preference android:title="Privacy Policy">
-            <intent android:action="android.settings.SYNC_SETTINGS" />
         </Preference>
     </PreferenceCategory>
 

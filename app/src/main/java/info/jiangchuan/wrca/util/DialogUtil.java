@@ -13,11 +13,17 @@ public class DialogUtil {
        dialog = new ProgressDialog(context);
     }
     public static void showProgressDialog(String message) {
+        if (dialog == null) {
+            return;
+        }
         dialog.setMessage(message);
         dialog.show();
     }
 
     public static void hideProgressDialog() {
-       dialog.dismiss();
+        if (dialog == null) {
+            return;
+        }
+        dialog.dismiss();
     }
 }

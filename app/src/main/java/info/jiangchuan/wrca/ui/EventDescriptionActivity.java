@@ -19,9 +19,9 @@ public class EventDescriptionActivity extends ActionBarActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_event_description);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         findView();
         final Event event = (Event)getIntent().getSerializableExtra("event");
-
         viewTitle.setText(event.getTitle());
         viewContent.setText(event.getDescription());
         Log.d("show", event.getDescription());
@@ -30,9 +30,11 @@ public class EventDescriptionActivity extends ActionBarActivity {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
-            // Respond to the action bar's Up/Home button
-            case android.R.id.home:
+            case android.R.id.home: {
+                onBackPressed();
                 return true;
+            }
+
         }
         return super.onOptionsItemSelected(item);
     }
