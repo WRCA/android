@@ -40,7 +40,14 @@
 
         <Preference android:title="Privacy Policy">
         </Preference>
+
+        <Preference
+            android:title="About This app">
+            <intent android:action="info.jiangchuan.wrca.about"/>
+        </Preference>
+
     </PreferenceCategory>
+
 
     <PreferenceCategory
         android:title="Others">

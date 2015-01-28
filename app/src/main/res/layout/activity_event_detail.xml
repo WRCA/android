@@ -73,6 +73,7 @@
             <TextView
                 android:id="@+id/text_view_description"
                 android:layout_height="100dp"
+                android:maxLines="5"
                 android:layout_width="match_parent"
                 android:inputType="textMultiLine"
                 android:textSize="15sp"/>

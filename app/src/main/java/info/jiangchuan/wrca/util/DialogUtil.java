@@ -5,7 +5,7 @@ import android.content.Context;
 
 /**
  * Created by jiangchuan on 1/27/15.
- */
+// */
 public class DialogUtil {
 
     static ProgressDialog dialog;

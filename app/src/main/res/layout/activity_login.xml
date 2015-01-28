@@ -16,7 +16,7 @@
             android:layout_height="@dimen/image_size"
             android:layout_marginTop="@dimen/margin_top"
             android:layout_marginBottom="@dimen/margin_gap"
-            android:src="@drawable/ic_launcher"
+            android:src="@drawable/icon_wrca"
             android:layout_gravity="center_horizontal"/>
         <!-- Email -->
         <EditText android:id="@+id/edit_text_email"
