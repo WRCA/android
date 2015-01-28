@@ -52,7 +52,6 @@ public class GCMIntentService extends GCMBaseIntentService{
     @Override
     protected void onUnregistered(Context context, String registrationId) {
         Log.i(TAG, "Device unregistered");
-        displayMessage(context, getString(R.string.gcm_unregistered));
         ServerUtilities.unregister(context, registrationId);
     }
 

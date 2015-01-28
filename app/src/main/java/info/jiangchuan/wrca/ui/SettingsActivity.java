@@ -72,7 +72,7 @@ public class SettingsActivity extends PreferenceActivity implements Preference.O
             CheckBoxPreference box = (CheckBoxPreference) preference;
             Boolean notification = box.isChecked();
             user.setNotification(notification);
-            if (notification) {
+            if (notification && !WillowRidge.getInstance().getGcmService().isRegistered()) {
                 WillowRidge.getInstance().getGcmService().register(user);
             } else {
                 WillowRidge.getInstance().getGcmService().unRegister();

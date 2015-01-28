@@ -24,6 +24,14 @@ public class GCMService {
     AsyncTask<Void, Void, Void> mRegisterTask;
 
     Context context = null;
+
+    private boolean registered = false;
+
+    public boolean isRegistered() {
+        return registered;
+    }
+
+
     public GCMService(Context context) {
         this.context = context;
     }
@@ -40,12 +48,6 @@ public class GCMService {
             String newMessage = intent.getExtras().getString(EXTRA_MESSAGE);
             // Waking up mobile if it is sleeping
             WakeLocker.acquire(context.getApplicationContext());
-
-            /**
-             * Take appropriate action on this message
-             * depending upon your app requirement
-             * For now i am just displaying it on the screen
-             * */
 
             Toast.makeText(context.getApplicationContext(), "New Message: " + newMessage, Toast.LENGTH_LONG).show();
 
@@ -104,6 +106,7 @@ public class GCMService {
                 };
                 mRegisterTask.execute(null, null, null);
             }
+           registered = true;
         }
     }
 
@@ -112,9 +115,10 @@ public class GCMService {
             mRegisterTask.cancel(true);
         }
         try {
+            final String regId = GCMRegistrar.getRegistrationId(context);
             context.unregisterReceiver(mHandleMessageReceiver);
-            GCMRegistrar.unregister(context);
             GCMRegistrar.onDestroy(context);
+            registered = false;
         } catch (Exception e) {
             Log.e("UnRegister Receiver Error", "> " + e.getMessage());
         }

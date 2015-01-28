@@ -105,8 +105,9 @@ public class PushNotificationActivity extends ActionBarActivity implements Adapt
     @Override
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
         Intent intent = new Intent(this, NotificationDetailActivity.class);
+        int size = WillowRidge.getInstance().getUser().getNotifications().size();
         intent.putExtra("notification", WillowRidge.getInstance().getUser()
-                .getNotifications().get(position));
+                .getNotifications().get(size - position - 1));
         startActivity(intent);
     }
 }

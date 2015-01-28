@@ -29,7 +29,7 @@ public class User implements Serializable{
     private List<Notification> notifications = new ArrayList<Notification>();
 
 
-    public boolean isNotification() {
+    public boolean requireNotification() {
         return notification;
     }
 
