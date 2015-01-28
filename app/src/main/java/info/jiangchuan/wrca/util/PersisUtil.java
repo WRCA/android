@@ -35,6 +35,8 @@ public class PersisUtil {
 
         user.setAutoLogin(SharedPrefUtil.readBoolean(Constant.STRING_AUTO_LOGIN));
         user.setToken(SharedPrefUtil.readString(Constant.STRING_AUTH_TOKEN));
+        user.setNotification(SharedPrefUtil.readBoolean(Constant.STRING_NOTIFICATION));
+        user.setEmail(SharedPrefUtil.readString(Constant.STRING_LOGIN_EMAIL));
     }
 
     static public void clear(User user) {
@@ -45,6 +47,7 @@ public class PersisUtil {
         SerializeUtil.serialize(Constant.FILE_SAVED_NOTIFICATIONS, user.getNotifications());
         SerializeUtil.serialize(Constant.FILE_SAVED_EVENTS, user.getEvents());
         SharedPrefUtil.writeString(Constant.STRING_AUTH_TOKEN, user.getToken());
+        SharedPrefUtil.writeString(Constant.STRING_LOGIN_EMAIL, user.getEmail());
 //        SharedPrefUtil.writeBoolean(Constant.STRING_AUTO_LOGIN, user.isAutoLogin());
     }
 

@@ -116,6 +116,7 @@ public class LoginActivity extends ActionBarActivity {
                     case RestConst.INT_STATUS_200: {
                         String token = jsonObject.get(RestConst.REQ_PARAM_TOKEN).getAsString();
                         SharedPrefUtil.writeString(Constant.STRING_AUTH_TOKEN, token);
+                        WillowRidge.getInstance().getUser().setEmail(email);
                         WillowRidge.getInstance().getUser().setToken(token);
                         Intent intent = new Intent(getApplication(), MainActivity.class);
                         startActivity(intent);

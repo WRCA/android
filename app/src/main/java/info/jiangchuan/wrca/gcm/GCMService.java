@@ -108,11 +108,12 @@ public class GCMService {
     }
 
     public void unRegister() {
-         if (mRegisterTask != null) {
+        if (mRegisterTask != null) {
             mRegisterTask.cancel(true);
         }
         try {
             context.unregisterReceiver(mHandleMessageReceiver);
+            GCMRegistrar.unregister(context);
             GCMRegistrar.onDestroy(context);
         } catch (Exception e) {
             Log.e("UnRegister Receiver Error", "> " + e.getMessage());

@@ -11,6 +11,8 @@ public class Constant {
     public static final String STRING_NOTIFICATION = "notification";
     public static final String STRING_SILENCE = "silence";
     public static final String STRING_LOGIN_STATE = "login_state";
+    public static final String STRING_LOGIN_EMAIL = "email";
+
 
 
     public static final String string_saved_events = "saved_events";

@@ -61,6 +61,8 @@
     <string name="share_pref_auto_login">login</string>
     <string name="share_pref_clear_history">clear_history</string>
     <string name="share_pref_log_out">logout</string>
+    <string name="share_pref_notification">notification</string>
+
 
 
     <!-- toast message -->
@@ -72,4 +74,16 @@
     <string name="dialog_used_by_resident">Reminder: the verification code allows Willow Ridge Community residents using this app,
     please fill in your email that has backup in Willow Ridge Civic Assocation to get your code and register. Thank you! </string>
 
+    <!--about info-->
+    <string name="about_info">This app is for use at Willow Ridge Community. It means user must be living in Willow Ridge Community and
+        provide email address to Willow Ridge Civic Association in order to register. A verification code is required for registration.
+        Currently, this app is a prototype for checking and extracting functions and requirement. Further polish and improvement will be
+        introduced. Thank you!
+    </string>
+
+    <!--version code-->
+    <string name="verison">0.1</string>
+    <string name="terms">This app is developed for Willow Ridge Civic Assocation, in used by Willow Ridge residents. The app
+    is under developed and may have heavy bugs.</string>
 </resources>
+

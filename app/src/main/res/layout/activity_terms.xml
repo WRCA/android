@@ -6,15 +6,16 @@
     <LinearLayout
         android:layout_height="wrap_content"
         android:layout_width="match_parent"
+        android:padding="@dimen/margin_side"
         android:orientation="vertical">
 
 
         <TextView
             android:layout_marginTop="@dimen/margin_top"
             android:layout_height="wrap_content"
+            android:textSize="@dimen/abc_text_size_medium_material"
             android:layout_width="wrap_content"
-            android:text="This app is developed for Willow Ridge Civic Assocation, in used by Willow Ridge residents. The app
-        is under developed and may heavy bugs."/>
+            android:text="@string/terms"/>
 
     </LinearLayout>
 </ScrollView>

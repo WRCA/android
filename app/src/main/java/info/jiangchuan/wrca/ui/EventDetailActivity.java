@@ -47,7 +47,7 @@ public class EventDetailActivity extends ActionBarActivity
         ImageContainer imageContainer = WillowRidge.getInstance().getImageLoader().get(event.getThumbnailUrl(),new ImageListener() {
             @Override
             public void onResponse(ImageContainer response, boolean isImmediate) {
-                mActivity.findViewById(R.id.linear_layout_image).setBackground(new BitmapDrawable(response.getBitmap()));
+                mActivity.findViewById(R.id.linear_layout_image).setBackgroundDrawable(new BitmapDrawable(response.getBitmap()));
                 TextView title = (TextView)findViewById(R.id.text_view_title);
                 title.setText(event.getTitle());
             }
@@ -96,6 +96,11 @@ public class EventDetailActivity extends ActionBarActivity
                 }
                 return true;
             }
+            case android.R.id.home: {
+                onBackPressed();
+                return true;
+            }
+
         }
 
         return super.onOptionsItemSelected(item);

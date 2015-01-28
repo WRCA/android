@@ -20,7 +20,7 @@ public class User implements Serializable{
     // preference
     boolean autoLogin; // auto login
     boolean silent;    // no sound
-    boolean notification; // require notifications
+    boolean notification = true; // require notifications
 
     // user saved events
     private List<Event> events = new ArrayList<Event>();

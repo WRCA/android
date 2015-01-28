@@ -8,6 +8,8 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.TextView;
 
+import com.android.volley.toolbox.NetworkImageView;
+
 import java.util.List;
 
 import info.jiangchuan.wrca.R;
@@ -25,6 +27,7 @@ public class NotificationsAdapter extends BaseAdapter{
     public NotificationsAdapter(Activity activity, List<Notification> notifications) {
         this.activity = activity;
         this.notifications = notifications;
+        this.inflater = (LayoutInflater) activity.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
     }
 
     @Override
@@ -44,24 +47,35 @@ public class NotificationsAdapter extends BaseAdapter{
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
-        if (inflater == null)
-            inflater = (LayoutInflater) activity
-                    .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        if (convertView == null)
+        ViewHolder viewHolder;
+        int size = notifications.size();
+        Notification notification = notifications.get(size - position - 1);
+
+        if (convertView == null) {
             convertView = inflater.inflate(R.layout.list_row_notification, null);
+            viewHolder = new ViewHolder();
 
 
-        TextView content = (TextView) convertView.findViewById(R.id.content);
-        TextView time = (TextView) convertView.findViewById(R.id.time);
 
-        // getting movie data for the row
-        Notification m = notifications.get(position);
+            viewHolder.content = (TextView) convertView.findViewById(R.id.content);
+            viewHolder.time = (TextView) convertView.findViewById(R.id.time);
 
-        content.setText(m.getContent());
+            convertView.setTag(viewHolder);
 
-        // rating
-        time.setText(String.valueOf(m.getTime()));
+        } else {
+           viewHolder = (ViewHolder) convertView.getTag();
+        }
+
+        // content
+        viewHolder.content.setText(notification.getContent());
+
+        // time
+        viewHolder.time.setText(String.valueOf(notification.getTime()));
 
         return convertView;
+    }
+    static class ViewHolder {
+        TextView content;
+        TextView time;
     }
 }

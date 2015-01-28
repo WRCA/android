@@ -45,7 +45,6 @@ public class WebActivity extends ActionBarActivity{
     private void setupBrowser() {
         WebView browser = (WebView) findViewById(R.id.web_view);
         browser.getSettings().setBuiltInZoomControls(true);
-        browser.getSettings().setDisplayZoomControls(false);
         browser.loadUrl("http://www.wrca.info");
 
     }

@@ -24,7 +24,7 @@
 
         <CheckBoxPreference
             android:id="@+id/checkbox_preference_push_notifications"
-            android:key="pref_notifications"
+            android:key="@string/share_pref_notification"
             android:title="Push Notifications"
             android:defaultValue="true" />
     </PreferenceCategory>

@@ -1,7 +1,33 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical" android:layout_width="match_parent"
+    android:padding="@dimen/margin_side"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
     android:layout_height="match_parent">
+    <TextView
+        android:layout_marginTop="@dimen/margin_top"
+        android:layout_marginBottom="@dimen/margin_gap"
+        android:layout_height="wrap_content"
+        android:layout_width="wrap_content"
+        android:text="@string/about_info"
+        android:layout_gravity="center_horizontal"/>
+
+    <LinearLayout
+        android:layout_marginBottom="@dimen/margin_gap"
+        android:layout_height="wrap_content"
+        android:layout_width="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:orientation="horizontal">
+        <TextView
+            android:layout_height="wrap_content"
+            android:layout_width="wrap_content"
+            android:text="V"/>
+
+        <TextView
+            android:layout_height="wrap_content"
+            android:layout_width="wrap_content"
+            android:text="@string/verison"/>
+    </LinearLayout>
 
     <com.facebook.widget.LikeView
         android:id="@+id/like_view"
