@@ -22,8 +22,6 @@ import com.google.android.gcm.GCMRegistrar;
  * Created by jiangchuan on 1/26/15.
  */
 public class GCMService {
-    // Asyntask
-    AsyncTask<Void, Void, Void> mRegisterTask;
 
     Context context = null;
 
@@ -38,8 +36,6 @@ public class GCMService {
         this.context = context;
     }
 
-    // Alert dialog manager
-    AlertDialogManager alert = new AlertDialogManager();
      /**
      * Receiving push messages
      * */
@@ -51,7 +47,7 @@ public class GCMService {
             // Waking up mobile if it is sleeping
             WakeLocker.acquire(context.getApplicationContext());
 
-            Toast.makeText(context.getApplicationContext(), "New Message: " + newMessage, Toast.LENGTH_LONG).show();
+            //Toast.makeText(context.getApplicationContext(), "New Message: " + newMessage, Toast.LENGTH_LONG).show();
 
             // Releasing wake lock
             WakeLocker.release();
@@ -86,9 +82,6 @@ public class GCMService {
     }
 
     public void unRegister() {
-        if (mRegisterTask != null) {
-            mRegisterTask.cancel(true);
-        }
         try {
             context.unregisterReceiver(mHandleMessageReceiver);
             GCMRegistrar.unregister(context);
@@ -102,10 +95,6 @@ public class GCMService {
         // Check if GCM configuration is set
         if (SERVER_URL == null || SENDER_ID == null || SERVER_URL.length() == 0
                 || SENDER_ID.length() == 0) {
-            // GCM sernder id / server url is missing
-            alert.showAlertDialog(context, "Configuration Error!",
-                    "Please set your Server URL and GCM Sender ID", false);
-            // stop executing code by return
             return false;
         }
         return true;
