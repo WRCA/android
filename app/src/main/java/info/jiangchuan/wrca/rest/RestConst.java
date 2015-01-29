@@ -14,6 +14,8 @@ public class RestConst {
     // events
     public static final String PATH_EVENTS = "/events";
 
+    public static final String PATH_GCM_REGISTER = "/gcm/register";
+    public static final String PATH_GCM_UNREGISTER = "/gcm/unregister";
 
 
     /********* domain name ***********/

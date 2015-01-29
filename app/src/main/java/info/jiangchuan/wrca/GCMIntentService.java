@@ -60,7 +60,7 @@ public class GCMIntentService extends GCMBaseIntentService{
      * */
     @Override
     protected void onMessage(Context context, Intent intent) {
-        String message = intent.getExtras().getString("price");
+        String message = intent.getExtras().getString("content");
         displayMessage(context, message);
 
         // store message

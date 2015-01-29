@@ -48,7 +48,7 @@ public class MainActivity extends Activity
         if (user != null) {
             if (user.requireNotification()
                     && WillowRidge.getInstance().getGcmService().isRegistered() == false) {
-                //WillowRidge.getInstance().getGcmService().register(user);
+                WillowRidge.getInstance().getGcmService().register();
             }
         }
     }

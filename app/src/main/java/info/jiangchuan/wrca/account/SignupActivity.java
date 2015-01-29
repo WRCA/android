@@ -87,7 +87,7 @@ public class SignupActivity extends ActionBarActivity {
                         user.setEmail(email);
                         user.setToken(token);
                         user.setNotification(true); // new user, set push notificaion to true
-                        WillowRidge.getInstance().getGcmService().register(user);
+                        WillowRidge.getInstance().getGcmService().register();
                         startActivity(intent);
                         finish();
                         break;

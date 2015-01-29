@@ -10,7 +10,7 @@ import java.util.List;
 public class User implements Serializable{
 
     // account
-    String name;
+    String name = "Default name";
     String email;
     String password;
     String token;

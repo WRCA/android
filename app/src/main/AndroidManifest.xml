@@ -24,6 +24,10 @@
         android:name="android.permission.READ_EXTERNAL_STORAGE"
         android:maxSdkVersion="18" />
 
+    <uses-sdk android:minSdkVersion="8"
+        android:targetSdkVersion="19"
+        android:maxSdkVersion="21"/>
+
     <application
         android:name=".WillowRidge"
         android:allowBackup="true"

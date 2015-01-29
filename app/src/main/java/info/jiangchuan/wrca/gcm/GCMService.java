@@ -8,7 +8,9 @@ import android.os.AsyncTask;
 import android.util.Log;
 import android.widget.Toast;
 
+import info.jiangchuan.wrca.WillowRidge;
 import info.jiangchuan.wrca.models.User;
+import info.jiangchuan.wrca.util.SerializeUtil;
 
 import static info.jiangchuan.wrca.gcm.CommonUtilities.DISPLAY_MESSAGE_ACTION;
 import static info.jiangchuan.wrca.gcm.CommonUtilities.EXTRA_MESSAGE;
@@ -57,16 +59,10 @@ public class GCMService {
     };
 
 
-    public void register(User u) {
-        // Make sure the device has the proper dependencies.
-        final  User user = u;
+    public void register() {
+        User user = WillowRidge.getInstance().getUser();
         GCMRegistrar.checkDevice(context);
-
-        // Make sure the manifest was properly set - comment out this line
-        // while developing the app, then uncomment it when it's ready.
         GCMRegistrar.checkManifest(context);
-
-
         context.registerReceiver(mHandleMessageReceiver, new IntentFilter(
                 DISPLAY_MESSAGE_ACTION));
 
@@ -83,30 +79,9 @@ public class GCMService {
             if (GCMRegistrar.isRegisteredOnServer(context)) {
                 // Skips registration.
             } else {
-                // Try to register again, but not in the UI thread.
-                // It's also necessary to cancel the thread onDestroy(),
-                // hence the use of AsyncTask instead of a raw thread.
-                final Context context = this.context;
-                mRegisterTask = new AsyncTask<Void, Void, Void>() {
-
-                    @Override
-                    protected Void doInBackground(Void... params) {
-                        // Register on our server
-                        // On server creates a new user
-                        Log.d("GCM", "lets register");
-                        ServerUtilities.register(context, user.getName(), user.getEmail(), regId);
-                        return null;
-                    }
-
-                    @Override
-                    protected void onPostExecute(Void result) {
-                        mRegisterTask = null;
-                    }
-
-                };
-                mRegisterTask.execute(null, null, null);
+                ServerUtilities.register(this.context, user.getName(), user.getEmail(), regId);
             }
-           registered = true;
+            registered = true;
         }
     }
 
@@ -115,8 +90,8 @@ public class GCMService {
             mRegisterTask.cancel(true);
         }
         try {
-            final String regId = GCMRegistrar.getRegistrationId(context);
             context.unregisterReceiver(mHandleMessageReceiver);
+            GCMRegistrar.unregister(context);
             GCMRegistrar.onDestroy(context);
             registered = false;
         } catch (Exception e) {

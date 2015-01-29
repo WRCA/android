@@ -43,4 +43,18 @@ public interface API {
     void password(
             @Query("email") String email,
             Callback<JsonObject> callback);
+
+
+    @FormUrlEncoded
+    @POST(RestConst.PATH_GCM_REGISTER)
+    void gcmRegister(
+            @FieldMap Map<String, String> params,
+            Callback<JsonObject> callback);
+
+    @FormUrlEncoded
+    @POST(RestConst.PATH_GCM_UNREGISTER)
+    void gcmUnRegister(
+            @FieldMap Map<String, String> params,
+            Callback<JsonObject> callback);
+
 }
