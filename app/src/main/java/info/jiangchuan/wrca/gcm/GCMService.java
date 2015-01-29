@@ -47,7 +47,6 @@ public class GCMService {
             // Waking up mobile if it is sleeping
             WakeLocker.acquire(context.getApplicationContext());
 
-            //Toast.makeText(context.getApplicationContext(), "New Message: " + newMessage, Toast.LENGTH_LONG).show();
 
             // Releasing wake lock
             WakeLocker.release();

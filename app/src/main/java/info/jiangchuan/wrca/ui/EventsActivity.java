@@ -14,9 +14,11 @@ import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.AbsListView;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.SpinnerAdapter;
 
@@ -55,6 +57,7 @@ public class EventsActivity extends ActionBarActivity
 
     private boolean isloading = false;
     private String range = "all";
+    private boolean searchViewOpen = false;
 
     final int limit = 6;
     int offset = 1;
@@ -118,10 +121,33 @@ public class EventsActivity extends ActionBarActivity
         int id = item.getItemId();
 
         switch (id) {
+            case R.id.action_search: {
+                try {
+                    if (!searchViewOpen) {
+                        LinearLayout hiddenLayout = (LinearLayout)findViewById(R.id.layout_hidden);
+                        if (hiddenLayout == null) {
+                            LinearLayout myLayout = (LinearLayout)findViewById(R.id.linear_layout_above);
+                            View hiddenInfo = getLayoutInflater().inflate(R.layout.layout_search_view, myLayout, false);
+                            myLayout.addView(hiddenInfo);
+                        }
+                        searchViewOpen = true;
+                    }
+                    else {
+                        View myView = findViewById(R.id.layout_hidden);
+                        ViewGroup parent = (ViewGroup) myView.getParent();
+                        parent.removeView(myView);
+                        searchViewOpen = false;
+                    }
+                    return true;
+                } catch (Exception e) {
+                    e.printStackTrace();
+                    return false;
+                }
+            }
             case R.id.item_saved: {
                 Intent intent = new Intent(this, SavedEventsActivity.class);
                 startActivity(intent);
-                break;
+                return true;
             }
             case R.id.action_settings: {
                 Intent intent = new Intent(this, SettingsActivity.class);

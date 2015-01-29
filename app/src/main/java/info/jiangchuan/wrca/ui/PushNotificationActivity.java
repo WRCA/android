@@ -3,6 +3,7 @@ package info.jiangchuan.wrca.ui;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -17,6 +18,7 @@ import info.jiangchuan.wrca.util.DialogUtil;
 
 public class PushNotificationActivity extends ActionBarActivity implements AdapterView.OnItemClickListener{
 
+    private static final String TAG = "PushNotificationActivity";
     private static PushNotificationActivity activity;
 
     public static PushNotificationActivity getActivity() {
@@ -87,11 +89,7 @@ public class PushNotificationActivity extends ActionBarActivity implements Adapt
         int id = item.getItemId();
         switch (id) {
             case R.id.action_refresh: {
-                //noinspection SimplifiableIfStatement
-                DialogUtil.setup(this);
-                DialogUtil.showProgressDialog("wait...");
                 adapter.notifyDataSetChanged();
-                DialogUtil.hideProgressDialog();
                 return true;
             }
             case R.id.action_settings: {

@@ -52,7 +52,7 @@ public class ServerUtilities {
             @Override
             public void success(JsonObject jsonObject, Response response) {
                 Log.d(TAG, jsonObject.toString());
-                ToastUtil.showToast(WillowRidge.getInstance(), jsonObject.toString());
+                //ToastUtil.showToast(WillowRidge.getInstance(), jsonObject.toString());
             }
 
             @Override

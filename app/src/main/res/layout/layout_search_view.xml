@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/major_color"
+    android:id="@+id/layout_hidden">
+
+    <EditText
+        android:layout_width="match_parent"
+        android:hint="Search"
+        android:textColorHint="@color/white"
+        android:maxLines="1"
+        android:layout_marginLeft="@dimen/margin_side"
+        android:layout_marginRight="@dimen/margin_side"
+        android:textColor="@color/white"
+        android:textSize="@dimen/abc_text_size_medium_material"
+        android:layout_height="50dp"/>
+
+</LinearLayout>

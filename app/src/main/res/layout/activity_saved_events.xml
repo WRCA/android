@@ -6,6 +6,7 @@
 
     <ListView
         android:id="@+id/list_view_saved_events"
+        android:listSelector="@color/selector_list_row"
         android:layout_height="wrap_content"
         android:layout_width="match_parent">
 

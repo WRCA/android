@@ -92,5 +92,10 @@
         <item>This Month</item>
     </string-array>
 
+    <!--search-->
+    <string name="search_hint">hint</string>
+
+    <!-- menu-->
+    <string name="clear">Clear</string>
 </resources>
 

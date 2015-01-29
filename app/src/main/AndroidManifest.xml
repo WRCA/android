@@ -61,9 +61,20 @@
             android:name=".MainActivity"
             android:label="@string/title_activity_main" >
         </activity>
+
         <activity
             android:name=".ui.EventsActivity"
-            android:label="EventsActivity" />
+            android:label="EventsActivity" >
+            <meta-data android:name="android.app.searchable"
+                android:resource="@xml/searchable"/>
+        </activity>
+
+        <activity android:name=".SearchResultsActivity" >
+            <intent-filter>
+                <action android:name="android.intent.action.SEARCH" />
+            </intent-filter>
+        </activity>
+
         <activity
             android:parentActivityName=".ui.EventsActivity"
             android:name=".ui.EventDetailActivity"

@@ -1,5 +1,8 @@
 package info.jiangchuan.wrca.ui;
 
+import android.app.AlertDialog;
+import android.app.SearchManager;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
@@ -86,9 +89,35 @@ public class SavedEventsActivity extends ActionBarActivity {
         int id = item.getItemId();
 
         //noinspection SimplifiableIfStatement
-        if (id == android.R.id.home) {
-            Log.d(TAG, "home");
-            finish();
+        switch (id) {
+            case android.R.id.home: {
+                finish();
+                return true;
+            }
+            case R.id.action_clear: {
+                AlertDialog dialog = new AlertDialog.Builder(this)
+                        .setTitle("Delete all Items")
+                        .setMessage("Are you sure you want to Clear all items?")
+                        .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                WillowRidge.getInstance().getUser().getEvents().clear();
+                                adapter.notifyDataSetChanged();
+                            }
+
+                        })
+                        .setNegativeButton(android.R.string.no, new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+
+                            }
+                        })
+
+                        .setIcon(android.R.drawable.ic_dialog_alert)
+                        .show();
+                return true;
+            }
+
         }
 
         return super.onOptionsItemSelected(item);
