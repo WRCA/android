@@ -12,6 +12,7 @@ import android.widget.ListView;
 import info.jiangchuan.wrca.R;
 import info.jiangchuan.wrca.WillowRidge;
 import info.jiangchuan.wrca.adapters.NotificationsAdapter;
+import info.jiangchuan.wrca.util.DialogUtil;
 
 
 public class PushNotificationActivity extends ActionBarActivity implements AdapterView.OnItemClickListener{
@@ -87,7 +88,10 @@ public class PushNotificationActivity extends ActionBarActivity implements Adapt
         switch (id) {
             case R.id.action_refresh: {
                 //noinspection SimplifiableIfStatement
+                DialogUtil.setup(this);
+                DialogUtil.showProgressDialog("wait...");
                 adapter.notifyDataSetChanged();
+                DialogUtil.hideProgressDialog();
                 return true;
             }
             case R.id.action_settings: {

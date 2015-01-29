@@ -42,6 +42,11 @@ public class WebActivity extends ActionBarActivity{
         setupBrowser();
     }
 
+    @Override
+    public void onBackPressed() {
+        finish();
+    }
+
     private void setupBrowser() {
         WebView browser = (WebView) findViewById(R.id.web_view);
         browser.getSettings().setBuiltInZoomControls(true);

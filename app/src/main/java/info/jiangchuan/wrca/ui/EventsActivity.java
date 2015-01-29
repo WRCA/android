@@ -75,10 +75,13 @@ public class EventsActivity extends ActionBarActivity
 
     void setupActionBar() {
         SpinnerAdapter mSpinnerAdapter = ArrayAdapter.createFromResource(this,
-                R.array.actionbar_events_list, android.R.layout.simple_list_item_1);
+                R.array.actionbar_events_list, android.R.layout.simple_dropdown_item_1line);
 
-        getSupportActionBar().setListNavigationCallbacks(mSpinnerAdapter, this);
-        getSupportActionBar().setNavigationMode(ActionBar.NAVIGATION_MODE_LIST);
+        ActionBar bar = getSupportActionBar();
+        bar.setListNavigationCallbacks(mSpinnerAdapter, this);
+        bar.setNavigationMode(ActionBar.NAVIGATION_MODE_LIST);
+        bar.setHomeButtonEnabled(true);
+
     }
     void setupListview() {
         listView = (ListView) findViewById(R.id.list);
@@ -113,8 +116,6 @@ public class EventsActivity extends ActionBarActivity
         // automatically handle clicks on the Home/Up button, so long
         // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
-
-        //noinspection SimplifiableIfStatement
 
         switch (id) {
             case R.id.item_saved: {
@@ -205,7 +206,6 @@ public class EventsActivity extends ActionBarActivity
     @Override
     public void onStop() {
         super.onStop();
-        Log.d(TAG, "onStop");
     }
 
     private void refresh() {
