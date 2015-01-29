@@ -85,5 +85,12 @@
     <string name="verison">0.1</string>
     <string name="terms">This app is developed for Willow Ridge Civic Assocation, in used by Willow Ridge residents. The app
     is under developed and may have heavy bugs.</string>
+
+    <string-array name="actionbar_events_list">
+        <item>All Events</item>
+        <item>This Week</item>
+        <item>This Month</item>
+    </string-array>
+
 </resources>
 

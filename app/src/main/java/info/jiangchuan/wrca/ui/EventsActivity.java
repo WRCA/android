@@ -7,6 +7,7 @@ package info.jiangchuan.wrca.ui;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarActivity;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -15,7 +16,9 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.AbsListView;
 import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.ListView;
+import android.widget.SpinnerAdapter;
 
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
@@ -39,8 +42,10 @@ import info.jiangchuan.wrca.util.ToastUtil;
 import retrofit.Callback;
 import retrofit.RetrofitError;
 
-public class EventsActivity extends ActionBarActivity implements AbsListView.OnScrollListener,
-        AdapterView.OnItemClickListener{
+public class EventsActivity extends ActionBarActivity
+        implements AbsListView.OnScrollListener,
+        AdapterView.OnItemClickListener,
+        ActionBar.OnNavigationListener {
 
     private static final String TAG = "EventsActivity";
     private List<Event> events = new ArrayList<Event>();
@@ -48,7 +53,6 @@ public class EventsActivity extends ActionBarActivity implements AbsListView.OnS
     private EventAdapter adapter;
     private EventsActivity mActivity;
 
-    private int lastItem = 0;
     private boolean isloading = false;
     private String range = "all";
 
@@ -70,7 +74,11 @@ public class EventsActivity extends ActionBarActivity implements AbsListView.OnS
     }
 
     void setupActionBar() {
-        getSupportActionBar().setTitle("All Events");
+        SpinnerAdapter mSpinnerAdapter = ArrayAdapter.createFromResource(this,
+                R.array.actionbar_events_list, android.R.layout.simple_list_item_1);
+
+        getSupportActionBar().setListNavigationCallbacks(mSpinnerAdapter, this);
+        getSupportActionBar().setNavigationMode(ActionBar.NAVIGATION_MODE_LIST);
     }
     void setupListview() {
         listView = (ListView) findViewById(R.id.list);
@@ -114,19 +122,6 @@ public class EventsActivity extends ActionBarActivity implements AbsListView.OnS
                 startActivity(intent);
                 break;
             }
-            case R.id.item_this_week:
-                onEventsThisWeek();
-                getSupportActionBar().setTitle("This Week");
-                break;
-            case R.id.item_this_month:
-
-                onEventsThisMonth();
-                getSupportActionBar().setTitle("This Month");
-                break;
-            case R.id.item_all:
-                onEventsAll();
-                getSupportActionBar().setTitle("All Events");
-                break;
             case R.id.action_settings: {
                 Intent intent = new Intent(this, SettingsActivity.class);
                 startActivity(intent);
@@ -138,29 +133,14 @@ public class EventsActivity extends ActionBarActivity implements AbsListView.OnS
         return super.onOptionsItemSelected(item);
     }
     private void onEventsThisWeek() {
-        events.clear();
-        offset = 1; // reset
-        listView.setOnScrollListener(this);
-        adapter = new EventAdapter(this, events);
-        listView.setAdapter(adapter);
         range = "week";
         refresh();
     }
     private void onEventsThisMonth() {
-        events.clear();
-        offset = 1; // reset
-        listView.setOnScrollListener(this);
-        adapter = new EventAdapter(this, events);
-        listView.setAdapter(adapter);
         range = "month";
         refresh();
     }
     private void onEventsAll() {
-        events.clear();
-        offset = 1; // reset
-        listView.setOnScrollListener(this);
-        adapter = new EventAdapter(this, events);
-        listView.setAdapter(adapter);
         range = "all";
         refresh();
     }
@@ -229,7 +209,11 @@ public class EventsActivity extends ActionBarActivity implements AbsListView.OnS
     }
 
     private void refresh() {
-      onLoadMore();
+        events.clear();
+        offset = 1; // reset
+        adapter.notifyDataSetChanged();
+        listView.setOnScrollListener(this);
+        onLoadMore();
     }
 
     @Override
@@ -253,6 +237,22 @@ public class EventsActivity extends ActionBarActivity implements AbsListView.OnS
         Intent intent = new Intent(mActivity, EventDetailActivity.class);
         intent.putExtra("event", events.get(position));
         startActivity(intent);
+    }
+
+    @Override
+    public boolean onNavigationItemSelected(int i, long l) {
+        switch (i) {
+            case 0:
+                onEventsAll();
+                return true;
+            case 1:
+                onEventsThisWeek();
+                return true;
+            case 2:
+                onEventsThisMonth();
+                return true;
+        }
+        return false;
     }
 }
 
