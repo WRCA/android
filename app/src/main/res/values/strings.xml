@@ -4,7 +4,7 @@
     <string name="app_name">WRCA</string>
     <string name="hello_world">Hello world!</string>
 
-    <string name="title_activity_signup">SignupActivity</string>
+    <string name="title_activity_signup">Signup</string>
     <string name="title_activity_main">MainActivity</string>
     <string name="title_activity_event_detail">EventDetailActivity</string>
     <string name="title_activity_event_description">EventDescriptionActivity</string>

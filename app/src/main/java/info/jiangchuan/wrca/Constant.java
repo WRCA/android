@@ -30,4 +30,7 @@ public class Constant {
     public static final int INT_REQUEST_LOGIN = 0;
     public static final int INT_REQUEST_MAIN = 1;
 
+    /*********** debug ***********************/
+    public static final boolean DEBUG = false;
+
 }

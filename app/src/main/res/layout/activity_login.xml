@@ -43,7 +43,7 @@
             android:background="@color/selector_button"
             android:textColor="@color/white"
             android:layout_marginBottom="@dimen/margin_gap"
-            android:text="new user?"
+            android:text="New User?"
             android:onClick="signup"/>
 
         <Button android:id="@+id/button_submit"
@@ -51,7 +51,7 @@
             android:background="@color/selector_button"
             android:layout_height="wrap_content"
             android:textColor="@color/color_white"
-            android:text="submit"
+            android:text="Submit"
             android:onClick="submit"/>
 
         <TextView

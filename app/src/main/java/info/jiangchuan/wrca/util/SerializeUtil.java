@@ -8,11 +8,9 @@ import java.io.FileOutputStream;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.io.PrintWriter;
-import java.util.ArrayList;
-import java.util.List;
 
+import info.jiangchuan.wrca.Constant;
 import info.jiangchuan.wrca.WillowRidge;
-import info.jiangchuan.wrca.models.Notification;
 
 /**
  * Created by jiangchuan on 1/25/15.
@@ -41,7 +39,8 @@ public class SerializeUtil {
             oos.close();
             fos.close();
         } catch (Exception e) {
-            Log.d(TAG, e.toString());
+            if (Constant.DEBUG)
+                Log.d(TAG, e.toString());
         }
     }
 
@@ -58,7 +57,8 @@ public class SerializeUtil {
             fis.close();
             return object;
         } catch (Exception e) {
-            Log.d(TAG, e.toString());
+            if (Constant.DEBUG)
+                Log.d(TAG, e.toString());
             return null;
         }
 

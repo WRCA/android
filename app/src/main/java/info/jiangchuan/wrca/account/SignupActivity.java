@@ -78,7 +78,8 @@ public class SignupActivity extends ActionBarActivity {
             public void success(JsonObject jsonObject, retrofit.client.Response response) {
                 DialogUtil.hideProgressDialog();
                 Result result = ResultParser.parse(jsonObject);
-                Log.d(TAG, jsonObject.toString());
+                if (Constant.DEBUG)
+                    Log.d(TAG, jsonObject.toString());
                 switch (result.getStatus()) {
                     case RestConst.INT_STATUS_200: {
                         try {

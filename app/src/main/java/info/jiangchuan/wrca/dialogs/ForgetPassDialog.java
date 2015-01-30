@@ -11,6 +11,7 @@ import android.widget.EditText;
 
 import com.google.gson.JsonObject;
 
+import info.jiangchuan.wrca.Constant;
 import info.jiangchuan.wrca.R;
 import info.jiangchuan.wrca.models.Result;
 import info.jiangchuan.wrca.parsers.ResultParser;
@@ -46,11 +47,13 @@ public class ForgetPassDialog extends Dialog implements android.view.View.OnClic
 
     @Override
     public void onClick(View v) {
-        Log.d(TAG, Integer.toString(v.getId()));
+        if (Constant.DEBUG)
+            Log.d(TAG, Integer.toString(v.getId()));
         switch (v.getId()) {
             case R.id.btn_send: {
                 EditText editText = (EditText) findViewById(R.id.txt_email);
-                Log.d(TAG, "onclick");
+                if (Constant.DEBUG)
+                    Log.d(TAG, "onclick");
                 String email = editText.getText().toString();
                 if (TextUtils.isEmpty(email)) {
                     ToastUtil.showToast(context, "email cannot be empty");

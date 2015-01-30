@@ -80,7 +80,8 @@ public class LoginActivity extends ActionBarActivity {
     @Override
     public void onStop() {
         super.onStop();
-        Log.d(TAG, "onStop");
+        if (Constant.DEBUG)
+            Log.d(TAG, "onStop");
      }
     public void signup(View view) {
         Intent intent = new Intent(this, SignupActivity.class);
@@ -110,7 +111,8 @@ public class LoginActivity extends ActionBarActivity {
             public void success(JsonObject jsonObject, retrofit.client.Response response) {
                 DialogUtil.hideProgressDialog();
                 String msg = jsonObject.toString();
-                Log.d(TAG, jsonObject.toString());
+                if (Constant.DEBUG)
+                    Log.d(TAG, jsonObject.toString());
                 Result result = ResultParser.parse(jsonObject);
                 switch (result.getStatus()) {
                     case RestConst.INT_STATUS_200: {

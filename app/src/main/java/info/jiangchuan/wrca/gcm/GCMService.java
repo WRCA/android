@@ -4,20 +4,18 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
-import android.os.AsyncTask;
 import android.util.Log;
-import android.widget.Toast;
 
+import com.google.android.gcm.GCMRegistrar;
+
+import info.jiangchuan.wrca.Constant;
 import info.jiangchuan.wrca.WillowRidge;
 import info.jiangchuan.wrca.models.User;
-import info.jiangchuan.wrca.util.SerializeUtil;
 
 import static info.jiangchuan.wrca.gcm.CommonUtilities.DISPLAY_MESSAGE_ACTION;
 import static info.jiangchuan.wrca.gcm.CommonUtilities.EXTRA_MESSAGE;
 import static info.jiangchuan.wrca.gcm.CommonUtilities.SENDER_ID;
 import static info.jiangchuan.wrca.gcm.CommonUtilities.SERVER_URL;
-
-import com.google.android.gcm.GCMRegistrar;
 /**
  * Created by jiangchuan on 1/26/15.
  */
@@ -68,7 +66,9 @@ public class GCMService {
         if (regId.equals("")) {
             // Registration is not present, register now with GCM
             GCMRegistrar.register(context, SENDER_ID);
-            Log.d("GCM", "register on google");
+
+            if (Constant.DEBUG)
+                Log.d("GCM", "register on google");
         } else {
             // Device is already registered on GCM
             if (GCMRegistrar.isRegisteredOnServer(context)) {
@@ -87,7 +87,8 @@ public class GCMService {
             GCMRegistrar.onDestroy(context);
             registered = false;
         } catch (Exception e) {
-            Log.e("UnRegister Receiver Error", "> " + e.getMessage());
+            if (Constant.DEBUG)
+                Log.e("UnRegister Receiver Error", "> " + e.getMessage());
         }
     }
     public boolean isGCMConfigSet() {

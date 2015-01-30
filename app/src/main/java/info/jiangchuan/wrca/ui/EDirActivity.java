@@ -2,13 +2,14 @@ package info.jiangchuan.wrca.ui;
 
 import android.app.LocalActivityManager;
 import android.content.Intent;
-import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
+import android.support.v7.app.ActionBarActivity;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.TabHost;
 
+import info.jiangchuan.wrca.Constant;
 import info.jiangchuan.wrca.R;
 
 public class EDirActivity extends ActionBarActivity {
@@ -54,7 +55,8 @@ public class EDirActivity extends ActionBarActivity {
         TabHost host;
         host = (TabHost)findViewById(android.R.id.tabhost);
         if (host == null) {
-            Log.d(TAG, "mHost null");
+            if (Constant.DEBUG)
+                Log.d(TAG, "mHost null");
         }
 
         LocalActivityManager localActivityManager = new LocalActivityManager(this, false);
@@ -64,7 +66,8 @@ public class EDirActivity extends ActionBarActivity {
         TabHost.TabSpec	tab1 = host.newTabSpec("tab1");
         TabHost.TabSpec	tab2 = host.newTabSpec("tab2");
         if (tab1 == null || tab2 == null ) {
-            Log.d(TAG, "tab null");
+            if (Constant.DEBUG)
+                Log.d(TAG, "tab null");
         }
         tab1.setIndicator("Nearby");
         tab2.setIndicator("Members");

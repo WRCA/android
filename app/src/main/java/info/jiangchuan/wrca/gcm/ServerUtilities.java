@@ -1,5 +1,10 @@
 package info.jiangchuan.wrca.gcm;
 
+import android.content.Context;
+import android.util.Log;
+
+import com.google.gson.JsonObject;
+
 import java.io.IOException;
 import java.io.OutputStream;
 import java.net.HttpURLConnection;
@@ -11,23 +16,13 @@ import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Random;
 
-import static info.jiangchuan.wrca.gcm.CommonUtilities.SERVER_URL;
-import static info.jiangchuan.wrca.gcm.CommonUtilities.TAG;
-
-import android.content.Context;
-import android.util.Log;
-
-import com.google.android.gcm.GCMRegistrar;
-import com.google.gson.JsonObject;
-
-import info.jiangchuan.wrca.R;
-import info.jiangchuan.wrca.WillowRidge;
-import info.jiangchuan.wrca.gcm.CommonUtilities;
+import info.jiangchuan.wrca.Constant;
 import info.jiangchuan.wrca.rest.Client;
-import info.jiangchuan.wrca.util.ToastUtil;
 import retrofit.Callback;
 import retrofit.RetrofitError;
 import retrofit.client.Response;
+
+import static info.jiangchuan.wrca.gcm.CommonUtilities.TAG;
 
 /**
  * Created by jiangchuan on 1/24/15.
@@ -42,7 +37,8 @@ public class ServerUtilities {
      *
      */
     public static void register(final Context context, String name, String email, final String regId) {
-        Log.i(TAG, "registering device (regId = " + regId + ")");
+        if (Constant.DEBUG)
+            Log.i(TAG, "registering device (regId = " + regId + ")");
         Map<String, String> params = new HashMap<String, String>();
         params.put("regId", regId);
         params.put("name", name);
@@ -56,7 +52,8 @@ public class ServerUtilities {
 
             @Override
             public void failure(RetrofitError error) {
-                Log.e(TAG, error.toString());
+                if (Constant.DEBUG)
+                    Log.e(TAG, error.toString());
             }
         });
     }
@@ -70,13 +67,14 @@ public class ServerUtilities {
         Client.getApi().gcmUnRegister(params, new Callback<JsonObject>() {
             @Override
             public void success(JsonObject jsonObject, Response response) {
-//                Log.d(TAG, jsonObject.toString());
+
 //                ToastUtil.showToast(WillowRidge.getInstance(), jsonObject.toString());
             }
 
             @Override
             public void failure(RetrofitError error) {
-                Log.e(TAG, error.toString());
+                if (Constant.DEBUG)
+                    Log.e(TAG, error.toString());
             }
         });
     }
@@ -110,11 +108,13 @@ public class ServerUtilities {
             }
         }
         String body = bodyBuilder.toString();
-        Log.v(TAG, "Posting '" + body + "' to " + url);
+        if (Constant.DEBUG)
+            Log.v(TAG, "Posting '" + body + "' to " + url);
         byte[] bytes = body.getBytes();
         HttpURLConnection conn = null;
         try {
-            Log.e("URL", "> " + url);
+            if (Constant.DEBUG)
+                Log.e("URL", "> " + url);
             conn = (HttpURLConnection) url.openConnection();
             conn.setDoOutput(true);
             conn.setUseCaches(false);

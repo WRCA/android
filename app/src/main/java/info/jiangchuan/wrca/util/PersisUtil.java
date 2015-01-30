@@ -23,13 +23,15 @@ public class PersisUtil {
         user.getEvents().clear();
         List<Notification> tmp = (ArrayList<Notification>) SerializeUtil.deSerialize(Constant.FILE_SAVED_NOTIFICATIONS);
         if (tmp != null) {
-            Log.d(TAG, "notif:" + Integer.toString(notifications.size()));
+            if (Constant.DEBUG)
+                Log.d(TAG, "notif:" + Integer.toString(notifications.size()));
             notifications.addAll(tmp);
         }
 
         List<Event> tmp2 = (ArrayList<Event>)SerializeUtil.deSerialize(Constant.FILE_SAVED_EVENTS);
         if (tmp2 != null) {
-            Log.d(TAG, "events:" + Integer.toString(tmp2.size()));
+            if (Constant.DEBUG)
+                Log.d(TAG, "events:" + Integer.toString(tmp2.size()));
             events.addAll(tmp2);
         }
 

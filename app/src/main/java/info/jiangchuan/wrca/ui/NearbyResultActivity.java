@@ -2,8 +2,8 @@ package info.jiangchuan.wrca.ui;
 
 import android.content.Intent;
 import android.net.Uri;
-import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
+import android.support.v7.app.ActionBarActivity;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -17,13 +17,13 @@ import com.android.volley.VolleyError;
 import com.android.volley.VolleyLog;
 import com.android.volley.toolbox.JsonObjectRequest;
 
-
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
 
+import info.jiangchuan.wrca.Constant;
 import info.jiangchuan.wrca.R;
 import info.jiangchuan.wrca.WillowRidge;
 import info.jiangchuan.wrca.adapters.PlaceAdapter;
@@ -61,7 +61,8 @@ public class NearbyResultActivity extends ActionBarActivity {
                 "&location=43.012062,-78.80952977&radius=3000"+"&key=AIzaSyBzNeQOQWOXUwgyC6v5JPVlRhralZ2FKWM";
 
 
-        Log.d(TAG, url);
+        if (Constant.DEBUG)
+            Log.d(TAG, url);
         JsonObjectRequest eventReq = new JsonObjectRequest(Request.Method.GET, url, null,
                 new Response.Listener<JSONObject>() {
                     @Override
@@ -69,7 +70,8 @@ public class NearbyResultActivity extends ActionBarActivity {
                         try {
                             // Parsing json
                             JSONArray arr  = response.getJSONArray("results");
-                            Log.d(TAG, Integer.toString(arr.length()));
+                            if (Constant.DEBUG)
+                                Log.d(TAG, Integer.toString(arr.length()));
                             for (int i = 0; i < arr.length(); i++) {
                                 JSONObject obj = arr.getJSONObject(i);
                                 Place place = new Place();
@@ -91,7 +93,8 @@ public class NearbyResultActivity extends ActionBarActivity {
                 }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                VolleyLog.d(TAG, "Error: " + error.getMessage());
+                if (Constant.DEBUG)
+                    VolleyLog.d(TAG, "Error: " + error.getMessage());
             }
         });
         // Adding request to request queue

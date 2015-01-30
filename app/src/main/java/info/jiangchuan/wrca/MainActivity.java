@@ -58,7 +58,8 @@ public class MainActivity extends Activity
     private void setupTabs(Bundle savedInstanceState) {
         tabHost = (TabHost)findViewById(android.R.id.tabhost);
         if (tabHost == null) {
-            Log.d(TAG, "mHost null");
+            if (Constant.DEBUG)
+                Log.d(TAG, "mHost null");
         }
 
         LocalActivityManager localActivityManager = new LocalActivityManager(this, false);
@@ -70,7 +71,8 @@ public class MainActivity extends Activity
         TabHost.TabSpec	tab3 = tabHost.newTabSpec("tab3");
         TabHost.TabSpec	tab4 = tabHost.newTabSpec("tab4");
         if (tab1 == null || tab2 == null || tab3 == null || tab4 == null) {
-            Log.d(TAG, "tab null");
+            if (Constant.DEBUG)
+                Log.d(TAG, "tab null");
         }
         tab1.setIndicator("events");
         tab2.setIndicator("push");

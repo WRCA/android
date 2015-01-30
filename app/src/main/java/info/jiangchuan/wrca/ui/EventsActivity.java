@@ -30,6 +30,7 @@ import org.json.JSONException;
 import java.util.ArrayList;
 import java.util.List;
 
+import info.jiangchuan.wrca.Constant;
 import info.jiangchuan.wrca.R;
 import info.jiangchuan.wrca.WillowRidge;
 import info.jiangchuan.wrca.adapters.EventAdapter;
@@ -173,7 +174,8 @@ public class EventsActivity extends ActionBarActivity
     private void onLoadMore() {
         User user = WillowRidge.getInstance().getUser();
         if (user.getToken() == null || range == null) {
-            Log.e(TAG, "param cannot be null");
+            if (Constant.DEBUG)
+                Log.e(TAG, "param cannot be null");
             return;
         }
         if (footer != null && isloading == false) {
