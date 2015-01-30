@@ -51,7 +51,6 @@ public class ServerUtilities {
         Client.getApi().gcmRegister(params, new Callback<JsonObject>() {
             @Override
             public void success(JsonObject jsonObject, Response response) {
-                Log.d(TAG, jsonObject.toString());
                 //ToastUtil.showToast(WillowRidge.getInstance(), jsonObject.toString());
             }
 

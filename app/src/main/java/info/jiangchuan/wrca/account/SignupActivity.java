@@ -5,9 +5,9 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.google.gson.JsonObject;
 
@@ -21,11 +21,11 @@ import info.jiangchuan.wrca.WillowRidge;
 import info.jiangchuan.wrca.dialogs.GetVeriCodeDialog;
 import info.jiangchuan.wrca.models.Result;
 import info.jiangchuan.wrca.models.User;
+import info.jiangchuan.wrca.parsers.ParserUtil;
 import info.jiangchuan.wrca.parsers.ResultParser;
 import info.jiangchuan.wrca.rest.Client;
 import info.jiangchuan.wrca.rest.RestConst;
 import info.jiangchuan.wrca.util.DialogUtil;
-import info.jiangchuan.wrca.util.NetworkUtil;
 import info.jiangchuan.wrca.util.SharedPrefUtil;
 import info.jiangchuan.wrca.util.ToastUtil;
 import retrofit.Callback;
@@ -78,18 +78,23 @@ public class SignupActivity extends ActionBarActivity {
             public void success(JsonObject jsonObject, retrofit.client.Response response) {
                 DialogUtil.hideProgressDialog();
                 Result result = ResultParser.parse(jsonObject);
-                switch (response.getStatus()) {
+                Log.d(TAG, jsonObject.toString());
+                switch (result.getStatus()) {
                     case RestConst.INT_STATUS_200: {
-                        String token = jsonObject.get(Constant.STRING_AUTH_TOKEN).toString();
-                        SharedPrefUtil.writeString(Constant.STRING_AUTH_TOKEN, token);
-                        Intent intent = new Intent(mActivity, MainActivity.class);
-                        User user = WillowRidge.getInstance().getUser();
-                        user.setEmail(email);
-                        user.setToken(token);
-                        user.setNotification(true); // new user, set push notificaion to true
-                        WillowRidge.getInstance().getGcmService().register();
-                        startActivity(intent);
-                        finish();
+                        try {
+                            String token = ParserUtil.parseToken(jsonObject);
+                            SharedPrefUtil.writeString(Constant.STRING_AUTH_TOKEN, token);
+                            Intent intent = new Intent(mActivity, MainActivity.class);
+                            User user = WillowRidge.getInstance().getUser();
+                            user.setEmail(email);
+                            user.setToken(token);
+                            user.setNotification(true); // new user, set push notificaion to true
+                            WillowRidge.getInstance().getGcmService().register();
+                            startActivity(intent);
+                            finish();
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
                         break;
                     }
                     default: {

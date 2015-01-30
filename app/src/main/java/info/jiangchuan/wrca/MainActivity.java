@@ -43,14 +43,7 @@ public class MainActivity extends Activity
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         setupTabs(savedInstanceState);
-
         User user = WillowRidge.getInstance().getUser();
-        if (user != null) {
-            if (user.requireNotification()
-                    && WillowRidge.getInstance().getGcmService().isRegistered() == false) {
-                WillowRidge.getInstance().getGcmService().register();
-            }
-        }
     }
 
     @Override

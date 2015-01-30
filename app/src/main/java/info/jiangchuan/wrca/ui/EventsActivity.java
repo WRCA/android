@@ -59,7 +59,7 @@ public class EventsActivity extends ActionBarActivity
     private String range = "all";
     private boolean searchViewOpen = false;
 
-    final int limit = 6;
+    final int limit = 5;
     int offset = 1;
 
     View footer;
@@ -73,7 +73,6 @@ public class EventsActivity extends ActionBarActivity
         DialogUtil.showProgressDialog("Loading...");
         setupListview();
         setupActionBar();
-        Log.d(TAG, "events onCreate");
     }
 
     void setupActionBar() {
@@ -93,7 +92,7 @@ public class EventsActivity extends ActionBarActivity
         adapter = new EventAdapter(this, events);
         listView.setAdapter(adapter);
         footer.setVisibility(View.GONE);
-        listView.setOnScrollListener(this);
+       // listView.setOnScrollListener(this);
         listView.setOnItemClickListener(this);
     }
 
@@ -180,6 +179,7 @@ public class EventsActivity extends ActionBarActivity
         if (footer != null && isloading == false) {
             footer.setVisibility(View.VISIBLE);
         }
+
         Client.getApi().events(user.getToken(), range, Integer.toString(offset), Integer.toString(limit), new Callback<JsonObject>() {
             @Override
             public void success(JsonObject jsonObject, retrofit.client.Response response) {
@@ -197,6 +197,7 @@ public class EventsActivity extends ActionBarActivity
                             int list_count = jsonObject.get(EventParser.LIST_COUNT).getAsInt();
                             if (offset + limit > list_count) {
                                 listView.setOnScrollListener(null); // no more data, close
+                                isloading = false;
                                 listView.removeFooterView(footer);
                             } else {
                                 offset = offset + limit;
@@ -210,8 +211,8 @@ public class EventsActivity extends ActionBarActivity
                     }
                     default: {
                         // other err
-                        isloading = false;
                         listView.setOnScrollListener(null);
+                        isloading = false;
                         ToastUtil.showToast(mActivity, result.getMessage());
                         break;
                     }
@@ -236,10 +237,10 @@ public class EventsActivity extends ActionBarActivity
 
     private void refresh() {
         events.clear();
-        offset = 1; // reset
         adapter.notifyDataSetChanged();
+        isloading = false;
+        offset = 1;
         listView.setOnScrollListener(this);
-        onLoadMore();
     }
 
     @Override
@@ -254,6 +255,7 @@ public class EventsActivity extends ActionBarActivity
                 && footer != null && footer.getVisibility() == View.GONE) {
             isloading = true;
             footer.setVisibility(View.VISIBLE);
+            //Log.d(TAG, "onScroll");
             onLoadMore();
         }
     }
